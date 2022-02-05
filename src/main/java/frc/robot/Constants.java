@@ -19,4 +19,7 @@ public final class Constants {
     ballHandler = 14;
     public static final int
     shooter = 15;
+    public static final int
+    extender = 16,
+    rotator = 17;
 }
