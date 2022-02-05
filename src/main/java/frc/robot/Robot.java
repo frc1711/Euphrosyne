@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -19,12 +26,33 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  UsbCamera camera;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
+    new Thread(() -> {
+      camera = CameraServer.startAutomaticCapture();
+
+      camera.setResolution(640, 480);
+
+      CvSink cvSink = CameraServer.getVideo();
+      CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+
+      Mat source = new Mat();
+      Mat output = new Mat();
+
+      while(!Thread.interrupted()) {
+        if (cvSink.grabFrame(source) == 0) {
+          continue;
+        }
+        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+        outputStream.putFrame(output);
+      }
+    }).start();
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();

@@ -33,40 +33,13 @@
 	<widget field="Swerve" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
 		<location x="60" y="120"/>
 	</widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="496" y="32"/>
+		<width>560</width>
+		<height>304</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
 </dashboard>
 <live-window>
-	<widget field="Swerve" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
-		<location x="0" y="22"/>
-	</widget>
-	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
-		<widget field="PIDController[3]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="6" y="15"/>
-			<height>149</height>
-			<width>250</width>
-		</widget>
-		<widget field="PIDController[1]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="6" y="164"/>
-			<height>149</height>
-			<width>250</width>
-		</widget>
-		<widget field="navX-Sensor[4]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
-			<location x="6" y="313"/>
-			<height>150</height>
-			<width>250</width>
-		</widget>
-		<widget field="PIDController[2]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="6" y="463"/>
-			<height>149</height>
-			<width>250</width>
-		</widget>
-		<widget field="PIDController[4]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="6" y="612"/>
-			<height>149</height>
-			<width>250</width>
-		</widget>
-		<location x="0" y="0"/>
-		<width>262</width>
-		<height>767</height>
-	</widget>
 </live-window>
 </xml>
