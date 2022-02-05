@@ -1,0 +1,72 @@
+<xml version="1.0">
+<dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.Label">
+		<location x="30" y="30"/>
+		<property name="Text" value="Connection Indicator"/>
+	</static-widget>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.ConnectionIndicator">
+		<location x="28" y="58"/>
+		<property name="Connection Color" value="0.204.0.255"/>
+		<property name="Graphics" value="Rounded"/>
+	</static-widget>
+	<widget field="ResetGyro" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="88" y="210"/>
+	</widget>
+	<widget field="Rear Right Direction" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="243" y="240"/>
+	</widget>
+	<widget field="Rear Left Direction" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="249" y="270"/>
+	</widget>
+	<widget field="Front Right Direction" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="240" y="180"/>
+	</widget>
+	<widget field="Front Left Direction" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="247" y="210"/>
+	</widget>
+	<widget field="Gyro Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="284" y="90"/>
+	</widget>
+	<widget field="SetSwerveModulePositions" type="Command" class="edu.wpi.first.smartdashboard.gui.elements.Command">
+		<location x="12" y="239"/>
+	</widget>
+	<widget field="Swerve" type="Subsystem" class="edu.wpi.first.smartdashboard.gui.elements.Subsystem">
+		<location x="60" y="120"/>
+	</widget>
+</dashboard>
+<live-window>
+	<widget field="Swerve" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="0" y="22"/>
+	</widget>
+	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<widget field="PIDController[3]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="15"/>
+			<height>149</height>
+			<width>250</width>
+		</widget>
+		<widget field="PIDController[1]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="164"/>
+			<height>149</height>
+			<width>250</width>
+		</widget>
+		<widget field="navX-Sensor[4]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
+			<location x="6" y="313"/>
+			<height>150</height>
+			<width>250</width>
+		</widget>
+		<widget field="PIDController[2]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="463"/>
+			<height>149</height>
+			<width>250</width>
+		</widget>
+		<widget field="PIDController[4]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="6" y="612"/>
+			<height>149</height>
+			<width>250</width>
+		</widget>
+		<location x="0" y="0"/>
+		<width>262</width>
+		<height>767</height>
+	</widget>
+</live-window>
+</xml>
