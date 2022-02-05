@@ -8,16 +8,17 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.Constants;
 
-public class Shooter extends SubsystemBase {
-	public final CANSparkMax shooter;
+public class CargoHandler extends SubsystemBase {
+	private final CANSparkMax pulley;
 	
-	public Shooter () {
-		shooter = new CANSparkMax(Constants.shooter, MotorType.kBrushless);
+	public CargoHandler () {
+		pulley = new CANSparkMax(Constants.ballHandler, MotorType.kBrushless);
 	}
 	
 	public void stop (){
-		shooter.set(0);
+		pulley.set(0);
 	}
 }

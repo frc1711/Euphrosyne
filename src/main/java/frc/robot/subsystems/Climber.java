@@ -11,20 +11,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-  /** Creates a new Climber. */
-  public final CANSparkMax
-  extender,
-  rotator;
-  public Climber() {
-    extender = new CANSparkMax(Constants.extender, MotorType.kBrushless);
-    rotator = new CANSparkMax(Constants.rotator, MotorType.kBrushless);
-  }
-  public void stop(){
-    extender.set(0);
-    rotator.set(0);
-  }
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+	public final CANSparkMax extender, rotator;
+	
+	public Climber () {
+		extender = new CANSparkMax(Constants.extender, MotorType.kBrushless);
+		rotator = new CANSparkMax(Constants.rotator, MotorType.kBrushless);
+	}
+	
+	public void stop (){
+		extender.set(0);
+		rotator.set(0);
+	}
 }
