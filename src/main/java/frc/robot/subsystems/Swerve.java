@@ -11,18 +11,18 @@ public class Swerve extends GyroSwerveDrive {
 	
 	private static Swerve swerveInstance;
 	
-	private static final double trackToWheelbaseRatio = 21/18.;
+	private static final double trackToWheelbaseRatio = 1/1;
 	
 	private static final int
-		frontLeftSteerID = 6,
-		frontRightSteerID = 4,
-		rearLeftSteerID = 8,
-		rearRightSteerID = 2,
+		frontLeftSteerID = 1,
+		frontRightSteerID = 3,
+		rearLeftSteerID = 5,
+		rearRightSteerID = 7,
 		
-		frontLeftDriveID = 5,
-		frontRightDriveID = 3,
-		rearLeftDriveID = 7,
-		rearRightDriveID = 1,
+		frontLeftDriveID = 2,
+		frontRightDriveID = 4,
+		rearLeftDriveID = 6,
+		rearRightDriveID = 8,
 		
 		frontLeftSteerEncoderID = 9,
 		frontRightSteerEncoderID = 10,
