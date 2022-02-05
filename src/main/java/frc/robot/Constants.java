@@ -17,4 +17,6 @@ public final class Constants {
     intake = 13;
     public static final int
     ballHandler = 14;
+    public static final int
+    shooter = 15;
 }
