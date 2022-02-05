@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 
-import frc.team1711.swerve.subsystems.AutoSwerveWheel;
+import frc.team1711.swerve.subsystems.SwerveWheel;
 import frc.team1711.swerve.util.Angles;
 
 import java.io.BufferedReader;
@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
-public class SwerveModule extends AutoSwerveWheel {
+public class SwerveModule extends SwerveWheel {
 		
 	private static final double
 		steerPIDkp = 1.2,
@@ -45,14 +45,6 @@ public class SwerveModule extends AutoSwerveWheel {
 		
 		steerPID = new PIDController(steerPIDkp, steerPIDki, steerPIDkd);
 	}
-	
-	@Override
-	protected double getPositionDifference () {
-		return 0; // No autonomous capability
-	}
-	
-	@Override
-	protected void resetDriveEncoder () { } // No autonomous capability
 	
 	// Direction methods
 	@Override
