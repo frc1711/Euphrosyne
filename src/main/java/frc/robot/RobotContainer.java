@@ -7,19 +7,26 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetSwerveModulePositions;
 import frc.robot.commands.SwerveTeleop;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
 	
+	private final Joystick driveController, centralController;
+	
 	private final Swerve swerveDrive;
-	private final Joystick driveController;
+	private final Climber climber;
+	
 	private final SwerveTeleop swerveTeleop;
+	private final ClimberCommand climberCommand;
 	
 	public RobotContainer () {
 		driveController = new Joystick(0);
+		centralController = new Joystick(1);
 		
 		swerveDrive = Swerve.getInstance();
 		swerveTeleop = new SwerveTeleop(
@@ -27,6 +34,12 @@ public class RobotContainer {
 			() -> driveController.getRawAxis(0),	// strafeX
 			() -> -driveController.getRawAxis(1),	// strafeY
 			() -> driveController.getRawAxis(4));	// steering
+		
+		climber = new Climber(Constants.extender, Constants.rotator);
+		climberCommand = new ClimberCommand(
+			climber,
+			() -> centralController.getRawAxis(0),	// extension
+			() -> centralController.getRawAxis(4));	// rotation
 		
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
