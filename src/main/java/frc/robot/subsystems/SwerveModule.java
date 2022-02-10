@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -9,7 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team1711.swerve.subsystems.SwerveWheel;
 import frc.team1711.swerve.util.Angles;
 
@@ -21,10 +22,11 @@ import java.io.PrintWriter;
 public class SwerveModule extends SwerveWheel {
 		
 	private static final double
-		steerPIDkp = 1.2,
+		steerPIDkp = 2.2,
 		steerPIDki = 0,
 		steerPIDkd = 0;
 	
+	private final String name;
 	private final int steerEncoderID;
 	private final CANCoder steerEncoder;
 	private final PIDController steerPID;
@@ -32,6 +34,8 @@ public class SwerveModule extends SwerveWheel {
 	private final CANSparkMax driveController, steerController;
 	
 	public SwerveModule (String name, int steerControllerID, int driveControllerID, int steerEncoderID) {
+		this.name = name;
+		
 		driveController = new CANSparkMax(driveControllerID, CANSparkMaxLowLevel.MotorType.kBrushless);
 		steerController = new CANSparkMax(steerControllerID, CANSparkMaxLowLevel.MotorType.kBrushless);
 		
@@ -76,6 +80,7 @@ public class SwerveModule extends SwerveWheel {
 	
 	// Creates a new value for the encoder's direction absolute offset
 	// based on the assumption that the wheel is currently facing directly forward
+	// and configures the encoders
 	private double createNewDirectionAbsoluteOffset () {
 		// Makes a file writer so the new value can be written to a file on the RoboRIO
 		final double newOffset = steerEncoder.getAbsolutePosition();
@@ -93,8 +98,9 @@ public class SwerveModule extends SwerveWheel {
 	}
 	
 	public void configDirectionEncoder () {
-		// Sets the direction absolute offset (not stored on encoder but related to encoder)
+		
 		directionAbsoluteOffset = createNewDirectionAbsoluteOffset();
+		System.out.println(name + " new offset: " + directionAbsoluteOffset);
 		
 		// Create the cancoder configuration
 		CANCoderConfiguration config = new CANCoderConfiguration();
@@ -109,22 +115,26 @@ public class SwerveModule extends SwerveWheel {
 		config.sensorDirection = true;
 		
 		// Flashes the configuration
-		steerEncoder.configAllSettings(config, 1000);
+		ErrorCode errorCode = steerEncoder.configAllSettings(config, 1000);
+		if (errorCode != ErrorCode.OK) {
+			System.out.println("Error in configuring " + name + " CANCoder: " + errorCode.name());
+		}
 	}
 	
 	// Controlling steering
 	@Override
 	protected void setDirection (double targetDirection) {
+		
 		// Gets desired change in direction by wrapping the difference
 		// between where we want to be and where we with zero as the center
 		double directionChange = Angles.wrapDegreesZeroCenter(targetDirection - getDirection());
 		
 		// PID loop between 0 (representing current value) and the number
 		// of revolutions we want to change the direction by
-		double steerSpeed = steerPID.calculate(0, directionChange / 360);
+		double steerSpeed = -steerPID.calculate(0, directionChange / 360);
 		
 		// Sets steering controller
-		steerController.set(-steerSpeed);
+		steerController.set(steerSpeed);
 	}
 	
 	@Override
