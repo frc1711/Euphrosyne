@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ResetGyro;
 import frc.robot.commands.SetSwerveModulePositions;
@@ -38,15 +39,22 @@ public class RobotContainer {
 		climber = new Climber(Constants.extender, Constants.rotator);
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> centralController.getRawAxis(0),	// extension
-			() -> centralController.getRawAxis(4));	// rotation
+			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(0)),	// extension
+			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(4)));	// rotation
 		
 		swerveDrive.setDefaultCommand(swerveTeleop);
+		climber.setDefaultCommand(climberCommand);
 		
 		// SmartDashboard
 		SmartDashboard.putData("Swerve", swerveDrive);
 		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
 		SmartDashboard.putData(new ResetGyro(swerveDrive));
+	}
+	
+	// TODO: Get a more permanent solution
+	public double applyDeadbandTEMPORARY (double input) {
+		if (Math.abs(input) <= 0.08) return 0;
+		return input;
 	}
 	
 	public Command getAutonomousCommand () {

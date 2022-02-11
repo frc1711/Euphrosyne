@@ -42,63 +42,46 @@
 	</widget>
 </dashboard>
 <live-window>
+	<widget field="Climber" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
+		<location x="263" y="22"/>
+	</widget>
 	<widget field="Swerve" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
-		<location x="0" y="22"/>
+		<location x="263" y="0"/>
 	</widget>
 	<widget field="Ungrouped" type="LW Subsystem" class="edu.wpi.first.smartdashboard.livewindow.elements.LWSubsystem">
-		<widget field="PIDController[3]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+		<widget field="PIDController[4]" type="Table" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
+			<location x="0" y="0"/>
+			<height>0</height>
+			<width>0</width>
+		</widget>
+		<widget field="PIDController[4]" type="Table" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
 			<location x="0" y="0"/>
 			<height>0</height>
 			<width>0</width>
 		</widget>
 		<widget field="PIDController[3]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
+			<location x="6" y="15"/>
+			<height>149</height>
+			<width>250</width>
 		</widget>
 		<widget field="PIDController[1]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
-		</widget>
-		<widget field="PIDController[1]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
+			<location x="6" y="164"/>
+			<height>149</height>
+			<width>250</width>
 		</widget>
 		<widget field="navX-Sensor[4]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
-		</widget>
-		<widget field="navX-Sensor[4]" type="Gyro" class="edu.wpi.first.smartdashboard.gui.elements.Compass">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
+			<location x="6" y="313"/>
+			<height>150</height>
+			<width>250</width>
 		</widget>
 		<widget field="PIDController[2]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
-		</widget>
-		<widget field="PIDController[2]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
-		</widget>
-		<widget field="PIDController[4]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
-		</widget>
-		<widget field="PIDController[4]" type="PIDController" class="edu.wpi.first.smartdashboard.gui.elements.PIDEditor">
-			<location x="0" y="0"/>
-			<height>0</height>
-			<width>0</width>
+			<location x="6" y="463"/>
+			<height>149</height>
+			<width>250</width>
 		</widget>
 		<location x="0" y="0"/>
 		<width>262</width>
-		<height>767</height>
+		<height>618</height>
 	</widget>
 </live-window>
 </xml>
