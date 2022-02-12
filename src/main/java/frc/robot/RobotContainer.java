@@ -18,6 +18,16 @@ import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
 	
+	private static final int
+		intakeID = 13,
+		
+		cargoHandlerID = 14,
+		
+		shooterID = 15,
+		
+		extenderID = 16,
+		rotatorID = 17;
+	
 	private final Joystick driveController, centralController;
 	
 	private final Swerve swerveDrive;
@@ -43,9 +53,9 @@ public class RobotContainer {
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Central System
-		cargoHandler = new CargoHandler(Constants.ballHandler);
-		intake = new Intake(Constants.intake);
-		shooter = new Shooter(Constants.shooter);
+		cargoHandler = new CargoHandler(cargoHandlerID);
+		intake = new Intake(intakeID);
+		shooter = new Shooter(shooterID);
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
 			() -> centralController.getRawButton(1),	// CargoHandler:	A
