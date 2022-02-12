@@ -36,9 +36,9 @@ public class RobotContainer {
 		swerveDrive = Swerve.getInstance();
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
-			() -> driveController.getRawAxis(0),	// strafeX
-			() -> -driveController.getRawAxis(1),	// strafeY
-			() -> driveController.getRawAxis(4));	// steering
+			() -> driveController.getRawAxis(0),		// Strafe X:		Left joystick X
+			() -> -driveController.getRawAxis(1),		// Strafe Y:		Left joystick Y
+			() -> driveController.getRawAxis(4));		// Steering:		Right joystick X
 		
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
@@ -48,9 +48,9 @@ public class RobotContainer {
 		shooter = new Shooter(Constants.shooter);
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
-			() -> centralController.getRawButton(0),
-			() -> centralController.getRawButton(1),
-			() -> centralController.getRawButton(2));
+			() -> centralController.getRawButton(1),	// CargoHandler:	A
+			() -> centralController.getRawButton(2),	// Intake:			B
+			() -> centralController.getRawButton(3));	// Shooter:			X
 		
 		cargoHandler.setDefaultCommand(centralSystem);
 		
