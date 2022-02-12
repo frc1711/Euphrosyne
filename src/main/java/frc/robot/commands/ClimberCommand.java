@@ -31,7 +31,7 @@ public class ClimberCommand extends CommandBase {
 	
 	@Override
 	public void execute () {
-		climber.setExtensionSpeed(extensionInput.getAsDouble() * 0.2); // TODO: Speed scalar constants
+		climber.setExtensionSpeed(extensionInput.getAsDouble() * 0.4);
 		climber.setRotationSpeed(rotationInput.getAsDouble() * 0.2);
 	}
 	

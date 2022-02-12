@@ -39,8 +39,8 @@ public class RobotContainer {
 		climber = new Climber(Constants.extender, Constants.rotator);
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(0)),	// extension
-			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(4)));	// rotation
+			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(4)),		// extension
+			() -> applyDeadbandTEMPORARY(-centralController.getRawAxis(0)));	// rotation
 		
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
@@ -53,7 +53,7 @@ public class RobotContainer {
 	
 	// TODO: Get a more permanent solution
 	public double applyDeadbandTEMPORARY (double input) {
-		if (Math.abs(input) <= 0.08) return 0;
+		if (Math.abs(input) <= 0.12) return 0;
 		return input;
 	}
 	
