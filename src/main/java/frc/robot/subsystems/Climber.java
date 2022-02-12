@@ -8,14 +8,21 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-	public final CANSparkMax extender, rotator;
+	private final CANSparkMax extender, rotator;
 	
-	public Climber () {
-		extender = new CANSparkMax(Constants.extender, MotorType.kBrushless);
-		rotator = new CANSparkMax(Constants.rotator, MotorType.kBrushless);
+	public Climber (int extenderID, int rotatorID) {
+		extender = new CANSparkMax(extenderID, MotorType.kBrushless);
+		rotator = new CANSparkMax(rotatorID, MotorType.kBrushless);
+	}
+	
+	public void setExtensionSpeed (double speed) {
+		extender.set(speed);
+	}
+	
+	public void setRotationSpeed (double speed) {
+		rotator.set(speed);
 	}
 	
 	public void stop (){

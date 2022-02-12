@@ -12,6 +12,6 @@ public final class Constants {
 		
 		shooter = 15,
 		
-		extender = 16,
-		rotator = 17;
+		rotator = 16,
+		extender = 17;
 }
