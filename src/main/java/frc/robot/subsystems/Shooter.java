@@ -8,16 +8,19 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
 	private final CANSparkMax shooter;
 	
-	public Shooter () {
-		shooter = new CANSparkMax(Constants.shooter, MotorType.kBrushless);
+	public Shooter (int shooterID) {
+		shooter = new CANSparkMax(shooterID, MotorType.kBrushless);
 	}
 	
-	public void stop (){
+	public void setSpeed (double speed) {
+		shooter.set(speed);
+	}
+	
+	public void stop () {
 		shooter.set(0);
 	}
 }
