@@ -16,6 +16,10 @@ public class Shooter extends SubsystemBase {
 		shooter = new CANSparkMax(shooterID, MotorType.kBrushless);
 	}
 	
+	public void setSpeed (double speed) {
+		shooter.set(speed);
+	}
+	
 	public void stop () {
 		shooter.set(0);
 	}

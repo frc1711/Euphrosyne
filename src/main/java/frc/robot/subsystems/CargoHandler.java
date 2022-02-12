@@ -16,6 +16,10 @@ public class CargoHandler extends SubsystemBase {
 		pulley = new CANSparkMax(ballHandlerID, MotorType.kBrushless);
 	}
 	
+	public void setSpeed (double speed) {
+		pulley.set(speed);
+	}
+	
 	public void stop () {
 		pulley.set(0);
 	}
