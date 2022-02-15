@@ -1,6 +1,7 @@
 # 2022 FRC 1711 Euphrosyne Robot Code
 
-[![CI](https://github.com//frc1711/Euphrosyne/actions/workflows/main.yml/badge.svg)](https://github.com//frc1711/Euphrosyne/actions/workflows/main.yml)
+[![Build Status](https://github.com//frc1711/Euphrosyne/actions/workflows/main.yml/badge.svg)](https://github.com//frc1711/Euphrosyne/actions/workflows/main.yml)
+
 This repo will hold the 2022 FRC 1711 Raptors robot code.
 
 ## When making changes/updates/improvements
