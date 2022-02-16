@@ -29,7 +29,10 @@ public class RobotContainer {
 		shooterID = 15,
 		
 		rotatorID = 16,
-		extenderID = 17;
+		extenderID = 17,
+		
+		leftRotationLimitSwitchID = 1,
+		rightRotationLimitSwitchID = 0;
 	
 	private final Joystick driveController, centralController;
 	
@@ -57,7 +60,11 @@ public class RobotContainer {
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command
-		climber = new Climber(extenderID, rotatorID);
+		climber = new Climber(
+			extenderID,
+			rotatorID,
+			leftRotationLimitSwitchID,
+			rightRotationLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(4)),		// Extension:		Right joystick X

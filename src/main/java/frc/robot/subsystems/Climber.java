@@ -7,14 +7,26 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
 	private final CANSparkMax extender, rotator;
+	private final DigitalInput leftRotationLimitSwitch, rightRotationLimitSwitch;
 	
-	public Climber (int extenderID, int rotatorID) {
+	public Climber (
+			int extenderID,
+			int rotatorID,
+			int leftRotationLimitSwitchID,
+			int rightRotationLimitSwitchID) {
 		extender = new CANSparkMax(extenderID, MotorType.kBrushless);
 		rotator = new CANSparkMax(rotatorID, MotorType.kBrushless);
+		leftRotationLimitSwitch = new DigitalInput(leftRotationLimitSwitchID);
+		rightRotationLimitSwitch = new DigitalInput(rightRotationLimitSwitchID);
+		
+		SmartDashboard.putData("leftRotationLimitSwitch", leftRotationLimitSwitch);
+		SmartDashboard.putData("rightRotationLimitSwitch", rightRotationLimitSwitch);
 	}
 	
 	public void setExtensionSpeed (double speed) {
