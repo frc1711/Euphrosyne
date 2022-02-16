@@ -1,15 +1,15 @@
-package frc.robot.commands;
+package frc.robot.commands.swerve;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Swerve;
 
-public class SetSwerveModulePositions extends CommandBase {
+public class ResetGyro extends CommandBase {
 	
 	private final Swerve swerveDrive;
 	private boolean finished = false;
 	
-	public SetSwerveModulePositions (Swerve swerveDrive) {
+	public ResetGyro (Swerve swerveDrive) {
 		this.swerveDrive = swerveDrive;
 		addRequirements(swerveDrive);
 	}
@@ -17,9 +17,9 @@ public class SetSwerveModulePositions extends CommandBase {
 	@Override
 	public void initialize () {
 		swerveDrive.stop();
-		System.out.println("RESETTING SWERVE MODULE ENCODERS");
-		swerveDrive.configDirectionEncoders();
-		System.out.println("SWERVE MODULE ENCODERS RESET");
+		System.out.println("ZEROING GYRO");
+		swerveDrive.resetGyro();
+		System.out.println("GYRO ZEROED");
 		finished = true;
 	}
 	

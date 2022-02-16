@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.climber;
 
 import java.util.function.DoubleSupplier;
 
@@ -23,6 +23,10 @@ public class ClimberCommand extends CommandBase {
 		this.rotationInput = rotationInput;
 		addRequirements(climber);
 	}
+	
+	// 1. Slowly rotate climber (direction) until limit switch is tripped
+	// 2. That direction is canceled by the limit switch
+	// 3. There is an encoder stop in the opposite direction a number of rotations
 	
 	@Override
 	public void initialize () {

@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
-import frc.robot.commands.CentralSystem;
-import frc.robot.commands.ResetGyro;
-import frc.robot.commands.SetSwerveModulePositions;
-import frc.robot.commands.SwerveTeleop;
-import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.central.CentralSystem;
+import frc.robot.commands.swerve.ResetGyro;
+import frc.robot.commands.swerve.SetSwerveModulePositions;
+import frc.robot.commands.swerve.SwerveTeleop;
+import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
