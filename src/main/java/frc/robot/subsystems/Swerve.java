@@ -29,6 +29,8 @@ public class Swerve extends GyroSwerveDrive {
 		rearLeftSteerEncoderID = 11,
 		rearRightSteerEncoderID = 12;
 	
+	private static final double deadband = 0.12;
+	
 	private static final double
 		driveRelativeSpeed = SwerveDrive.driveRelativeSpeedDefault,
 		steerRelativeSpeed = SwerveDrive.steerRelativeSpeedDefault;
@@ -54,14 +56,16 @@ public class Swerve extends GyroSwerveDrive {
 		setSteerRelativeSpeed(steerRelativeSpeed);
 		
 		gyro = new AHRS();
+		SmartDashboard.putData(gyro);
+		
+		setDeadband(deadband);
 	}
 	
 	public void displayOrientation () {
-		SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
-		SmartDashboard.putNumber("Front Left Direction", flWheel.getDirection() % 180);
-		SmartDashboard.putNumber("Front Right Direction", frWheel.getDirection() % 180);
-		SmartDashboard.putNumber("Rear Left Direction", rlWheel.getDirection() % 180);
-		SmartDashboard.putNumber("Rear Right Direction", rrWheel.getDirection() % 180);
+		SmartDashboard.putNumber("Front Left Direction", (flWheel.getDirection() + 90) % 180 - 90);
+		SmartDashboard.putNumber("Front Right Direction", (frWheel.getDirection() + 90) % 180 - 90);
+		SmartDashboard.putNumber("Rear Left Direction", (rlWheel.getDirection() + 90) % 180 - 90);
+		SmartDashboard.putNumber("Rear Right Direction", (rrWheel.getDirection() + 90) % 180 - 90);
 	}
 	
 	public void configDirectionEncoders () {
