@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -15,22 +16,23 @@ import frc.robot.subsystems.Shooter;
 public class CentralSystem extends CommandBase {
 	
 	private static final double
-		cargoHandlerSpeed = 0.2,
-		intakeSpeed = 0.2,
+		cargoHandlerSpeed = -0.5,
+		intakeSpeed = -0.7,
 		shooterSpeed = -0.71;
 	
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
 	private final Shooter shooter;
 	
-	private final BooleanSupplier runCargoHandler, runIntake, runShooter;
+	private final BooleanSupplier runCargoHandler, runShooter;
+	private final DoubleSupplier runIntake;
 	
 	public CentralSystem (
 			CargoHandler cargoHandler,
 			Intake intake,
 			Shooter shooter,
 			BooleanSupplier runCargoHandler,
-			BooleanSupplier runIntake,
+			DoubleSupplier runIntake,
 			BooleanSupplier runShooter) {
 		this.cargoHandler = cargoHandler;
 		this.intake = intake;
@@ -53,7 +55,7 @@ public class CentralSystem extends CommandBase {
 	@Override
 	public void execute () {
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
-		intake.setSpeed(runIntake.getAsBoolean() ? intakeSpeed : 0);
+		intake.setSpeed(runIntake.getAsDouble() * intakeSpeed);
 		shooter.setSpeed(runShooter.getAsBoolean() ? shooterSpeed : 0);
 	}
 	

@@ -61,7 +61,7 @@ public class RobotContainer {
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(4)),		// Extension:		Right joystick X
-			() -> applyDeadbandTEMPORARY(-centralController.getRawAxis(0)));	// Rotation:		Left joystick X
+			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(0)));		// Rotation:		Left joystick X
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -71,7 +71,7 @@ public class RobotContainer {
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
 			() -> centralController.getRawButton(1),							// CargoHandler:	A
-			() -> centralController.getRawButton(2),							// Intake:			B
+			() -> centralController.getRawAxis(3),								// Intake:			Right trigger
 			() -> centralController.getRawButton(3));							// Shooter:			X
 		cargoHandler.setDefaultCommand(centralSystem);
 		
