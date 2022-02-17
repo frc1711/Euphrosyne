@@ -4,7 +4,6 @@
 
 package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Climber;
@@ -24,10 +23,6 @@ public class ClimberRotationInitialization extends CommandBase {
 		this.climber = climber;
 		addRequirements(climber);
 	}
-	
-	// 1. Slowly rotate climber (direction) until limit switch is tripped
-	// 2. That direction is canceled by the limit switch
-	// 3. There is an encoder stop in the opposite direction a number of rotations
 	
 	@Override
 	public void initialize () {
