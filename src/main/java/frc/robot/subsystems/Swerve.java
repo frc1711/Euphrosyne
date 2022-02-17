@@ -62,6 +62,7 @@ public class Swerve extends GyroSwerveDrive {
 	}
 	
 	public void displayOrientation () {
+		// TODO: Use Sendable swerve modules for this
 		SmartDashboard.putNumber("Front Left Direction", (flWheel.getDirection() + 90) % 180 - 90);
 		SmartDashboard.putNumber("Front Right Direction", (frWheel.getDirection() + 90) % 180 - 90);
 		SmartDashboard.putNumber("Rear Left Direction", (rlWheel.getDirection() + 90) % 180 - 90);
@@ -89,10 +90,10 @@ public class Swerve extends GyroSwerveDrive {
 	public static Swerve getInstance () {
 		if (swerveInstance == null)
 			swerveInstance = new Swerve(
-				new SwerveModule("FrontLeft", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID), // Front left module
-				new SwerveModule("FrontRight", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID), // Front right module
-				new SwerveModule("RearLeft", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID), // Rear left module
-				new SwerveModule("RearRight", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID)); // Rear right module)
+				new SwerveModule("FrontLeft", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID),
+				new SwerveModule("FrontRight", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID),
+				new SwerveModule("RearLeft", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID),
+				new SwerveModule("RearRight", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID));
 		return swerveInstance;
 	}
 	

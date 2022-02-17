@@ -6,11 +6,12 @@ package frc.robot.commands.climber;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
 public class ClimberCommand extends CommandBase {
+	
+	private static final double extensionSpeed = 0.4, rotationSpeed = 0.2;
 	
 	private final Climber climber;
 	private final DoubleSupplier extensionInput, rotationInput;
@@ -32,12 +33,8 @@ public class ClimberCommand extends CommandBase {
 	
 	@Override
 	public void execute () {
-		// TODO: Make these actual constants
-		climber.setExtensionSpeed(extensionInput.getAsDouble() * 0.4);
-		climber.setRotationSpeed(rotationInput.getAsDouble() * 0.2);
-		
-		// TODO: Remove this after fixing the controls-loss bug
-		SmartDashboard.putNumber("Rotation Input", rotationInput.getAsDouble());
+		climber.setExtensionSpeed(extensionInput.getAsDouble() * extensionSpeed);
+		climber.setRotationSpeed(rotationInput.getAsDouble() * rotationSpeed);
 	}
 	
 	@Override
