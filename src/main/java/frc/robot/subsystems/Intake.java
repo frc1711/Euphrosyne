@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 	private final CANSparkMax intakeMotor;
+	private double s = 0;
 	
 	public Intake (int intakeID) {
 		intakeMotor = new CANSparkMax(intakeID, MotorType.kBrushless);
@@ -18,9 +19,16 @@ public class Intake extends SubsystemBase {
 	
 	public void setSpeed (double speed) {
 		intakeMotor.set(speed);
+		s = speed;
 	}
 	
 	public void stop () {
 		intakeMotor.set(0);
+		s = 0;
+	}
+	
+	// TODO: Temporary method
+	public double getSpeedTemp () {
+		return s;
 	}
 }

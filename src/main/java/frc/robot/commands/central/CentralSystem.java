@@ -7,6 +7,7 @@ package frc.robot.commands.central;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.CargoHandler;
@@ -17,7 +18,7 @@ public class CentralSystem extends CommandBase {
 	
 	private static final double
 		cargoHandlerSpeed = -0.5,
-		intakeSpeed = -0.7,
+		intakeSpeed = -1,
 		shooterSpeed = -0.71;
 	
 	private final CargoHandler cargoHandler;
@@ -57,6 +58,8 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
 		intake.setSpeed(runIntake.getAsDouble() * intakeSpeed);
 		shooter.setSpeed(runShooter.getAsBoolean() ? shooterSpeed : 0);
+		
+		SmartDashboard.putNumber("Intake Speed", intake.getSpeedTemp());
 	}
 	
 	@Override

@@ -25,33 +25,34 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-
+  private boolean robotHasBeenEnabled = false;
   UsbCamera camera;
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    new Thread(() -> {
-      camera = CameraServer.startAutomaticCapture();
+    // new Thread(() -> {
+    //   camera = CameraServer.startAutomaticCapture();
 
-      camera.setResolution(640, 480);
+    //   camera.setResolution(640, 480);
 
-      CvSink cvSink = CameraServer.getVideo();
-      CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+    //   CvSink cvSink = CameraServer.getVideo();
+    //   CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
 
-      Mat source = new Mat();
-      Mat output = new Mat();
+    //   Mat source = new Mat();
+    //   Mat output = new Mat();
 
-      while(!Thread.interrupted()) {
-        if (cvSink.grabFrame(source) == 0) {
-          continue;
-        }
-        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-        outputStream.putFrame(output);
-      }
-    }).start();
+    //   while(!Thread.interrupted()) {
+    //     if (cvSink.grabFrame(source) == 0) {
+    //       continue;
+    //     }
+    //     Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
+    //     outputStream.putFrame(output);
+    //   }
+    // }).start();
 
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -84,6 +85,8 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+	handleRobotEnabling();
+	
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -98,6 +101,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+	handleRobotEnabling();
+	
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -113,6 +118,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+	handleRobotEnabling();
+	
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
@@ -120,4 +127,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+  
+	private void handleRobotEnabling () {
+		if (!robotHasBeenEnabled) {
+			m_robotContainer.onFirstRobotEnable();
+		} robotHasBeenEnabled = true;
+	}
 }
