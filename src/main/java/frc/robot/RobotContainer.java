@@ -7,19 +7,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.commands.central.CentralSystem;
+import frc.robot.commands.climber.ClimberCommand;
+import frc.robot.commands.climber.ClimberRotationInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
-import frc.robot.commands.climber.ClimberCommand;
-import frc.robot.commands.climber.ClimberRotationInitialization;
 import frc.robot.subsystems.CargoHandler;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
@@ -71,7 +70,7 @@ public class RobotContainer {
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> applyDeadbandTEMPORARY(-centralController.getRawAxis(5)),		// Extension:		Right joystick Y
-			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(1)));	// Rotation:		Left joystick Y
+			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(1)));		// Rotation:		Left joystick Y
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -97,7 +96,7 @@ public class RobotContainer {
 	}
 	
 	public Command getAutonomousCommand () {
-		return new ResetGyro(swerveDrive);
+		return null;
 	}
 	
 	public void onFirstRobotEnable () {
