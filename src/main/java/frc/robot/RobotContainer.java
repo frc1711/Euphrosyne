@@ -71,7 +71,7 @@ public class RobotContainer {
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> applyDeadbandTEMPORARY(-centralController.getRawAxis(5)),		// Extension:		Right joystick Y
-			() -> applyDeadbandTEMPORARY(-centralController.getRawAxis(1)));	// Rotation:		Left joystick Y
+			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(1)));	// Rotation:		Left joystick Y
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
