@@ -41,9 +41,6 @@ public class ClimberRotationInitialization extends CommandBase {
 		if (!climber.getRotationLimitSwitch()) {
 			climber.setRotationSpeed(rotationSpeed);
 		} else trippedLimitSwitch = true;
-		
-		// TODO: Remove this
-		SmartDashboard.putNumber("Climber Encoder", climber.getIntegratedEncoderValue());
 	}
 	
 	@Override

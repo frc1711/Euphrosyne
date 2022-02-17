@@ -58,8 +58,6 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
 		intake.setSpeed(runIntake.getAsDouble() * intakeSpeed);
 		shooter.setSpeed(runShooter.getAsBoolean() ? shooterSpeed : 0);
-		
-		SmartDashboard.putNumber("Intake Speed", intake.getSpeedTemp());
 	}
 	
 	@Override
