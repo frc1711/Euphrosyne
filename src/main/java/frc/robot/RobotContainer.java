@@ -80,9 +80,9 @@ public class RobotContainer {
 		shooter = new Shooter(shooterID);
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
-			() -> centralController.getAButton(),			// CargoHandler
-			() -> centralController.getRightTriggerAxis(),	// Intake
-			() -> centralController.getXButton());			// Shooter
+			() -> centralController.getAButton(),					// CargoHandler
+			() -> centralController.getRightTriggerAxis(),			// Intake
+			() -> centralController.getLeftTriggerAxis());			// Shooter
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// SmartDashboard
