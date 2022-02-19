@@ -62,7 +62,7 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
 		
 		maxIntakeSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
-		maxShooterSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
+		maxShooterSpeed = SmartDashboard.getNumber("Max Shooter Speed", 0);
 		double intakeSpeed = runIntake.getAsDouble() * maxIntakeSpeed;
 		double shooterSpeed = runShooter.getAsDouble() * maxShooterSpeed;
 		
