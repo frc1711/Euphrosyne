@@ -33,12 +33,7 @@ public class Climber extends SubsystemBase {
 		rotator = new CANSparkMax(rotatorID, MotorType.kBrushless);
 		leftRotationLimitSwitch = new DigitalInput(leftRotationLimitSwitchID);
 		rightRotationLimitSwitch = new DigitalInput(rightRotationLimitSwitchID);
-		
 		rotationEncoder = rotator.getEncoder();
-		
-		// TODO: Implement sendable in the various subsystems and use Shuffleboard instead of SmartDashboard 
-		SmartDashboard.putData("leftRotationLimitSwitch", leftRotationLimitSwitch);
-		SmartDashboard.putData("rightRotationLimitSwitch", rightRotationLimitSwitch);
 	}
 	
 	public void setExtensionSpeed (double speed) {
@@ -85,11 +80,6 @@ public class Climber extends SubsystemBase {
 	
 	public void unsetFullyWrappedRotationMarker () {
 		fullyWrappedRotationEncoderValueSet = false;
-	}
-	
-	// TODO: Get rid of this
-	public double getIntegratedEncoderValue () {
-		return rotator.getEncoder().getPosition();
 	}
 	
 	/**

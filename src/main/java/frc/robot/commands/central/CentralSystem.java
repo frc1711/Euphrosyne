@@ -16,17 +16,18 @@ import frc.robot.subsystems.Shooter;
 
 public class CentralSystem extends CommandBase {
 	
-	private static final double
-		cargoHandlerSpeed = -0.5,
-		intakeSpeed = -1,
-		shooterSpeed = -0.71;
+	private static final double cargoHandlerSpeed = -0.5;
+	
+	private double
+		maxIntakeSpeed = -1,
+		maxShooterSpeed = -1;
 	
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
 	private final Shooter shooter;
 	
-	private final BooleanSupplier runCargoHandler, runShooter;
-	private final DoubleSupplier runIntake;
+	private final BooleanSupplier runCargoHandler;
+	private final DoubleSupplier runIntake, runShooter;
 	
 	public CentralSystem (
 			CargoHandler cargoHandler,
@@ -34,7 +35,7 @@ public class CentralSystem extends CommandBase {
 			Shooter shooter,
 			BooleanSupplier runCargoHandler,
 			DoubleSupplier runIntake,
-			BooleanSupplier runShooter) {
+			DoubleSupplier runShooter) {
 		this.cargoHandler = cargoHandler;
 		this.intake = intake;
 		this.shooter = shooter;
@@ -51,15 +52,24 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.stop();
 		intake.stop();
 		shooter.stop();
+		
+		SmartDashboard.putNumber("Max Intake Speed", maxIntakeSpeed);
+		SmartDashboard.putNumber("Max Shooter Speed", maxShooterSpeed);
 	}
 	
 	@Override
 	public void execute () {
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
-		intake.setSpeed(runIntake.getAsDouble() * intakeSpeed);
-		shooter.setSpeed(runShooter.getAsBoolean() ? shooterSpeed : 0);
 		
-		SmartDashboard.putNumber("Intake Speed", intake.getSpeedTemp());
+		maxIntakeSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
+		maxShooterSpeed = SmartDashboard.getNumber("Max Shooter Speed", 0);
+		double intakeSpeed = runIntake.getAsDouble() * maxIntakeSpeed;
+		double shooterSpeed = runShooter.getAsDouble() * maxShooterSpeed;
+		
+		SmartDashboard.putNumber("Current Intake Speed", intakeSpeed);
+		SmartDashboard.putNumber("Current Shooter Speed", shooterSpeed);
+		intake.setSpeed(intakeSpeed);
+		shooter.setSpeed(shooterSpeed);
 	}
 	
 	@Override

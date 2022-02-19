@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.team1711.swerve.subsystems.SwerveWheel;
 import frc.team1711.swerve.util.Angles;
 

@@ -11,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "7,0": {
+          "4,1": {
             "size": [
               2,
               1
@@ -22,7 +22,7 @@
               "_title": "ResetGyro"
             }
           },
-          "5,2": {
+          "3,2": {
             "size": [
               1,
               1
@@ -36,7 +36,7 @@
               "Visuals/Show value": true
             }
           },
-          "4,0": {
+          "6,1": {
             "size": [
               2,
               1
@@ -47,7 +47,7 @@
               "_title": "Swerve"
             }
           },
-          "7,1": {
+          "4,2": {
             "size": [
               2,
               1
@@ -58,7 +58,7 @@
               "_title": "SetSwerveModulePositions"
             }
           },
-          "5,1": {
+          "3,1": {
             "size": [
               1,
               1
@@ -72,7 +72,7 @@
               "Visuals/Show value": true
             }
           },
-          "4,2": {
+          "2,2": {
             "size": [
               1,
               1
@@ -86,7 +86,7 @@
               "Visuals/Show value": true
             }
           },
-          "4,1": {
+          "2,1": {
             "size": [
               1,
               1
@@ -100,7 +100,7 @@
               "Visuals/Show value": true
             }
           },
-          "1,0": {
+          "0,1": {
             "size": [
               2,
               2
@@ -115,30 +115,56 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "1,2": {
+          "0,0": {
             "size": [
               2,
               1
             ],
             "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/leftRotationLimitSwitch/Value",
-              "_title": "Left Rotation Limit Switch",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Max Intake Speed",
+              "_title": "Max Intake Speed",
+              "Slider Settings/Min": -1.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
             }
           },
-          "1,3": {
+          "4,0": {
             "size": [
               2,
               1
             ],
             "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/rightRotationLimitSwitch/Value",
-              "_title": "Right Rotation Limit Switch",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Max Shooter Speed",
+              "_title": "Max Shooter Speed",
+              "Slider Settings/Min": -1.0,
+              "Slider Settings/Max": 1.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Current Intake Speed",
+              "_title": "Current Intake Speed"
+            }
+          },
+          "6,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Current Shooter Speed",
+              "_title": "Current Shooter Speed"
             }
           }
         }
@@ -269,9 +295,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
+    "x": -4.0,
     "y": 0.0,
-    "width": 1536.0,
-    "height": 870.4000244140625
+    "width": 1546.4000244140625,
+    "height": 668.0
   }
 }

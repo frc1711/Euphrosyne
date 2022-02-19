@@ -5,21 +5,21 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.commands.central.CentralSystem;
+import frc.robot.commands.climber.ClimberCommand;
+import frc.robot.commands.climber.ClimberRotationInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
-import frc.robot.commands.climber.ClimberCommand;
-import frc.robot.commands.climber.ClimberRotationInitialization;
 import frc.robot.subsystems.CargoHandler;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
@@ -37,7 +37,7 @@ public class RobotContainer {
 		leftRotationLimitSwitchID = 1,
 		rightRotationLimitSwitchID = 0;
 	
-	private final Joystick driveController, centralController;
+	private final XboxController driveController, centralController;
 	
 	private final Swerve swerveDrive;
 	private final CargoHandler cargoHandler;
@@ -50,16 +50,16 @@ public class RobotContainer {
 	private final ClimberCommand climberCommand;
 	
 	public RobotContainer () {
-		driveController = new Joystick(0);
-		centralController = new Joystick(1);
+		driveController = new XboxController(0);
+		centralController = new XboxController(1);
 		
 		// Swerve Teleop
 		swerveDrive = Swerve.getInstance();
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
-			() -> driveController.getRawAxis(0),								// Strafe X:		Left joystick X
-			() -> -driveController.getRawAxis(1),								// Strafe Y:		Left joystick Y
-			() -> driveController.getRawAxis(4));								// Steering:		Right joystick X
+			() -> driveController.getLeftX(),			// Strafe X
+			() -> -driveController.getLeftY(),			// Strafe Y
+			() -> driveController.getRightX());			// Steering
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command
@@ -70,8 +70,8 @@ public class RobotContainer {
 			rightRotationLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> applyDeadbandTEMPORARY(-centralController.getRawAxis(5)),		// Extension:		Right joystick Y
-			() -> applyDeadbandTEMPORARY(centralController.getRawAxis(1)));	// Rotation:		Left joystick Y
+			() -> applyDeadbandTEMPORARY(-centralController.getRightY()),	// Extension
+			() -> applyDeadbandTEMPORARY(centralController.getLeftY()));	// Rotation
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -80,9 +80,9 @@ public class RobotContainer {
 		shooter = new Shooter(shooterID);
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
-			() -> centralController.getRawButton(1),							// CargoHandler:	A
-			() -> centralController.getRawAxis(3),								// Intake:			Right trigger
-			() -> centralController.getRawButton(3));							// Shooter:			X
+			() -> centralController.getAButton(),					// CargoHandler
+			() -> centralController.getRightTriggerAxis(),			// Intake
+			() -> centralController.getLeftTriggerAxis());			// Shooter
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// SmartDashboard
@@ -97,7 +97,7 @@ public class RobotContainer {
 	}
 	
 	public Command getAutonomousCommand () {
-		return new ResetGyro(swerveDrive);
+		return null;
 	}
 	
 	public void onFirstRobotEnable () {
