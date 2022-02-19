@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -73,7 +75,9 @@ public class RobotContainer {
 		centralController = new XboxController(1);
 		
 		// Swerve Teleop
+		AHRS gyro = new AHRS();
 		swerveDrive = new Swerve(
+			gyro,
 			new SwerveModule("Front Left Module", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID),
 			new SwerveModule("Front Right Module", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID),
 			new SwerveModule("Rear Left Module", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID),
@@ -112,6 +116,8 @@ public class RobotContainer {
 		// SmartDashboard
 		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
 		SmartDashboard.putData(new ResetGyro(swerveDrive));
+		SmartDashboard.putData(swerveDrive);
+		SmartDashboard.putData(gyro);
 	}
 	
 	public Command getAutonomousCommand () {

@@ -19,25 +19,28 @@ public class Swerve extends GyroSwerveDrive {
 		rlWheel,
 		rrWheel;
 	
-	public Swerve (SwerveModule flWheel, SwerveModule frWheel, SwerveModule rlWheel, SwerveModule rrWheel, SwerveDrive.SwerveDrivingSpeeds drivingSpeeds) {
-		super(
-			flWheel, frWheel, rlWheel, rrWheel,
-			trackToWheelbaseRatio, drivingSpeeds);
+	public Swerve (
+			AHRS gyro,
+			SwerveModule flWheel,
+			SwerveModule frWheel,
+			SwerveModule rlWheel,
+			SwerveModule rrWheel,
+			SwerveDrive.SwerveDrivingSpeeds drivingSpeeds) {
+		super(gyro, flWheel, frWheel, rlWheel, rrWheel, trackToWheelbaseRatio, drivingSpeeds);
 		this.flWheel = flWheel;
 		this.frWheel = frWheel;
 		this.rlWheel = rlWheel;
 		this.rrWheel = rrWheel;
 		
-		gyro = new AHRS();
-		SmartDashboard.putData(gyro); // TODO: Use Sendable swerve modules for this
+		this.gyro = gyro;
 	}
 	
 	public void displayOrientation () {
-		// TODO: Use Sendable swerve modules for this
-		SmartDashboard.putNumber("Front Left Direction", (flWheel.getDirection() + 90) % 180 - 90);
-		SmartDashboard.putNumber("Front Right Direction", (frWheel.getDirection() + 90) % 180 - 90);
-		SmartDashboard.putNumber("Rear Left Direction", (rlWheel.getDirection() + 90) % 180 - 90);
-		SmartDashboard.putNumber("Rear Right Direction", (rrWheel.getDirection() + 90) % 180 - 90);
+		// // TODO: Use Sendable swerve modules for this
+		// SmartDashboard.putNumber("Front Left Direction", (flWheel.getDirection() + 90) % 180 - 90);
+		// SmartDashboard.putNumber("Front Right Direction", (frWheel.getDirection() + 90) % 180 - 90);
+		// SmartDashboard.putNumber("Rear Left Direction", (rlWheel.getDirection() + 90) % 180 - 90);
+		// SmartDashboard.putNumber("Rear Right Direction", (rrWheel.getDirection() + 90) % 180 - 90);
 	}
 	
 	public void configDirectionEncoders () {
