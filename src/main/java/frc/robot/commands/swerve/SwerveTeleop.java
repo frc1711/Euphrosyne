@@ -4,34 +4,48 @@
 
 package frc.robot.commands.swerve;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Swerve;
+import frc.team1711.swerve.subsystems.SwerveDrive;
 import frc.team1711.swerve.util.InputHandler;
 
 public class SwerveTeleop extends CommandBase {
 	
 	private static final InputHandler swerveInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
+	public static final SwerveDrive.ControlsConfig
+		normalConfig = new SwerveDrive.ControlsConfig(0.7, 0.3, swerveInputHandler),
+		fastConfig = new SwerveDrive.ControlsConfig(1, 1, swerveInputHandler),
+		slowConfig = new SwerveDrive.ControlsConfig(0.4, 0.4, swerveInputHandler);
+	
 	private final Swerve swerveDrive;
 	private final DoubleSupplier
 		strafeX,
 		strafeY,
 		steering;
+	private final BooleanSupplier
+		fastMode,
+		slowMode;
 	
 	public SwerveTeleop (
 			Swerve swerveDrive,
 			DoubleSupplier strafeX,
 			DoubleSupplier strafeY,
-			DoubleSupplier steering) {
+			DoubleSupplier steering,
+			BooleanSupplier fastMode,
+			BooleanSupplier slowMode) {
 		
 		this.swerveDrive = swerveDrive;
 		
 		this.strafeX = strafeX;
 		this.strafeY = strafeY;
 		this.steering = steering;
+		this.fastMode = fastMode;
+		this.slowMode = slowMode;
 		
 		// SmartDashboard commands
 		addRequirements(swerveDrive);
@@ -44,11 +58,20 @@ public class SwerveTeleop extends CommandBase {
 	
 	@Override
 	public void execute () {
+		// Sets the current controls configuration
+		SwerveDrive.ControlsConfig controlsConfig = getControlsConfig();
+		
 		// Performs field-relative driving for the swerve system with input deadbands turned on
-		swerveDrive.fieldRelativeUserInputDrive(strafeX.getAsDouble(), strafeY.getAsDouble(), steering.getAsDouble(), swerveInputHandler);
+		swerveDrive.fieldRelativeUserInputDrive(strafeX.getAsDouble(), strafeY.getAsDouble(), steering.getAsDouble(), controlsConfig);
 		
 		// Update SmartDashboard
 		swerveDrive.displayOrientation();
+	}
+	
+	private SwerveDrive.ControlsConfig getControlsConfig () {
+		if (slowMode.getAsBoolean()) return slowConfig;
+		else if (fastMode.getAsBoolean()) return fastConfig;
+		else return normalConfig;
 	}
 	
 	@Override

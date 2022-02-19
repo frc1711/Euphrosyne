@@ -23,7 +23,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.SwerveModule;
-import frc.team1711.swerve.subsystems.SwerveDrive;
 
 public class RobotContainer {
 	
@@ -68,8 +67,6 @@ public class RobotContainer {
 	private final CentralSystem centralSystem;
 	private final ClimberCommand climberCommand;
 	
-	private final SwerveDrive.SwerveDrivingSpeeds swerveDrivingSpeeds = new SwerveDrive.SwerveDrivingSpeeds(0.7, 0.3);
-	
 	public RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
@@ -81,13 +78,14 @@ public class RobotContainer {
 			new SwerveModule("Front Left Module", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID),
 			new SwerveModule("Front Right Module", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID),
 			new SwerveModule("Rear Left Module", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID),
-			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID),
-			swerveDrivingSpeeds);
+			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID));
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
-			() -> driveController.getLeftX(),			// Strafe X
-			() -> -driveController.getLeftY(),			// Strafe Y
-			() -> driveController.getRightX());			// Steering
+			() -> driveController.getLeftX(),				// Strafe X
+			() -> -driveController.getLeftY(),				// Strafe Y
+			() -> driveController.getRightX(),				// Steering
+			() -> driveController.getRightTriggerAxis() > 0.4,	// Fast mode
+			() -> driveController.getLeftTriggerAxis() > 0.4);	// Slow mode
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command
