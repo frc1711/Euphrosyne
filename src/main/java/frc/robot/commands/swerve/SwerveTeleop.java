@@ -18,9 +18,9 @@ public class SwerveTeleop extends CommandBase {
 	private static final InputHandler swerveInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
 	public static final SwerveDrive.ControlsConfig
-		normalConfig = new SwerveDrive.ControlsConfig(0.7, 0.3, swerveInputHandler),
+		normalConfig = new SwerveDrive.ControlsConfig(0.5, 0.5, swerveInputHandler),
 		fastConfig = new SwerveDrive.ControlsConfig(1, 1, swerveInputHandler),
-		slowConfig = new SwerveDrive.ControlsConfig(0.4, 0.4, swerveInputHandler);
+		slowConfig = new SwerveDrive.ControlsConfig(0.1, 0.1, swerveInputHandler);
 	
 	private final Swerve swerveDrive;
 	private final DoubleSupplier
