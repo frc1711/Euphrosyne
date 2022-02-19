@@ -22,13 +22,13 @@ import frc.team1711.swerve.util.InputHandler;
 
 public class CentralSystem extends CommandBase {
 	
-	private static final InputHandler centralSystemInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
+	private static final InputHandler centralSystemInputHandler = new InputHandler(0.10, InputHandler.Curve.linearCurve);
 	
 	private static final double cargoHandlerSpeed = -0.5;
 	
 	private double
-		maxIntakeSpeed = -1,
-		maxShooterSpeed = -1;
+		maxIntakeSpeed = -0.7,
+		maxShooterSpeed = -0.7;
 	
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
