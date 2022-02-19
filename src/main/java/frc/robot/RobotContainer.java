@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,8 +20,26 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.SwerveModule;
+import frc.team1711.swerve.subsystems.SwerveDrive;
 
 public class RobotContainer {
+	
+	private static final int
+		frontLeftDriveID = 1,
+		frontRightDriveID = 3,
+		rearLeftDriveID = 5,
+		rearRightDriveID = 7,
+		
+		frontLeftSteerID = 2,
+		frontRightSteerID = 4,
+		rearLeftSteerID = 6,
+		rearRightSteerID = 8,
+		
+		frontLeftSteerEncoderID = 9,
+		frontRightSteerEncoderID = 10,
+		rearLeftSteerEncoderID = 11,
+		rearRightSteerEncoderID = 12;
 	
 	private static final int
 		intakeID = 13,
@@ -49,12 +66,19 @@ public class RobotContainer {
 	private final CentralSystem centralSystem;
 	private final ClimberCommand climberCommand;
 	
+	private final SwerveDrive.SwerveDrivingSpeeds swerveDrivingSpeeds = new SwerveDrive.SwerveDrivingSpeeds(0.7, 0.3);
+	
 	public RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
 		
 		// Swerve Teleop
-		swerveDrive = Swerve.getInstance();
+		swerveDrive = new Swerve(
+			new SwerveModule("Front Left Module", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID),
+			new SwerveModule("Front Right Module", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID),
+			new SwerveModule("Rear Left Module", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID),
+			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID),
+			swerveDrivingSpeeds);
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
 			() -> driveController.getLeftX(),			// Strafe X
@@ -70,8 +94,8 @@ public class RobotContainer {
 			rightRotationLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> applyDeadbandTEMPORARY(-centralController.getRightY()),	// Extension
-			() -> applyDeadbandTEMPORARY(centralController.getLeftY()));	// Rotation
+			() -> -centralController.getRightY(),	// Extension
+			() -> centralController.getLeftY());	// Rotation
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -88,12 +112,6 @@ public class RobotContainer {
 		// SmartDashboard
 		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
 		SmartDashboard.putData(new ResetGyro(swerveDrive));
-	}
-	
-	// TODO: Get a more permanent solution
-	public double applyDeadbandTEMPORARY (double input) {
-		if (Math.abs(input) <= 0.12) return 0;
-		return input;
 	}
 	
 	public Command getAutonomousCommand () {

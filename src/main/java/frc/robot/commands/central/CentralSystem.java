@@ -2,6 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+// Sequence for the shooter (reverse ball handler, start shooter, then user can hit ball handling), shooter controlled by toggle
+// Ball handling, intake, shooter reverse mode
+// Slow mode, turbo mode
+// Cameras, switchable
+
 package frc.robot.commands.central;
 
 import java.util.function.BooleanSupplier;
@@ -13,8 +18,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.team1711.swerve.util.InputHandler;
 
 public class CentralSystem extends CommandBase {
+	
+	private static final InputHandler centralSystemInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
 	private static final double cargoHandlerSpeed = -0.5;
 	
@@ -63,8 +71,8 @@ public class CentralSystem extends CommandBase {
 		
 		maxIntakeSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
 		maxShooterSpeed = SmartDashboard.getNumber("Max Shooter Speed", 0);
-		double intakeSpeed = runIntake.getAsDouble() * maxIntakeSpeed;
-		double shooterSpeed = runShooter.getAsDouble() * maxShooterSpeed;
+		double intakeSpeed = centralSystemInputHandler.apply(runIntake.getAsDouble()) * maxIntakeSpeed;
+		double shooterSpeed = centralSystemInputHandler.apply(runShooter.getAsDouble()) * maxShooterSpeed;
 		
 		SmartDashboard.putNumber("Current Intake Speed", intakeSpeed);
 		SmartDashboard.putNumber("Current Shooter Speed", shooterSpeed);

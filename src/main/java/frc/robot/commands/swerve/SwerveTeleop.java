@@ -9,8 +9,11 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Swerve;
+import frc.team1711.swerve.util.InputHandler;
 
 public class SwerveTeleop extends CommandBase {
+	
+	private static final InputHandler swerveInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
 	private final Swerve swerveDrive;
 	private final DoubleSupplier
@@ -42,7 +45,7 @@ public class SwerveTeleop extends CommandBase {
 	@Override
 	public void execute () {
 		// Performs field-relative driving for the swerve system with input deadbands turned on
-		swerveDrive.fieldRelativeInputDrive(strafeX.getAsDouble(), strafeY.getAsDouble(), steering.getAsDouble(), true);
+		swerveDrive.fieldRelativeUserInputDrive(strafeX.getAsDouble(), strafeY.getAsDouble(), steering.getAsDouble(), swerveInputHandler);
 		
 		// Update SmartDashboard
 		swerveDrive.displayOrientation();
