@@ -2,7 +2,7 @@ import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
 
 plugins {
 	id "java"
-	id "edu.wpi.first.GradleRIO" version "2022.1.1" // TODO: Make this 2022.3.1
+	id "edu.wpi.first.GradleRIO" version "2022.3.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -75,7 +75,7 @@ dependencies {
 
 	testImplementation 'junit:junit:4.12'
 
-	implementation name: 'swervelib-v3.2022.3.1'
+	implementation name: 'swervelib-v4.2022.3.1'
 }
 
 // Simulation configuration (e.g. environment variables).
