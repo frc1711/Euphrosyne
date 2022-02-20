@@ -114,7 +114,7 @@ public class RobotContainer {
 		// SmartDashboard
 		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
 		SmartDashboard.putData(new ResetGyro(swerveDrive));
-		SmartDashboard.putData(swerveDrive);
+		SmartDashboard.putData("Swerve Drive", swerveDrive);
 		SmartDashboard.putData(gyro);
 	}
 	
