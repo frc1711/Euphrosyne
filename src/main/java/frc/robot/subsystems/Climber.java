@@ -40,30 +40,23 @@ public class Climber extends SubsystemBase {
 	}
 	
 	public void setRotationSpeed (double speed) {
-		// If the fully-wrapped encoder value has been set
-		if (fullyWrappedRotationEncoderValueSet) {
-			// Make sure the rotation encoder doesn't move further from the fully wrapped state
-			// in the positive direction than it should
-			if (speed > 0 && rotationEncoder.getPosition() > fullyWrappedRotationEncoderValue + rotationEncoderMaxOffset) {
-				rotator.set(0);
-				return;
-			}
-			// and in the negative direction
-			if (speed < 0 && rotationEncoder.getPosition() < fullyWrappedRotationEncoderValue - rotationEncoderMaxOffset) {
-				rotator.set(0);
-				return;
-			}
-		}
+		if (speed > 0)	rotator.set(checkCanRotatePositive() ? speed : 0);
+		else			rotator.set(checkCanRotateNegative() ? speed : 0);
+	}
+	
+	private boolean checkCanRotatePositive () {
+		// Can only rotate further in the positive direction if the rotation limit switch isn't tripped
+		return !getRotationLimitSwitch();
+	}
+	
+	private boolean checkCanRotateNegative () {
+		// If the fully wrapped rotaton encoder value is not set, then it can rotate in the negative
+		// direction (it should be set though)
+		if (!fullyWrappedRotationEncoderValueSet) return true;
 		
-		// The limit switch should only be hit if it's fully wrapped (in the positive direction)
-		// So if the speed is greater than zero, we shouldn't wrap further if the limit switch is tripped
-		if (getRotationLimitSwitch() && speed > 0) {
-			rotator.set(0);
-			return;
-		}
-		
-		// If all the checks pass, then it can be used
-		rotator.set(speed);
+		// Can only rotate further in the negative direction if the rotation encoder reads a value
+		// greater than the minimum allowed rotational value
+		return rotationEncoder.getPosition() > fullyWrappedRotationEncoderValue - rotationEncoderMaxOffset;
 	}
 	
 	/**
