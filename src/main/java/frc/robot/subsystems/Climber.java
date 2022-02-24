@@ -15,7 +15,7 @@ public class Climber extends SubsystemBase {
 	
 	// The maximum offset from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
-	private static final double rotationEncoderMaxOffset = 44;
+	private static final double rotationEncoderMaxOffset = 39;
 	
 	private final CANSparkMax extender, rotator;
 	private final RelativeEncoder rotationEncoder, extensionEncoder;
@@ -99,11 +99,11 @@ public class Climber extends SubsystemBase {
 	 * both limit switches are not being pressed.
 	 */
 	public boolean getRotationLimitSwitch () {
-		return (!leftRotationLimitSwitch.get()) || (!rightRotationLimitSwitch.get());
+		return leftRotationLimitSwitch.get() || rightRotationLimitSwitch.get();
 	}
 	
 	public boolean getExtensionLimitSwitch () {
-		return (!leftExtensionLimitSwitch.get()) || (!rightExtensionLimitSwitch.get());
+		return leftExtensionLimitSwitch.get() || rightExtensionLimitSwitch.get();
 	}
 	
 	public void stop (){
