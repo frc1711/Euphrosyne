@@ -34,7 +34,7 @@ public class CentralSystem extends CommandBase {
 	private final Intake intake;
 	private final Shooter shooter;
 	
-	private final BooleanSupplier runCargoHandler;
+	private final BooleanSupplier runCargoHandler, reverseButton;
 	private final DoubleSupplier runIntake, runShooter;
 	
 	public CentralSystem (
@@ -43,7 +43,8 @@ public class CentralSystem extends CommandBase {
 			Shooter shooter,
 			BooleanSupplier runCargoHandler,
 			DoubleSupplier runIntake,
-			DoubleSupplier runShooter) {
+			DoubleSupplier runShooter, 
+			BooleanSupplier reverseButton) {
 		this.cargoHandler = cargoHandler;
 		this.intake = intake;
 		this.shooter = shooter;
@@ -51,6 +52,7 @@ public class CentralSystem extends CommandBase {
 		this.runCargoHandler = runCargoHandler;
 		this.runIntake = runIntake;
 		this.runShooter = runShooter;
+		this.reverseButton = reverseButton;
 		
 		addRequirements(cargoHandler, intake, shooter);
 	}
@@ -67,12 +69,17 @@ public class CentralSystem extends CommandBase {
 	
 	@Override
 	public void execute () {
+		int r = (reverseButton.getAsDouble() ? -1 : 1);
+
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
-		
+
 		maxIntakeSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
 		maxShooterSpeed = SmartDashboard.getNumber("Max Shooter Speed", 0);
 		double intakeSpeed = centralSystemInputHandler.apply(runIntake.getAsDouble()) * maxIntakeSpeed;
 		double shooterSpeed = centralSystemInputHandler.apply(runShooter.getAsDouble()) * maxShooterSpeed;
+		cargoHandlerSpeed *= r;
+		intakeSpeed *= r;
+		shooterSpeed *= r;
 		
 		SmartDashboard.putNumber("Current Intake Speed", intakeSpeed);
 		SmartDashboard.putNumber("Current Shooter Speed", shooterSpeed);
