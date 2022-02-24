@@ -69,17 +69,14 @@ public class CentralSystem extends CommandBase {
 	
 	@Override
 	public void execute () {
-		int r = (reverseButton.getAsDouble() ? -1 : 1);
+		int r = (reverseButton.getAsBoolean() ? -1 : 1); //r is a numerical value of true or false for reversebutton
 
-		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed : 0);
+		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed * r : 0);
 
 		maxIntakeSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
 		maxShooterSpeed = SmartDashboard.getNumber("Max Shooter Speed", 0);
-		double intakeSpeed = centralSystemInputHandler.apply(runIntake.getAsDouble()) * maxIntakeSpeed;
-		double shooterSpeed = centralSystemInputHandler.apply(runShooter.getAsDouble()) * maxShooterSpeed;
-		cargoHandlerSpeed *= r;
-		intakeSpeed *= r;
-		shooterSpeed *= r;
+		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * maxIntakeSpeed;
+		double shooterSpeed = r * centralSystemInputHandler.apply(runShooter.getAsDouble()) * maxShooterSpeed;
 		
 		SmartDashboard.putNumber("Current Intake Speed", intakeSpeed);
 		SmartDashboard.putNumber("Current Shooter Speed", shooterSpeed);
