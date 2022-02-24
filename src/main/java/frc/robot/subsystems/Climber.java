@@ -9,14 +9,18 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
 	
-	// The maximum offset from the fully-wrapped spindle encoder position
+	// The maximum offsets from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
 	private static final double rotationEncoderMaxOffset = 39;
+	private static final double extensionEncoderMaxOffset = 149.2;
 	
+	// Positive extension is extending upwards, negative is retracting downwards
+	// Positive rotation is pulling into limit switch, negative is pushing away
 	private final CANSparkMax extender, rotator;
 	private final RelativeEncoder rotationEncoder, extensionEncoder;
 	private final DigitalInput
@@ -25,8 +29,17 @@ public class Climber extends SubsystemBase {
 		leftExtensionLimitSwitch,
 		rightExtensionLimitSwitch;
 	
-	private boolean fullyWrappedRotationEncoderValueSet = false;
-	private double fullyWrappedRotationEncoderValue;
+	// Whether or not fullyWrappedEncoderValues have been set
+	private boolean
+		fullyWrappedRotationEncoderValueSet = false,
+		fullyWrappedExtensionEncoderValueSet = false;
+	
+	// The encoder position values for when the spindles are fully reeled in
+	// Used to make sure the rotation and extension spindles don't fully unwrap
+	// then wrap around in the other direction
+	private double
+		fullyWrappedRotationEncoderValue,
+		fullyWrappedExtensionEncoderValue;
 	
 	public Climber (
 			int extenderID,
@@ -45,19 +58,33 @@ public class Climber extends SubsystemBase {
 		extensionEncoder = extender.getEncoder();
 	}
 	
+	/**
+	 * Positive extension is extending upwards, negative is retracting downwards
+	 */
 	public void setExtensionSpeed (double speed) {
+		SmartDashboard.putNumber("Extension encoder", extensionEncoder.getPosition());
 		if (speed > 0)	extender.set(checkCanExtendPositive() ? speed : 0);
 		else			extender.set(checkCanExtendNegative() ? speed : 0);
 	}
 	
 	private boolean checkCanExtendPositive () {
-		return true;
+		// If the fully wrapped extension encoder value is not set, then it can extend in the positive
+		// direction (it should be set though)
+		if (!fullyWrappedExtensionEncoderValueSet) return true;
+		
+		// Can only extend further in the positive direction if the extension encoder reads a value
+		// lesser than the maximum allowed extension value
+		return extensionEncoder.getPosition() < fullyWrappedExtensionEncoderValue - extensionEncoderMaxOffset;
 	}
 	
 	private boolean checkCanExtendNegative () {
-		return true;
+		// Can only retract further down (negative extension speed) if the limit switch isn't tripped
+		return !getExtensionLimitSwitch();
 	}
 	
+	/**
+	 * Positive rotation is pulling into limit switch, negative is pushing away
+	 */
 	public void setRotationSpeed (double speed) {
 		if (speed > 0)	rotator.set(checkCanRotatePositive() ? speed : 0);
 		else			rotator.set(checkCanRotateNegative() ? speed : 0);
@@ -91,6 +118,15 @@ public class Climber extends SubsystemBase {
 	
 	public void unsetFullyWrappedRotationMarker () {
 		fullyWrappedRotationEncoderValueSet = false;
+	}
+	
+	public void setFullyWrappedExtensionMarker () {
+		fullyWrappedExtensionEncoderValue = extensionEncoder.getPosition();
+		fullyWrappedExtensionEncoderValueSet = true;
+	}
+	
+	public void unsetFullyWrappedExtensionMarker () {
+		fullyWrappedExtensionEncoderValueSet = false;
 	}
 	
 	/**
