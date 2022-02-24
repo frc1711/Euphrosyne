@@ -9,7 +9,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
@@ -62,7 +61,6 @@ public class Climber extends SubsystemBase {
 	 * Positive extension is extending upwards, negative is retracting downwards
 	 */
 	public void setExtensionSpeed (double speed) {
-		SmartDashboard.putNumber("Extension encoder", extensionEncoder.getPosition());
 		if (speed > 0)	extender.set(checkCanExtendPositive() ? speed : 0);
 		else			extender.set(checkCanExtendNegative() ? speed : 0);
 	}
@@ -74,7 +72,7 @@ public class Climber extends SubsystemBase {
 		
 		// Can only extend further in the positive direction if the extension encoder reads a value
 		// lesser than the maximum allowed extension value
-		return extensionEncoder.getPosition() < fullyWrappedExtensionEncoderValue - extensionEncoderMaxOffset;
+		return extensionEncoder.getPosition() < fullyWrappedExtensionEncoderValue + extensionEncoderMaxOffset;
 	}
 	
 	private boolean checkCanExtendNegative () {

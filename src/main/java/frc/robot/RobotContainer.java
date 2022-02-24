@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
-import frc.robot.commands.climber.ClimberRotationInitialization;
+import frc.robot.commands.climber.ClimberInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
@@ -128,7 +128,7 @@ public class RobotContainer {
 	}
 	
 	public void onFirstRobotEnable () {
-		CommandScheduler.getInstance().schedule(new ClimberRotationInitialization(climber));
+		CommandScheduler.getInstance().schedule(new ClimberInitialization(climber));
 	}
 	
 }
