@@ -53,7 +53,10 @@ public class RobotContainer {
 		extenderID = 17,
 		
 		leftRotationLimitSwitchID = 1,
-		rightRotationLimitSwitchID = 0;
+		rightRotationLimitSwitchID = 0,
+		
+		leftExtensionLimitSwitchID = 3,
+		rightExtensionLimitSwitchID = 2;
 	
 	private final XboxController driveController, centralController;
 	
@@ -93,7 +96,9 @@ public class RobotContainer {
 			extenderID,
 			rotatorID,
 			leftRotationLimitSwitchID,
-			rightRotationLimitSwitchID);
+			rightRotationLimitSwitchID,
+			leftExtensionLimitSwitchID,
+			rightExtensionLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> -centralController.getRightY(),	// Extension

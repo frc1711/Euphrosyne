@@ -12,13 +12,18 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
+	
 	// The maximum offset from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
 	private static final double rotationEncoderMaxOffset = 44;
 	
 	private final CANSparkMax extender, rotator;
-	private final RelativeEncoder rotationEncoder;
-	private final DigitalInput leftRotationLimitSwitch, rightRotationLimitSwitch;
+	private final RelativeEncoder rotationEncoder, extensionEncoder;
+	private final DigitalInput
+		leftRotationLimitSwitch,
+		rightRotationLimitSwitch,
+		leftExtensionLimitSwitch,
+		rightExtensionLimitSwitch;
 	
 	private boolean fullyWrappedRotationEncoderValueSet = false;
 	private double fullyWrappedRotationEncoderValue;
@@ -27,16 +32,30 @@ public class Climber extends SubsystemBase {
 			int extenderID,
 			int rotatorID,
 			int leftRotationLimitSwitchID,
-			int rightRotationLimitSwitchID) {
+			int rightRotationLimitSwitchID,
+			int leftExtensionLimitSwitchID,
+			int rightExtensionLimitSwitchID) {
 		extender = new CANSparkMax(extenderID, MotorType.kBrushless);
 		rotator = new CANSparkMax(rotatorID, MotorType.kBrushless);
 		leftRotationLimitSwitch = new DigitalInput(leftRotationLimitSwitchID);
 		rightRotationLimitSwitch = new DigitalInput(rightRotationLimitSwitchID);
+		leftExtensionLimitSwitch = new DigitalInput(leftExtensionLimitSwitchID);
+		rightExtensionLimitSwitch = new DigitalInput(rightExtensionLimitSwitchID);
 		rotationEncoder = rotator.getEncoder();
+		extensionEncoder = extender.getEncoder();
 	}
 	
 	public void setExtensionSpeed (double speed) {
-		extender.set(speed);
+		if (speed > 0)	extender.set(checkCanExtendPositive() ? speed : 0);
+		else			extender.set(checkCanExtendNegative() ? speed : 0);
+	}
+	
+	private boolean checkCanExtendPositive () {
+		return true;
+	}
+	
+	private boolean checkCanExtendNegative () {
+		return true;
 	}
 	
 	public void setRotationSpeed (double speed) {
@@ -81,6 +100,10 @@ public class Climber extends SubsystemBase {
 	 */
 	public boolean getRotationLimitSwitch () {
 		return (!leftRotationLimitSwitch.get()) || (!rightRotationLimitSwitch.get());
+	}
+	
+	public boolean getExtensionLimitSwitch () {
+		return (!leftExtensionLimitSwitch.get()) || (!rightExtensionLimitSwitch.get());
 	}
 	
 	public void stop (){
