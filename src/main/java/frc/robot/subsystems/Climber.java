@@ -10,12 +10,13 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.LinearInterpolator;
 
 public class Climber extends SubsystemBase {
 	
 	// The maximum offsets from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
-	private static final double rotationEncoderMaxOffset = 39;
+	private static final double rotationEncoderMaxOffset = -39;
 	private static final double extensionEncoderMaxOffset = 149.2;
 	
 	// Positive extension is extending upwards, negative is retracting downwards
@@ -113,6 +114,20 @@ public class Climber extends SubsystemBase {
 	
 	private double getExtensionPosition () {
 		return extensionEncoder.getPosition() - extensionEncoderZero;
+	}
+	
+	// When the rotation limit switch is being tripped (encoder position of 0), the climber is at 92 degrees.
+	// When the rotation encoder is at its maximum offset value, the climber is at 63 degrees.
+	private static final LinearInterpolator rotationEncoderToAngle = new LinearInterpolator(0, 92.5, rotationEncoderMaxOffset, 64);
+	public double getRotationDegrees () {
+		return rotationEncoderToAngle.interpolate(getRotationPosition());
+	}
+	
+	// When the extension limit switch is being tripped (encoder position of 0), the climber is extended to 40
+	// When the extension encoder is at its maximum offset va\][plue, the climber is extended to 63.5
+	private static final LinearInterpolator extensionEncoderToInches = new LinearInterpolator(0, 40, extensionEncoderMaxOffset, 63.5);
+	public double getExtensionHeightInches () {
+		return extensionEncoderToInches.interpolate(getExtensionPosition());
 	}
 	
 	/**
