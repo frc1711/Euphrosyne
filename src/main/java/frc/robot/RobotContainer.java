@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.commands.central.AutoShooter;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberRotationInitialization;
@@ -110,7 +110,9 @@ public class RobotContainer {
 			() -> centralController.getRightTriggerAxis(),			// Intake
 			() -> centralController.getLeftTriggerAxis(),			// Shooter
 			() -> centralController.getXButton());					// Reverse mode
-		cargoHandler.setDefaultCommand(centralSystem);
+		shooter.setDefaultCommand(centralSystem);
+		// TODO: Make one subsystem for central systems so defaultCommand doesn't
+		// mess with autonomous central system control
 		
 		// SmartDashboard
 		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
@@ -120,7 +122,7 @@ public class RobotContainer {
 	}
 	
 	public Command getAutonomousCommand () {
-		return null;
+		return new AutoShooter(shooter, 2, 0.2);
 	}
 	
 	public void onFirstRobotEnable () {
