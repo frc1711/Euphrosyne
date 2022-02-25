@@ -108,7 +108,8 @@ public class RobotContainer {
 			cargoHandler, intake, shooter,
 			() -> centralController.getAButton(),					// CargoHandler
 			() -> centralController.getRightTriggerAxis(),			// Intake
-			() -> centralController.getLeftTriggerAxis());			// Shooter
+			() -> centralController.getLeftTriggerAxis(),			// Shooter
+			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// SmartDashboard
