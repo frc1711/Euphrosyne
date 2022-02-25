@@ -29,8 +29,6 @@ public class ClimberInitialization extends CommandBase {
 	@Override
 	public void initialize () {
 		climber.stop();
-		climber.unsetFullyWrappedRotationMarker();
-		climber.unsetFullyWrappedExtensionMarker();
 	}
 	
 	private void rotateClimberUntilSwitched () {
@@ -63,8 +61,8 @@ public class ClimberInitialization extends CommandBase {
 		
 		// Step 2: Set the fully-wrapped spindle states for the climber so that it
 		// doesn't unwrap all the way and start wrapping in the opposite direction
-		climber.setFullyWrappedRotationMarker();
-		climber.setFullyWrappedExtensionMarker();
+		climber.rotationEncoderReset();
+		climber.extensionEncoderReset();
 	}
 	
 	@Override

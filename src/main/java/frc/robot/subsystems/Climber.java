@@ -28,18 +28,6 @@ public class Climber extends SubsystemBase {
 		leftExtensionLimitSwitch,
 		rightExtensionLimitSwitch;
 	
-	// Whether or not fullyWrappedEncoderValues have been set
-	private boolean
-		fullyWrappedRotationEncoderValueSet = false,
-		fullyWrappedExtensionEncoderValueSet = false;
-	
-	// The encoder position values for when the spindles are fully reeled in
-	// Used to make sure the rotation and extension spindles don't fully unwrap
-	// then wrap around in the other direction
-	private double
-		fullyWrappedRotationEncoderValue,
-		fullyWrappedExtensionEncoderValue;
-	
 	public Climber (
 			int extenderID,
 			int rotatorID,
@@ -65,14 +53,10 @@ public class Climber extends SubsystemBase {
 		else			extender.set(checkCanExtendNegative() ? speed : 0);
 	}
 	
-	private boolean checkCanExtendPositive () {
-		// If the fully wrapped extension encoder value is not set, then it can extend in the positive
-		// direction (it should be set though)
-		if (!fullyWrappedExtensionEncoderValueSet) return true;
-		
+	private boolean checkCanExtendPositive () {		
 		// Can only extend further in the positive direction if the extension encoder reads a value
 		// lesser than the maximum allowed extension value
-		return extensionEncoder.getPosition() < fullyWrappedExtensionEncoderValue + extensionEncoderMaxOffset;
+		return getExtensionPosition() < extensionEncoderMaxOffset;
 	}
 	
 	private boolean checkCanExtendNegative () {
@@ -94,37 +78,33 @@ public class Climber extends SubsystemBase {
 	}
 	
 	private boolean checkCanRotateNegative () {
-		// If the fully wrapped rotaton encoder value is not set, then it can rotate in the negative
-		// direction (it should be set though)
-		if (!fullyWrappedRotationEncoderValueSet) return true;
-		
 		// Can only rotate further in the negative direction if the rotation encoder reads a value
 		// greater than the minimum allowed rotational value
-		return rotationEncoder.getPosition() > fullyWrappedRotationEncoderValue - rotationEncoderMaxOffset;
+		return getRotationPosition() > rotationEncoderMaxOffset;
 	}
 	
 	/**
-	 * Used to mark when the climber is reeled in all the way (in the positive direction)
-	 * to the point where it hits the limit switch, so that the encoder value can be used
-	 * to prevent the climber moving too far in the negative direction such that it fully
-	 * unspools and begins to rewrap in the wrong direction.
+	 * Should be called when the rotation limit switch is first hit
 	 */
-	public void setFullyWrappedRotationMarker () {
-		fullyWrappedRotationEncoderValue = rotationEncoder.getPosition();
-		fullyWrappedRotationEncoderValueSet = true;
+	private double rotationEncoderZero;
+	public void rotationEncoderReset () {
+		rotationEncoderZero = rotationEncoder.getPosition();
 	}
 	
-	public void unsetFullyWrappedRotationMarker () {
-		fullyWrappedRotationEncoderValueSet = false;
+	private double getRotationPosition () {
+		return rotationEncoder.getPosition() - rotationEncoderZero;
 	}
 	
-	public void setFullyWrappedExtensionMarker () {
-		fullyWrappedExtensionEncoderValue = extensionEncoder.getPosition();
-		fullyWrappedExtensionEncoderValueSet = true;
+	/**
+	 * Should be called when the extension limit switch is first hit
+	 */
+	private double extensionEncoderZero;
+	public void extensionEncoderReset () {
+		extensionEncoderZero = extensionEncoder.getPosition();
 	}
 	
-	public void unsetFullyWrappedExtensionMarker () {
-		fullyWrappedExtensionEncoderValueSet = false;
+	private double getExtensionPosition () {
+		return extensionEncoder.getPosition() - extensionEncoderZero;
 	}
 	
 	/**
