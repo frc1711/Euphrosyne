@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 import frc.team1711.swerve.util.InputHandler;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 public class ClimberCommand extends CommandBase {
@@ -21,15 +22,19 @@ public class ClimberCommand extends CommandBase {
 	private static final double extensionMaxSpeed = 0.4, rotationMaxSpeed = 0.2;
 	
 	private final Climber climber;
+	
 	private final DoubleSupplier extensionInput, rotationInput;
+	private final BooleanSupplier overrideMode;
 	
 	public ClimberCommand (
 			Climber climber,
 			DoubleSupplier extensionInput,
-			DoubleSupplier rotationInput) {
+			DoubleSupplier rotationInput,
+			BooleanSupplier overrideMode) {
 		this.climber = climber;
 		this.extensionInput = extensionInput;
 		this.rotationInput = rotationInput;
+		this.overrideMode = overrideMode;
 		addRequirements(climber);
 	}
 	
@@ -50,29 +55,29 @@ public class ClimberCommand extends CommandBase {
 	@Override
 	public void execute () {
 		
-		// l = h / sin(a)
-		double maxLength = maxClimberHeightFromPivot / Math.sin(climber.getRotationDegrees() * (Math.PI / 180));
-		double currentLength = climber.getExtensionHeightInches();
-		
-		SmartDashboard.putNumber("Max length at angle", maxLength);
-		SmartDashboard.putNumber("Current length", currentLength);
-		
 		// Calculate extension and rotation speeds
 		double extensionSpeed = extensionMaxSpeed * climberInputHandler.apply(extensionInput.getAsDouble());
 		double rotationSpeed = rotationMaxSpeed * climberInputHandler.apply(rotationInput.getAsDouble());
 		
-		// Restrictions on climber height
-		if (exceedesClimberHeight()) {
-			// Prevent extending past height limit
-			if (extensionSpeed > 0) extensionSpeed = 0;
+		if (overrideMode.getAsBoolean()) {
+			// Override
+			climber.setExtensionSpeedOverride(extensionSpeed);
+			climber.setRotationSpeedOverride(rotationSpeed);
+		} else {
+			// Default mode (non-override)
+			// Restrictions on climber height
+			if (exceedesClimberHeight()) {
+				// Prevent extending past height limit
+				if (extensionSpeed > 0) extensionSpeed = 0;
+				
+				// Prevent rotating towards upright, making height exceed limit
+				if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) rotationSpeed = 0; // Pushing away from limit switch
+				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) rotationSpeed = 0; // Pulling toward limit switch
+			}
 			
-			// Prevent rotating towards upright, making height exceed limit
-			if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) rotationSpeed = 0; // Pushing away from limit switch
-			if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) rotationSpeed = 0; // Pulling toward limit switch
+			climber.setExtensionSpeed(extensionSpeed);
+			climber.setRotationSpeed(rotationSpeed);
 		}
-		
-		climber.setExtensionSpeed(extensionSpeed);
-		climber.setRotationSpeed(rotationSpeed);
 	}
 	
 	@Override

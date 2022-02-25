@@ -102,7 +102,8 @@ public class RobotContainer {
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> -centralController.getRightY(),	// Extension
-			() -> centralController.getLeftY());	// Rotation
+			() -> centralController.getLeftY(),		// Rotation
+			() -> SmartDashboard.getBoolean("Climber Override Mode", false));
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -121,6 +122,8 @@ public class RobotContainer {
 		SmartDashboard.putData(new ResetGyro(swerveDrive));
 		SmartDashboard.putData("Swerve Drive", swerveDrive);
 		SmartDashboard.putData(gyro);
+		
+		SmartDashboard.putBoolean("Climber Override Mode", false);
 	}
 	
 	public Command getAutonomousCommand () {
