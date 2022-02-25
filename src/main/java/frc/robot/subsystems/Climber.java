@@ -53,6 +53,10 @@ public class Climber extends SubsystemBase {
 		else			extender.set(checkCanExtendNegative() ? speed : 0);
 	}
 	
+	public void setExtensionSpeedOverride (double speed) {
+		extender.set(speed);
+	}
+	
 	private boolean checkCanExtendPositive () {		
 		// Can only extend further in the positive direction if the extension encoder reads a value
 		// lesser than the maximum allowed extension value
@@ -70,6 +74,10 @@ public class Climber extends SubsystemBase {
 	public void setRotationSpeed (double speed) {
 		if (speed > 0)	rotator.set(checkCanRotatePositive() ? speed : 0);
 		else			rotator.set(checkCanRotateNegative() ? speed : 0);
+	}
+	
+	public void setRotationSpeedOverride (double speed) {
+		rotator.set(speed);
 	}
 	
 	private boolean checkCanRotatePositive () {

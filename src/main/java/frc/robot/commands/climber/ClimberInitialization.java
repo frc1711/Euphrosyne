@@ -33,18 +33,18 @@ public class ClimberInitialization extends CommandBase {
 	
 	private void rotateClimberUntilSwitched () {
 		if (!climber.getRotationLimitSwitch()) {
-			climber.setRotationSpeed(rotationSpeed);
+			climber.setRotationSpeedOverride(rotationSpeed);
 		} else {
-			climber.setRotationSpeed(0);
+			climber.setRotationSpeedOverride(0);
 			trippedRotationLimitSwitch = true;
 		}
 	}
 	
 	private void retractClimberUntilSwitched () {
 		if (!climber.getExtensionLimitSwitch()) {
-			climber.setExtensionSpeed(extensionSpeed);
+			climber.setExtensionSpeedOverride(extensionSpeed);
 		} else {
-			climber.setExtensionSpeed(0);
+			climber.setExtensionSpeedOverride(0);
 			trippedExtensionLimitSwitch = true;
 		}
 	}
