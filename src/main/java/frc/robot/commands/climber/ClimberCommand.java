@@ -18,7 +18,7 @@ public class ClimberCommand extends CommandBase {
 	
 	private static final InputHandler climberInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
-	private static final double extensionSpeed = 0.4, rotationSpeed = 0.2;
+	private static final double extensionMaxSpeed = 0.4, rotationMaxSpeed = 0.2;
 	
 	private final Climber climber;
 	private final DoubleSupplier extensionInput, rotationInput;
@@ -38,8 +38,18 @@ public class ClimberCommand extends CommandBase {
 		climber.stop();
 	}
 	
+	// Returns whether or not the climber length makes it reach higher than the maximum allowed height
+	private boolean exceedesClimberHeight () {
+		// sin(a) = h / l
+		// l = h / sin(a)
+		final double maxLength = maxClimberHeightFromPivot / Math.sin(climber.getRotationDegrees() * (Math.PI / 180));
+		
+		return climber.getExtensionHeightInches() > maxLength;
+	}
+	
 	@Override
 	public void execute () {
+		
 		// l = h / sin(a)
 		double maxLength = maxClimberHeightFromPivot / Math.sin(climber.getRotationDegrees() * (Math.PI / 180));
 		double currentLength = climber.getExtensionHeightInches();
@@ -47,8 +57,22 @@ public class ClimberCommand extends CommandBase {
 		SmartDashboard.putNumber("Max length at angle", maxLength);
 		SmartDashboard.putNumber("Current length", currentLength);
 		
-		climber.setExtensionSpeed(climberInputHandler.apply(extensionInput.getAsDouble()) * extensionSpeed);
-		climber.setRotationSpeed(climberInputHandler.apply(rotationInput.getAsDouble()) * rotationSpeed);
+		// Calculate extension and rotation speeds
+		double extensionSpeed = extensionMaxSpeed * climberInputHandler.apply(extensionInput.getAsDouble());
+		double rotationSpeed = rotationMaxSpeed * climberInputHandler.apply(rotationInput.getAsDouble());
+		
+		// Restrictions on climber height
+		if (exceedesClimberHeight()) {
+			// Prevent extending past height limit
+			if (extensionSpeed > 0) extensionSpeed = 0;
+			
+			// Prevent rotating towards upright, making height exceed limit
+			if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) rotationSpeed = 0; // Pushing away from limit switch
+			if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) rotationSpeed = 0; // Pulling toward limit switch
+		}
+		
+		climber.setExtensionSpeed(extensionSpeed);
+		climber.setRotationSpeed(rotationSpeed);
 	}
 	
 	@Override
