@@ -125,7 +125,7 @@ public class Climber extends SubsystemBase {
 	
 	// When the extension limit switch is being tripped (encoder position of 0), the climber is extended to 40
 	// When the extension encoder is at its maximum offset va\][plue, the climber is extended to 63.5
-	private static final LinearInterpolator extensionEncoderToInches = new LinearInterpolator(0, 40, extensionEncoderMaxOffset, 63.5);
+	private static final LinearInterpolator extensionEncoderToInches = new LinearInterpolator(0, 40, extensionEncoderMaxOffset, 64);
 	public double getExtensionHeightInches () {
 		return extensionEncoderToInches.interpolate(getExtensionPosition());
 	}

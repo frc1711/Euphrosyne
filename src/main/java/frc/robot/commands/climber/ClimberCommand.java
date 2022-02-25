@@ -4,6 +4,7 @@
 
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Climber;
@@ -12,6 +13,8 @@ import frc.team1711.swerve.util.InputHandler;
 import java.util.function.DoubleSupplier;
 
 public class ClimberCommand extends CommandBase {
+	
+	private static final double maxClimberHeightFromPivot = 5*12; // 5'6" from ground; 6" from pivot to ground
 	
 	private static final InputHandler climberInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
@@ -37,6 +40,13 @@ public class ClimberCommand extends CommandBase {
 	
 	@Override
 	public void execute () {
+		// l = h / sin(a)
+		double maxLength = maxClimberHeightFromPivot / Math.sin(climber.getRotationDegrees() * (Math.PI / 180));
+		double currentLength = climber.getExtensionHeightInches();
+		
+		SmartDashboard.putNumber("Max length at angle", maxLength);
+		SmartDashboard.putNumber("Current length", currentLength);
+		
 		climber.setExtensionSpeed(climberInputHandler.apply(extensionInput.getAsDouble()) * extensionSpeed);
 		climber.setRotationSpeed(climberInputHandler.apply(rotationInput.getAsDouble()) * rotationSpeed);
 	}
