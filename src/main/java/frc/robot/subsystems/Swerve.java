@@ -32,14 +32,6 @@ public class Swerve extends GyroSwerveDrive {
 		this.gyro = gyro;
 	}
 	
-	public void displayOrientation () {
-		// // TODO: Use Sendable swerve modules for this
-		// SmartDashboard.putNumber("Front Left Direction", (flWheel.getDirection() + 90) % 180 - 90);
-		// SmartDashboard.putNumber("Front Right Direction", (frWheel.getDirection() + 90) % 180 - 90);
-		// SmartDashboard.putNumber("Rear Left Direction", (rlWheel.getDirection() + 90) % 180 - 90);
-		// SmartDashboard.putNumber("Rear Right Direction", (rrWheel.getDirection() + 90) % 180 - 90);
-	}
-	
 	public void configDirectionEncoders () {
 		flWheel.configDirectionEncoder();
 		frWheel.configDirectionEncoder();
