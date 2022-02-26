@@ -19,7 +19,7 @@ public class ClimberCommand extends CommandBase {
 	
 	private static final InputHandler climberInputHandler = new InputHandler(0.10, InputHandler.Curve.squareCurve);
 	
-	private static final double extensionMaxSpeed = 0.4, rotationMaxSpeed = 0.2;
+	private static final double extensionMaxSpeed = 0.75, rotationMaxSpeed = 0.5;
 	
 	private final Climber climber;
 	
