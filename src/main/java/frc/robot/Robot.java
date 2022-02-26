@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.CameraSystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,17 +20,13 @@ public class Robot extends TimedRobot {
 	
 	private RobotContainer m_robotContainer;
 	private boolean robotHasBeenEnabled = false;
-	private CameraSystem cameraSystem;
-	
-	private int camNum = 0; // Used for testing
 	
 	@Override
 	public void robotInit () {
-		cameraSystem = new CameraSystem(2);
-		
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		m_robotContainer = new RobotContainer();
+		new CameraSystem().schedule();
 	}
 	
 	@Override
@@ -73,11 +70,6 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
-		
-		// Test code for the camera
-		if (camNum == 0) camNum = 1;
-		else camNum = 0;
-		cameraSystem.activateCameraNum(camNum);
 	}
 	
 	@Override
