@@ -30,23 +30,7 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void robotInit () {
-		new Thread(() -> {
-			camera = CameraServer.startAutomaticCapture();
-			
-			camera.setResolution(640, 480);
-			
-			CvSink cvSink = CameraServer.getVideo();
-			CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
-			
-			Mat source = new Mat();
-			Mat output = new Mat();
-			
-			while (!Thread.interrupted()) {
-				if (cvSink.grabFrame(source) == 0) continue;
-				Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-				outputStream.putFrame(output);
-			}
-		}).start();
+		CameraServer.startAutomaticCapture();
 		
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.

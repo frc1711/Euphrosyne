@@ -22,7 +22,7 @@
               "_title": "ResetGyro"
             }
           },
-          "6,1": {
+          "8,1": {
             "size": [
               2,
               1
@@ -33,7 +33,7 @@
               "_title": "Swerve"
             }
           },
-          "4,2": {
+          "6,1": {
             "size": [
               2,
               1
@@ -157,6 +157,36 @@
                 }
               }
             }
+          },
+          "8,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/Climber Override Mode",
+              "_title": "Climber Override Mode"
+            }
+          },
+          "4,2": {
+            "size": [
+              5,
+              3
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "HALF",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
           }
         }
       }
@@ -186,22 +216,22 @@
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Swerve/Rear Right Module",
-                  "_title": "/LiveWindow/Swerve/Rear Right Module"
+                  "_title": "Rear Right Module"
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Swerve/Front Right Module",
-                  "_title": "/LiveWindow/Swerve/Front Right Module"
+                  "_title": "Front Right Module"
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Swerve/Rear Left Module",
-                  "_title": "/LiveWindow/Swerve/Rear Left Module"
+                  "_title": "Rear Left Module"
                 },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///LiveWindow/Swerve/Front Left Module",
-                  "_title": "/LiveWindow/Swerve/Front Left Module"
+                  "_title": "Front Left Module"
                 }
               ]
             }
@@ -285,6 +315,20 @@
                   "_title": "DigitalInput[0]/Value",
                   "Colors/Color when true": "#7CFC00FF",
                   "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[3]/Value",
+                  "_title": "LiveWindow/Ungrouped/DigitalInput[3]/Value",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
+                },
+                {
+                  "_type": "Boolean Box",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[2]/Value",
+                  "_title": "LiveWindow/Ungrouped/DigitalInput[2]/Value",
+                  "Colors/Color when true": "#7CFC00FF",
+                  "Colors/Color when false": "#8B0000FF"
                 }
               ]
             }
@@ -307,9 +351,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -6.400000095367432,
-    "y": 0.0,
-    "width": 1548.800048828125,
-    "height": 610.4000244140625
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 878.4000244140625
   }
 }
