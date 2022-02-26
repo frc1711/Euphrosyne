@@ -23,13 +23,13 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 	
 	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, BooleanSupplier stopCommand) {
 		super(
-			new AutoCargoHandler(cargoHandler, 1, cargoHandlerSpeed),
-			new AutoCargoHandler(cargoHandler, 0.5, -cargoHandlerSpeed),
+			new AutoCargoHandler(cargoHandler, 1, cargoHandlerSpeed),				// Push cargo to top of pulley
+			new AutoCargoHandler(cargoHandler, 0.5, -cargoHandlerSpeed),			// Pull back to avoid hitting shooter
 			new ParallelCommandGroup(
-				new AutoShooter(shooter, 2, shooterSpeed),
+				new AutoShooter(shooter, Double.POSITIVE_INFINITY, shooterSpeed),	// Run shooter (will run until stopped)
 				new SequentialCommandGroup(
-					new AutoCargoHandler(cargoHandler, 0.5, 0),
-					new AutoCargoHandler(cargoHandler, 1.5, cargoHandlerSpeed)
+					new AutoCargoHandler(cargoHandler, 0.5, 0),						// Wait before running cargo handler
+					new AutoCargoHandler(cargoHandler, Double.POSITIVE_INFINITY, cargoHandlerSpeed)		// Run cargo handler
 				)
 			)
 		);

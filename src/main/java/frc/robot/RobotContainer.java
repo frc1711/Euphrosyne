@@ -109,6 +109,7 @@ public class RobotContainer {
 			() -> centralController.getAButton(),					// CargoHandler
 			() -> centralController.getRightTriggerAxis(),			// Intake
 			() -> centralController.getLeftTriggerAxis(),			// Shooter
+			() -> centralController.getRightBumper(),				// Shooter sequence
 			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
