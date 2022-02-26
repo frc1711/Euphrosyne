@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.commands.central.AutoShooterSequence;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
-import frc.robot.commands.climber.ClimberRotationInitialization;
+import frc.robot.commands.climber.ClimberInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
@@ -53,7 +53,10 @@ public class RobotContainer {
 		extenderID = 17,
 		
 		leftRotationLimitSwitchID = 1,
-		rightRotationLimitSwitchID = 0;
+		rightRotationLimitSwitchID = 0,
+		
+		leftExtensionLimitSwitchID = 3,
+		rightExtensionLimitSwitchID = 2;
 	
 	private final XboxController driveController, centralController;
 	
@@ -93,11 +96,14 @@ public class RobotContainer {
 			extenderID,
 			rotatorID,
 			leftRotationLimitSwitchID,
-			rightRotationLimitSwitchID);
+			rightRotationLimitSwitchID,
+			leftExtensionLimitSwitchID,
+			rightExtensionLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> -centralController.getRightY(),	// Extension
-			() -> centralController.getLeftY());	// Rotation
+			() -> centralController.getLeftY(),		// Rotation
+			() -> SmartDashboard.getBoolean("Climber Override Mode", false));
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -109,6 +115,7 @@ public class RobotContainer {
 			() -> centralController.getAButton(),					// CargoHandler
 			() -> centralController.getRightTriggerAxis(),			// Intake
 			() -> centralController.getLeftTriggerAxis(),			// Shooter
+			() -> centralController.getRightBumper(),				// Shooter sequence
 			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
@@ -117,6 +124,8 @@ public class RobotContainer {
 		SmartDashboard.putData(new ResetGyro(swerveDrive));
 		SmartDashboard.putData("Swerve Drive", swerveDrive);
 		SmartDashboard.putData(gyro);
+		
+		SmartDashboard.putBoolean("Climber Override Mode", false);
 	}
 	
 	public Command getAutonomousCommand () {
@@ -124,7 +133,7 @@ public class RobotContainer {
 	}
 	
 	public void onFirstRobotEnable () {
-		CommandScheduler.getInstance().schedule(new ClimberRotationInitialization(climber));
+		CommandScheduler.getInstance().schedule(new ClimberInitialization(climber));
 	}
 	
 }

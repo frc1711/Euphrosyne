@@ -63,9 +63,6 @@ public class SwerveTeleop extends CommandBase {
 		
 		// Performs field-relative driving for the swerve system with input deadbands turned on
 		swerveDrive.fieldRelativeUserInputDrive(strafeX.getAsDouble(), strafeY.getAsDouble(), steering.getAsDouble(), controlsConfig);
-		
-		// Update SmartDashboard
-		swerveDrive.displayOrientation();
 	}
 	
 	private SwerveDrive.ControlsConfig getControlsConfig () {

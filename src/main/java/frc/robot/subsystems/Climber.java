@@ -10,75 +10,124 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.LinearInterpolator;
 
 public class Climber extends SubsystemBase {
-	// The maximum offset from the fully-wrapped spindle encoder position
+	
+	// The maximum offsets from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
-	private static final double rotationEncoderMaxOffset = 44;
+	private static final double rotationEncoderMaxOffset = -39;
+	private static final double extensionEncoderMaxOffset = 149.2;
 	
+	// Positive extension is extending upwards, negative is retracting downwards
+	// Positive rotation is pulling into limit switch, negative is pushing away
 	private final CANSparkMax extender, rotator;
-	private final RelativeEncoder rotationEncoder;
-	private final DigitalInput leftRotationLimitSwitch, rightRotationLimitSwitch;
-	
-	private boolean fullyWrappedRotationEncoderValueSet = false;
-	private double fullyWrappedRotationEncoderValue;
+	private final RelativeEncoder rotationEncoder, extensionEncoder;
+	private final DigitalInput
+		leftRotationLimitSwitch,
+		rightRotationLimitSwitch,
+		leftExtensionLimitSwitch,
+		rightExtensionLimitSwitch;
 	
 	public Climber (
 			int extenderID,
 			int rotatorID,
 			int leftRotationLimitSwitchID,
-			int rightRotationLimitSwitchID) {
+			int rightRotationLimitSwitchID,
+			int leftExtensionLimitSwitchID,
+			int rightExtensionLimitSwitchID) {
 		extender = new CANSparkMax(extenderID, MotorType.kBrushless);
 		rotator = new CANSparkMax(rotatorID, MotorType.kBrushless);
 		leftRotationLimitSwitch = new DigitalInput(leftRotationLimitSwitchID);
 		rightRotationLimitSwitch = new DigitalInput(rightRotationLimitSwitchID);
+		leftExtensionLimitSwitch = new DigitalInput(leftExtensionLimitSwitchID);
+		rightExtensionLimitSwitch = new DigitalInput(rightExtensionLimitSwitchID);
 		rotationEncoder = rotator.getEncoder();
-	}
-	
-	public void setExtensionSpeed (double speed) {
-		extender.set(speed);
-	}
-	
-	public void setRotationSpeed (double speed) {
-		// If the fully-wrapped encoder value has been set
-		if (fullyWrappedRotationEncoderValueSet) {
-			// Make sure the rotation encoder doesn't move further from the fully wrapped state
-			// in the positive direction than it should
-			if (speed > 0 && rotationEncoder.getPosition() > fullyWrappedRotationEncoderValue + rotationEncoderMaxOffset) {
-				rotator.set(0);
-				return;
-			}
-			// and in the negative direction
-			if (speed < 0 && rotationEncoder.getPosition() < fullyWrappedRotationEncoderValue - rotationEncoderMaxOffset) {
-				rotator.set(0);
-				return;
-			}
-		}
-		
-		// The limit switch should only be hit if it's fully wrapped (in the positive direction)
-		// So if the speed is greater than zero, we shouldn't wrap further if the limit switch is tripped
-		if (getRotationLimitSwitch() && speed > 0) {
-			rotator.set(0);
-			return;
-		}
-		
-		// If all the checks pass, then it can be used
-		rotator.set(speed);
+		extensionEncoder = extender.getEncoder();
 	}
 	
 	/**
-	 * Used to mark when the climber is reeled in all the way (in the positive direction)
-	 * to the point where it hits the limit switch, so that the encoder value can be used
-	 * to prevent the climber moving too far in the negative direction such that it fully
-	 * unspools and begins to rewrap in the wrong direction.
+	 * Positive extension is extending upwards, negative is retracting downwards
 	 */
-	public void setFullyWrappedRotationMarker () {
-		fullyWrappedRotationEncoderValue = rotationEncoder.getPosition();
-		fullyWrappedRotationEncoderValueSet = true;
+	public void setExtensionSpeed (double speed) {
+		if (speed > 0)	extender.set(checkCanExtendPositive() ? speed : 0);
+		else			extender.set(checkCanExtendNegative() ? speed : 0);
 	}
 	
-	public void unsetFullyWrappedRotationMarker () {
-		fullyWrappedRotationEncoderValueSet = false;
+	public void setExtensionSpeedOverride (double speed) {
+		extender.set(speed);
+	}
+	
+	private boolean checkCanExtendPositive () {		
+		// Can only extend further in the positive direction if the extension encoder reads a value
+		// lesser than the maximum allowed extension value
+		return getExtensionPosition() < extensionEncoderMaxOffset;
+	}
+	
+	private boolean checkCanExtendNegative () {
+		// Can only retract further down (negative extension speed) if the limit switch isn't tripped
+		return !getExtensionLimitSwitch();
+	}
+	
+	/**
+	 * Positive rotation is pulling into limit switch, negative is pushing away
+	 */
+	public void setRotationSpeed (double speed) {
+		if (speed > 0)	rotator.set(checkCanRotatePositive() ? speed : 0);
+		else			rotator.set(checkCanRotateNegative() ? speed : 0);
+	}
+	
+	public void setRotationSpeedOverride (double speed) {
+		rotator.set(speed);
+	}
+	
+	private boolean checkCanRotatePositive () {
+		// Can only rotate further in the positive direction if the rotation limit switch isn't tripped
+		return !getRotationLimitSwitch();
+	}
+	
+	private boolean checkCanRotateNegative () {
+		// Can only rotate further in the negative direction if the rotation encoder reads a value
+		// greater than the minimum allowed rotational value
+		return getRotationPosition() > rotationEncoderMaxOffset;
+	}
+	
+	/**
+	 * Should be called when the rotation limit switch is first hit
+	 */
+	private double rotationEncoderZero;
+	public void rotationEncoderReset () {
+		rotationEncoderZero = rotationEncoder.getPosition();
+	}
+	
+	private double getRotationPosition () {
+		return rotationEncoder.getPosition() - rotationEncoderZero;
+	}
+	
+	/**
+	 * Should be called when the extension limit switch is first hit
+	 */
+	private double extensionEncoderZero;
+	public void extensionEncoderReset () {
+		extensionEncoderZero = extensionEncoder.getPosition();
+	}
+	
+	private double getExtensionPosition () {
+		return extensionEncoder.getPosition() - extensionEncoderZero;
+	}
+	
+	// When the rotation limit switch is being tripped (encoder position of 0), the climber is at 92 degrees.
+	// When the rotation encoder is at its maximum offset value, the climber is at 63 degrees.
+	private static final LinearInterpolator rotationEncoderToAngle = new LinearInterpolator(0, 92.5, rotationEncoderMaxOffset, 64);
+	public double getRotationDegrees () {
+		return rotationEncoderToAngle.interpolate(getRotationPosition());
+	}
+	
+	// When the extension limit switch is being tripped (encoder position of 0), the climber is extended to 40
+	// When the extension encoder is at its maximum offset va\][plue, the climber is extended to 63.5
+	private static final LinearInterpolator extensionEncoderToInches = new LinearInterpolator(0, 40, extensionEncoderMaxOffset, 64);
+	public double getExtensionHeightInches () {
+		return extensionEncoderToInches.interpolate(getExtensionPosition());
 	}
 	
 	/**
@@ -87,7 +136,11 @@ public class Climber extends SubsystemBase {
 	 * both limit switches are not being pressed.
 	 */
 	public boolean getRotationLimitSwitch () {
-		return (!leftRotationLimitSwitch.get()) || (!rightRotationLimitSwitch.get());
+		return leftRotationLimitSwitch.get() || rightRotationLimitSwitch.get();
+	}
+	
+	public boolean getExtensionLimitSwitch () {
+		return leftExtensionLimitSwitch.get() || rightExtensionLimitSwitch.get();
 	}
 	
 	public void stop (){
