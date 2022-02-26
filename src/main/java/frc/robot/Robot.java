@@ -21,6 +21,8 @@ public class Robot extends TimedRobot {
 	private boolean robotHasBeenEnabled = false;
 	private CameraSystem cameraSystem;
 	
+	private int camNum = 0; // Used for testing
+	
 	@Override
 	public void robotInit () {
 		cameraSystem = new CameraSystem(2);
@@ -71,6 +73,11 @@ public class Robot extends TimedRobot {
 		if (m_autonomousCommand != null) {
 			m_autonomousCommand.cancel();
 		}
+		
+		// Test code for the camera
+		if (camNum == 0) camNum = 1;
+		else camNum = 0;
+		cameraSystem.activateCameraNum(camNum);
 	}
 	
 	@Override
