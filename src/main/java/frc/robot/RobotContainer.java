@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.commands.central.AutoShooterSequence;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -114,7 +114,9 @@ public class RobotContainer {
 			cargoHandler, intake, shooter,
 			() -> centralController.getAButton(),					// CargoHandler
 			() -> centralController.getRightTriggerAxis(),			// Intake
-			() -> centralController.getLeftTriggerAxis());			// Shooter
+			() -> centralController.getLeftTriggerAxis(),			// Shooter
+			() -> centralController.getRightBumper(),				// Shooter sequence
+			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// SmartDashboard
