@@ -14,7 +14,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -34,7 +34,7 @@ public class CentralSystem extends CommandBase {
 	private final Intake intake;
 	private final Shooter shooter;
 	
-	private final BooleanSupplier runCargoHandler, reverseButton;
+	private final BooleanSupplier runCargoHandler, reverseButton, runShooterSequence;
 	private final DoubleSupplier runIntake, runShooter;
 	
 	public CentralSystem (
@@ -43,7 +43,8 @@ public class CentralSystem extends CommandBase {
 			Shooter shooter,
 			BooleanSupplier runCargoHandler,
 			DoubleSupplier runIntake,
-			DoubleSupplier runShooter, 
+			DoubleSupplier runShooter,
+			BooleanSupplier runShooterSequence,
 			BooleanSupplier reverseButton) {
 		this.cargoHandler = cargoHandler;
 		this.intake = intake;
@@ -52,6 +53,7 @@ public class CentralSystem extends CommandBase {
 		this.runCargoHandler = runCargoHandler;
 		this.runIntake = runIntake;
 		this.runShooter = runShooter;
+		this.runShooterSequence = runShooterSequence;
 		this.reverseButton = reverseButton;
 		
 		addRequirements(cargoHandler, intake, shooter);
@@ -69,6 +71,10 @@ public class CentralSystem extends CommandBase {
 	
 	@Override
 	public void execute () {
+		// Attempting to run the shooter sequence
+		if (runShooterSequence.getAsBoolean())
+			CommandScheduler.getInstance().schedule(new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
+		
 		int r = (reverseButton.getAsBoolean() ? -1 : 1); //r is a numerical value of true or false for reversebutton
 
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed * r : 0);
