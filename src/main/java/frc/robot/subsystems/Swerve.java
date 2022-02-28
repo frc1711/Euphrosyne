@@ -2,10 +2,10 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import frc.team1711.swerve.subsystems.GyroSwerveDrive;
+import frc.team1711.swerve.subsystems.AutoSwerveDrive;
 import frc.team1711.swerve.util.Angles;
 
-public class Swerve extends GyroSwerveDrive {
+public class Swerve extends AutoSwerveDrive {
 	
 	private static final double trackToWheelbaseRatio = 1/1;
 	
