@@ -23,6 +23,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.SwerveModule;
+import frc.team1711.swerve.commands.AutonDrive;
+import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
 	
@@ -130,7 +132,7 @@ public class RobotContainer {
 	}
 	
 	public Command getAutonomousCommand () {
-		return null;
+		return new AutonDrive(swerveDrive, 0, 12, 0.2, 3, 0.01, FrameOfReference.ROBOT);
 	}
 	
 	public void onFirstRobotEnable () {
