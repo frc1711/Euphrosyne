@@ -84,11 +84,12 @@ public class RobotContainer {
 			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID));
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
-			() -> driveController.getLeftX(),				// Strafe X
-			() -> -driveController.getLeftY(),				// Strafe Y
-			() -> driveController.getRightX(),				// Steering
-			() -> driveController.getRightTriggerAxis() > 0.4,	// Fast mode
-			() -> driveController.getLeftTriggerAxis() > 0.4);	// Slow mode
+			() -> driveController.getLeftX(),											// Strafe X
+			() -> -driveController.getLeftY(),											// Strafe Y
+			() -> driveController.getRightX(),											// Steering
+			() -> driveController.getRightTriggerAxis() > 0.4,							// Fast mode
+			() -> driveController.getLeftTriggerAxis() > 0.4,							// Slow mode
+			() -> driveController.getLeftBumper() && driveController.getRightBumper());	// Reset gyro
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command

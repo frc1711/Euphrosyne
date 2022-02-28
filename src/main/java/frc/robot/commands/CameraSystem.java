@@ -4,6 +4,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class CameraSystem extends CommandBase {
@@ -44,7 +45,10 @@ public class CameraSystem extends CommandBase {
 		cameraChooser = new SendableChooser<CameraOption>();
 		for (CameraOption option : CameraOption.values())
 			cameraChooser.addOption(option.name(), option);
+		// TODO: Possible problem: .setDefaultOption is messing with original .addOption, cannot
+		// add same key twice
 		cameraChooser.setDefaultOption(CameraOption.values()[0].name(), CameraOption.values()[0]);
+		SmartDashboard.putData(cameraChooser);
 	}
 	
 	@Override

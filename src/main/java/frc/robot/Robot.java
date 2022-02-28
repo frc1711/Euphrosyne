@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.CameraSystem;
@@ -27,6 +29,11 @@ public class Robot extends TimedRobot {
 		// autonomous chooser on the dashboard.
 		m_robotContainer = new RobotContainer();
 		new CameraSystem().schedule();
+		
+		SendableChooser<Command> testChooser = new SendableChooser<Command>();
+		testChooser.setDefaultOption("Null Command 0", null);
+		testChooser.addOption("Null Command 1", null);
+		SmartDashboard.putData(testChooser);
 	}
 	
 	@Override
