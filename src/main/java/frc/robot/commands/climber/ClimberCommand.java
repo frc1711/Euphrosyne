@@ -85,8 +85,7 @@ public class ClimberCommand extends CommandBase {
 				climber.setExtensionSpeed(extensionSpeed) ||
 				climber.setRotationSpeed(rotationSpeed);
 			
-			
-			
+			climbLimitReached.accept(limitReached);
 		}
 		
 	}

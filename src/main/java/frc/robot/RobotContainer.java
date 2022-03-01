@@ -7,6 +7,7 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -84,11 +85,11 @@ public class RobotContainer {
 			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID));
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
-			() -> driveController.getLeftX(),				// Strafe X
-			() -> -driveController.getLeftY(),				// Strafe Y
-			() -> driveController.getRightX(),				// Steering
-			() -> driveController.getRightTriggerAxis() > 0.4,	// Fast mode
-			() -> driveController.getLeftTriggerAxis() > 0.4);	// Slow mode
+			() -> driveController.getLeftX(),						// Strafe X
+			() -> -driveController.getLeftY(),						// Strafe Y
+			() -> driveController.getRightX(),						// Steering
+			() -> driveController.getRightTriggerAxis() > 0.4,		// Fast mode
+			() -> driveController.getLeftTriggerAxis() > 0.4);		// Slow mode
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command
@@ -101,10 +102,10 @@ public class RobotContainer {
 			rightExtensionLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> -centralController.getRightY(),	// Extension
-			() -> centralController.getLeftY(),		// Rotation
-			() -> SmartDashboard.getBoolean("Climber Override Mode", false),
-			(x) -> ); // TODO: Add a BooleanConsumer for haptic feedback here
+			() -> -centralController.getRightY(),										// Extension
+			() -> centralController.getLeftY(),											// Rotation
+			() -> SmartDashboard.getBoolean("Climber Override Mode", false),			// Climber override mode
+			(x) -> centralController.setRumble(RumbleType.kLeftRumble, x ? 0.7 : 0));	// Rumble for hitting climber limit
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
