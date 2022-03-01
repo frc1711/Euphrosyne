@@ -27,19 +27,19 @@ public class ClimberCommand extends CommandBase {
 	
 	private final DoubleSupplier extensionInput, rotationInput;
 	private final BooleanSupplier overrideMode;
-	private final BooleanConsumer climbLimit;
+	private final BooleanConsumer climbLimitReached;
 	
 	public ClimberCommand (
 			Climber climber,
 			DoubleSupplier extensionInput,
 			DoubleSupplier rotationInput,
 			BooleanSupplier overrideMode,
-			BooleanConsumer climbLimit) {
+			BooleanConsumer climbLimitReached) {
 		this.climber = climber;
 		this.extensionInput = extensionInput;
 		this.rotationInput = rotationInput;
 		this.overrideMode = overrideMode;
-		this.climbLimit = climbLimit;
+		this.climbLimitReached = climbLimitReached;
 		addRequirements(climber);
 	}
 	
@@ -59,7 +59,8 @@ public class ClimberCommand extends CommandBase {
 	
 	@Override
 	public void execute () {
-		// Put limit rumble in here
+		
+		
 		// Calculate extension and rotation speeds
 		double extensionSpeed = extensionMaxSpeed * climberInputHandler.apply(extensionInput.getAsDouble());
 		double rotationSpeed = rotationMaxSpeed * climberInputHandler.apply(rotationInput.getAsDouble());
@@ -80,9 +81,14 @@ public class ClimberCommand extends CommandBase {
 				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) rotationSpeed = 0; // Pulling toward limit switch
 			}
 			
-			climber.setExtensionSpeed(extensionSpeed);
-			climber.setRotationSpeed(rotationSpeed);
+			final boolean limitReached =
+				climber.setExtensionSpeed(extensionSpeed) ||
+				climber.setRotationSpeed(rotationSpeed);
+			
+			
+			
 		}
+		
 	}
 	
 	@Override

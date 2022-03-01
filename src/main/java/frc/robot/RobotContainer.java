@@ -103,7 +103,8 @@ public class RobotContainer {
 			climber,
 			() -> -centralController.getRightY(),	// Extension
 			() -> centralController.getLeftY(),		// Rotation
-			() -> SmartDashboard.getBoolean("Climber Override Mode", false));
+			() -> SmartDashboard.getBoolean("Climber Override Mode", false),
+			(x) -> ); // TODO: Add a BooleanConsumer for haptic feedback here
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
