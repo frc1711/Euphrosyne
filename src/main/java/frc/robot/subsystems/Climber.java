@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.util.LinearInterpolator;
 
 public class Climber extends SubsystemBase {
@@ -71,10 +72,18 @@ public class Climber extends SubsystemBase {
 	
 	/**
 	 * Positive rotation is pulling into limit switch, negative is pushing away
+	 * @return {@code true} if the rotation speed was limited due to a limit,
+	 * {@code false} otherwise
 	 */
 	public void setRotationSpeed (double speed) {
-		if (speed > 0)	rotator.set(checkCanRotatePositive() ? speed : 0);
-		else			rotator.set(checkCanRotateNegative() ? speed : 0);
+		if (speed > 0) {
+			rotator.set(checkCanRotatePositive() ? speed : 0);
+			boolean positiveRotate = checkCanRotatePositive() ? false : true;
+		}
+		else {
+			rotator.set(checkCanRotateNegative() ? speed : 0);
+			boolean negativeRotate = checkCanRotateNegative() ? false : true;
+		}
 	}
 	
 	public void setRotationSpeedOverride (double speed) {

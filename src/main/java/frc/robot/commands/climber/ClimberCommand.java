@@ -6,12 +6,14 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.util.function.BooleanConsumer;
 
 import frc.robot.subsystems.Climber;
 import frc.team1711.swerve.util.InputHandler;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+
 
 public class ClimberCommand extends CommandBase {
 	
@@ -25,16 +27,19 @@ public class ClimberCommand extends CommandBase {
 	
 	private final DoubleSupplier extensionInput, rotationInput;
 	private final BooleanSupplier overrideMode;
+	private final BooleanConsumer climbLimit;
 	
 	public ClimberCommand (
 			Climber climber,
 			DoubleSupplier extensionInput,
 			DoubleSupplier rotationInput,
-			BooleanSupplier overrideMode) {
+			BooleanSupplier overrideMode,
+			BooleanConsumer climbLimit) {
 		this.climber = climber;
 		this.extensionInput = extensionInput;
 		this.rotationInput = rotationInput;
 		this.overrideMode = overrideMode;
+		this.climbLimit = climbLimit;
 		addRequirements(climber);
 	}
 	
@@ -54,7 +59,7 @@ public class ClimberCommand extends CommandBase {
 	
 	@Override
 	public void execute () {
-		
+		// Put limit rumble in here
 		// Calculate extension and rotation speeds
 		double extensionSpeed = extensionMaxSpeed * climberInputHandler.apply(extensionInput.getAsDouble());
 		double rotationSpeed = rotationMaxSpeed * climberInputHandler.apply(rotationInput.getAsDouble());
