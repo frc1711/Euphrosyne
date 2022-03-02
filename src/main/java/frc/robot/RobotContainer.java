@@ -135,7 +135,7 @@ public class RobotContainer {
 	public Command getAutonomousCommand () {
 		return new SequentialCommandGroup(
 			new AutoShooterSequence(shooter, cargoHandler, 1.5),
-			new AutonDrive(swerveDrive, 0, 12, 0.2, 3, 0.01, FrameOfReference.ROBOT));
+			new AutonDrive(swerveDrive, 0, 200, 0.1, 5, 0.01, FrameOfReference.ROBOT));
 	}
 	
 	public void onFirstRobotEnable () {
