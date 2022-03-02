@@ -11,13 +11,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 import frc.robot.commands.central.AutoShooterSequence;
+import frc.robot.commands.CameraChooser;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
+import frc.robot.subsystems.CameraSystem;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
@@ -68,14 +71,24 @@ public class RobotContainer {
 	private final Intake intake;
 	private final Shooter shooter;
 	private final Climber climber;
+	private final CameraSystem cameraSystem;
 	
 	private final SwerveTeleop swerveTeleop;
 	private final CentralSystem centralSystem;
 	private final ClimberCommand climberCommand;
+	private final CameraChooser cameraChooser;
 	
 	public RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
+		
+		// Camera System
+		cameraSystem = new CameraSystem();
+		cameraChooser = new CameraChooser(
+			cameraSystem,
+			() -> driveController.getAButtonPressed(),
+			() -> false);
+		cameraSystem.setDefaultCommand(cameraChooser);
 		
 		// Swerve Teleop
 		AHRS gyro = new AHRS();
