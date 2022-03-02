@@ -29,7 +29,8 @@ public class SwerveTeleop extends CommandBase {
 		steering;
 	private final BooleanSupplier
 		fastMode,
-		slowMode;
+		slowMode,
+		resetGyro;
 	
 	public SwerveTeleop (
 			Swerve swerveDrive,
@@ -37,7 +38,8 @@ public class SwerveTeleop extends CommandBase {
 			DoubleSupplier strafeY,
 			DoubleSupplier steering,
 			BooleanSupplier fastMode,
-			BooleanSupplier slowMode) {
+			BooleanSupplier slowMode,
+			BooleanSupplier resetGyro) {
 		
 		this.swerveDrive = swerveDrive;
 		
@@ -46,6 +48,7 @@ public class SwerveTeleop extends CommandBase {
 		this.steering = steering;
 		this.fastMode = fastMode;
 		this.slowMode = slowMode;
+		this.resetGyro = resetGyro;
 		
 		// SmartDashboard commands
 		addRequirements(swerveDrive);
@@ -58,6 +61,9 @@ public class SwerveTeleop extends CommandBase {
 	
 	@Override
 	public void execute () {
+		// Reset gyro
+		if (resetGyro.getAsBoolean()) swerveDrive.resetGyro();
+		
 		// Sets the current controls configuration
 		SwerveDrive.ControlsConfig controlsConfig = getControlsConfig();
 		
