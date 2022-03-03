@@ -6,11 +6,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.IDMap;
+
 public class CargoHandler extends SubsystemBase {
+	
+	private static CargoHandler cargoHandlerInstance;
+	
+	public static CargoHandler getInstance () {
+		if (cargoHandlerInstance == null) cargoHandlerInstance = new CargoHandler();
+		return cargoHandlerInstance;
+	}
+	
 	private final CANSparkMax pulley;
 	
-	public CargoHandler (int ballHandlerID) {
-		pulley = new CANSparkMax(ballHandlerID, MotorType.kBrushless);
+	private CargoHandler () {
+		pulley = new CANSparkMax(IDMap.CAN.CARGO_HANDLER.ID, MotorType.kBrushless);
 		pulley.setIdleMode(IdleMode.kBrake);
 	}
 	
@@ -21,4 +31,5 @@ public class CargoHandler extends SubsystemBase {
 	public void stop () {
 		pulley.set(0);
 	}
+	
 }

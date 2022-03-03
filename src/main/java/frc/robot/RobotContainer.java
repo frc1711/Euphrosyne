@@ -1,7 +1,5 @@
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -25,7 +23,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.SwerveModule;
 import frc.team1711.swerve.commands.AutonDrive;
 import frc.team1711.swerve.commands.FrameOfReference;
 
@@ -54,33 +51,15 @@ public class RobotContainer {
 		centralController = new XboxController(1);
 		
 		// Camera System
-		cameraSystem = new CameraSystem();
+		cameraSystem = CameraSystem.getInstance();
 		cameraChooser = new CameraChooser(
-			cameraSystem,
+			CameraSystem.getInstance(),
 			() -> driveController.getAButtonPressed(),
 			() -> false);
 		cameraSystem.setDefaultCommand(cameraChooser);
 		
 		// Swerve Teleop
-		AHRS gyro = new AHRS();
-		swerveDrive = new Swerve(
-			gyro,
-			new SwerveModule("Front Left Module",
-				IDMap.CAN.FRONT_LEFT_STEER.ID,
-				IDMap.CAN.FRONT_LEFT_DRIVE.ID,
-				IDMap.CAN.FRONT_LEFT_STEER_ENCODER.ID),
-			new SwerveModule("Front Right Module",
-				IDMap.CAN.FRONT_RIGHT_STEER.ID,
-				IDMap.CAN.FRONT_RIGHT_DRIVE.ID,
-				IDMap.CAN.FRONT_RIGHT_STEER_ENCODER.ID),
-			new SwerveModule("Rear Left Module",
-				IDMap.CAN.REAR_LEFT_STEER.ID,
-				IDMap.CAN.REAR_LEFT_DRIVE.ID,
-				IDMap.CAN.REAR_LEFT_STEER_ENCODER.ID),
-			new SwerveModule("Rear Right Module",
-				IDMap.CAN.REAR_RIGHT_STEER.ID,
-				IDMap.CAN.REAR_RIGHT_DRIVE.ID,
-				IDMap.CAN.REAR_RIGHT_STEER_ENCODER.ID));
+		swerveDrive = Swerve.getInstance();
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
 			() -> driveController.getLeftX(),											// Strafe X
@@ -92,13 +71,7 @@ public class RobotContainer {
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command
-		climber = new Climber(
-			IDMap.CAN.CLIMBER_EXTENDER.ID,
-			IDMap.CAN.CLIMBER_ROTATOR.ID,
-			IDMap.DIO.LEFT_ROTATION_LIMIT_SWITCH.ID,
-			IDMap.DIO.RIGHT_ROTATION_LIMIT_SWITCH.ID,
-			IDMap.DIO.LEFT_EXTENSION_LIMIT_SWITCH.ID,
-			IDMap.DIO.RIGHT_EXTENSION_LIMIT_SWITCH.ID);
+		climber = Climber.getInstance();
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> -centralController.getRightY(),					// Extension
@@ -107,9 +80,9 @@ public class RobotContainer {
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
-		cargoHandler = new CargoHandler(IDMap.CAN.CARGO_HANDLER.ID);
-		intake = new Intake(IDMap.CAN.INTAKE.ID);
-		shooter = new Shooter(IDMap.CAN.SHOOTER.ID);
+		cargoHandler = CargoHandler.getInstance();
+		intake = Intake.getInstance();
+		shooter = Shooter.getInstance();
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
 			() -> centralController.getAButton(),					// CargoHandler
@@ -119,7 +92,7 @@ public class RobotContainer {
 			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
-		// Control Board (ShuffleBoard)
+		// Control Board (Shuffleboard)
 		controlBoard.add(new SetSwerveModulePositions(swerveDrive))
 			.withPosition(0, 0).withSize(2, 1);
 		controlBoard.add(new ResetGyro(swerveDrive))
@@ -130,7 +103,7 @@ public class RobotContainer {
 			.getEntry();
 		controlBoard.add("Swerve Drive", swerveDrive)
 			.withPosition(2, 0).withSize(2, 3);
-		controlBoard.add("Gyro", gyro)
+		controlBoard.add("Gyro", swerveDrive.getGyro())
 			.withPosition(4, 0).withSize(2, 3);
 	}
 	

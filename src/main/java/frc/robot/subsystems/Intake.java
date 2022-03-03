@@ -6,11 +6,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.IDMap;
+
 public class Intake extends SubsystemBase {
+	
+	private static Intake intakeInstance;
+	
+	public static Intake getInstance () {
+		if (intakeInstance == null) intakeInstance = new Intake();
+		return intakeInstance;
+	}
+	
 	private final CANSparkMax intakeMotor;
 	
-	public Intake (int intakeID) {
-		intakeMotor = new CANSparkMax(intakeID, MotorType.kBrushless);
+	private Intake () {
+		intakeMotor = new CANSparkMax(IDMap.CAN.INTAKE.ID, MotorType.kBrushless);
 		intakeMotor.setIdleMode(IdleMode.kBrake);
 	}
 	
@@ -21,4 +31,5 @@ public class Intake extends SubsystemBase {
 	public void stop () {
 		intakeMotor.set(0);
 	}
+	
 }
