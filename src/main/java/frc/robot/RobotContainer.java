@@ -8,6 +8,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -80,9 +81,7 @@ public class RobotContainer {
 	private final ClimberCommand climberCommand;
 	private final CameraChooser cameraChooser;
 	
-	public static final ShuffleboardTab
-		controlBoard = Shuffleboard.getTab("Control Board"),
-		mainTab = Shuffleboard.getTab("SmartDashboard");
+	public static final ShuffleboardTab controlBoard = Shuffleboard.getTab("Control Board");
 	
 	private NetworkTableEntry climberOverrideMode;
 	
@@ -145,15 +144,18 @@ public class RobotContainer {
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// Control Board (ShuffleBoard)
-		controlBoard.add(new SetSwerveModulePositions(swerveDrive));
-		controlBoard.add(new ResetGyro(swerveDrive));
-		controlBoard.add("Swerve Drive", swerveDrive);
-		climberOverrideMode = controlBoard.add("Climber Override Mode", false).getEntry();
-		
-		controlBoard.add(gyro);
-		
-		// Main Tab (ShuffleBoard)
-		mainTab.add(gyro);
+		controlBoard.add(new SetSwerveModulePositions(swerveDrive))
+			.withPosition(0, 0).withSize(2, 1);
+		controlBoard.add(new ResetGyro(swerveDrive))
+			.withPosition(0, 1).withSize(2, 1);
+		climberOverrideMode = controlBoard.add("Climber Override Mode", false)
+			.withWidget(BuiltInWidgets.kField)
+			.withPosition(0, 2).withSize(2, 1)
+			.getEntry();
+		controlBoard.add("Swerve Drive", swerveDrive)
+			.withPosition(2, 0).withSize(2, 3);
+		controlBoard.add("Gyro", gyro)
+			.withPosition(4, 0).withSize(2, 3);
 	}
 	
 	public Command getAutonomousCommand () {
