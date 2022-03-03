@@ -35,38 +35,6 @@ import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
 	
-	private static final int
-		frontLeftDriveID = 1,
-		frontRightDriveID = 3,
-		rearLeftDriveID = 5,
-		rearRightDriveID = 7,
-		
-		frontLeftSteerID = 2,
-		frontRightSteerID = 4,
-		rearLeftSteerID = 6,
-		rearRightSteerID = 8,
-		
-		frontLeftSteerEncoderID = 9,
-		frontRightSteerEncoderID = 10,
-		rearLeftSteerEncoderID = 11,
-		rearRightSteerEncoderID = 12;
-	
-	private static final int
-		intakeID = 13,
-		
-		cargoHandlerID = 14,
-		
-		shooterID = 15,
-		
-		rotatorID = 16,
-		extenderID = 17,
-		
-		leftRotationLimitSwitchID = 1,
-		rightRotationLimitSwitchID = 0,
-		
-		leftExtensionLimitSwitchID = 3,
-		rightExtensionLimitSwitchID = 2;
-	
 	private final XboxController driveController, centralController;
 	
 	private final Swerve swerveDrive;
@@ -101,10 +69,22 @@ public class RobotContainer {
 		AHRS gyro = new AHRS();
 		swerveDrive = new Swerve(
 			gyro,
-			new SwerveModule("Front Left Module", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID),
-			new SwerveModule("Front Right Module", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID),
-			new SwerveModule("Rear Left Module", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID),
-			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID));
+			new SwerveModule("Front Left Module",
+				IDMap.CAN.FRONT_LEFT_STEER.ID,
+				IDMap.CAN.FRONT_LEFT_DRIVE.ID,
+				IDMap.CAN.FRONT_LEFT_STEER_ENCODER.ID),
+			new SwerveModule("Front Right Module",
+				IDMap.CAN.FRONT_RIGHT_STEER.ID,
+				IDMap.CAN.FRONT_RIGHT_DRIVE.ID,
+				IDMap.CAN.FRONT_RIGHT_STEER_ENCODER.ID),
+			new SwerveModule("Rear Left Module",
+				IDMap.CAN.REAR_LEFT_STEER.ID,
+				IDMap.CAN.REAR_LEFT_DRIVE.ID,
+				IDMap.CAN.REAR_LEFT_STEER_ENCODER.ID),
+			new SwerveModule("Rear Right Module",
+				IDMap.CAN.REAR_RIGHT_STEER.ID,
+				IDMap.CAN.REAR_RIGHT_DRIVE.ID,
+				IDMap.CAN.REAR_RIGHT_STEER_ENCODER.ID));
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
 			() -> driveController.getLeftX(),											// Strafe X
@@ -117,12 +97,12 @@ public class RobotContainer {
 		
 		// Climber Command
 		climber = new Climber(
-			extenderID,
-			rotatorID,
-			leftRotationLimitSwitchID,
-			rightRotationLimitSwitchID,
-			leftExtensionLimitSwitchID,
-			rightExtensionLimitSwitchID);
+			IDMap.CAN.CLIMBER_EXTENDER.ID,
+			IDMap.CAN.CLIMBER_ROTATOR.ID,
+			IDMap.DIO.LEFT_ROTATION_LIMIT_SWITCH.ID,
+			IDMap.DIO.RIGHT_ROTATION_LIMIT_SWITCH.ID,
+			IDMap.DIO.LEFT_EXTENSION_LIMIT_SWITCH.ID,
+			IDMap.DIO.RIGHT_EXTENSION_LIMIT_SWITCH.ID);
 		climberCommand = new ClimberCommand(
 			climber,
 			() -> -centralController.getRightY(),					// Extension
@@ -131,9 +111,9 @@ public class RobotContainer {
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
-		cargoHandler = new CargoHandler(cargoHandlerID);
-		intake = new Intake(intakeID);
-		shooter = new Shooter(shooterID);
+		cargoHandler = new CargoHandler(IDMap.CAN.CARGO_HANDLER.ID);
+		intake = new Intake(IDMap.CAN.INTAKE.ID);
+		shooter = new Shooter(IDMap.CAN.SHOOTER.ID);
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
 			() -> centralController.getAButton(),					// CargoHandler
