@@ -3,9 +3,9 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+
 import frc.robot.IDMap;
 import frc.team1711.swerve.subsystems.AutoSwerveDrive;
-import frc.team1711.swerve.util.Angles;
 
 public class Swerve extends AutoSwerveDrive {
 	
@@ -63,17 +63,6 @@ public class Swerve extends AutoSwerveDrive {
 		frWheel.configDirectionEncoder();
 		rlWheel.configDirectionEncoder();
 		rrWheel.configDirectionEncoder();
-	}
-	
-	@Override
-	public double getGyroAngle () {
-		return Angles.wrapDegrees(gyro.getAngle());
-	}
-	
-	@Override
-	public void resetGyro () {
-		gyro.calibrate();
-		gyro.reset();
 	}
 	
 	public Gyro getGyro () {
