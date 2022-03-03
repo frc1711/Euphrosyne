@@ -6,8 +6,10 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -78,6 +80,12 @@ public class RobotContainer {
 	private final ClimberCommand climberCommand;
 	private final CameraChooser cameraChooser;
 	
+	public static final ShuffleboardTab
+		controlBoard = Shuffleboard.getTab("Control Board"),
+		mainTab = Shuffleboard.getTab("SmartDashboard");
+	
+	private NetworkTableEntry climberOverrideMode;
+	
 	public RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
@@ -118,9 +126,9 @@ public class RobotContainer {
 			rightExtensionLimitSwitchID);
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> -centralController.getRightY(),	// Extension
-			() -> centralController.getLeftY(),		// Rotation
-			() -> SmartDashboard.getBoolean("Climber Override Mode", false));
+			() -> -centralController.getRightY(),					// Extension
+			() -> centralController.getLeftY(),						// Rotation
+			() -> climberOverrideMode.getBoolean(false));			// Climber override limits
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
@@ -136,13 +144,16 @@ public class RobotContainer {
 			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
-		// SmartDashboard
-		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
-		SmartDashboard.putData(new ResetGyro(swerveDrive));
-		SmartDashboard.putData("Swerve Drive", swerveDrive);
-		SmartDashboard.putData(gyro);
+		// Control Board (ShuffleBoard)
+		controlBoard.add(new SetSwerveModulePositions(swerveDrive));
+		controlBoard.add(new ResetGyro(swerveDrive));
+		controlBoard.add("Swerve Drive", swerveDrive);
+		climberOverrideMode = controlBoard.add("Climber Override Mode", false).getEntry();
 		
-		SmartDashboard.putBoolean("Climber Override Mode", false);
+		controlBoard.add(gyro);
+		
+		// Main Tab (ShuffleBoard)
+		mainTab.add(gyro);
 	}
 	
 	public Command getAutonomousCommand () {

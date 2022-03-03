@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CameraSystem extends SubsystemBase {
@@ -17,7 +17,7 @@ public class CameraSystem extends SubsystemBase {
 		setCamera(CameraOption.values()[0]);
 	}
 	
-	private MjpegServer server;
+	private VideoSink server;
 	private UsbCamera currentCamera;
 	
 	public static enum CameraOption {

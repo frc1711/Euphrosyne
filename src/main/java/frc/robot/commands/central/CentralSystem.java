@@ -12,7 +12,6 @@ package frc.robot.commands.central;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.CargoHandler;
@@ -26,7 +25,7 @@ public class CentralSystem extends CommandBase {
 	
 	private static final double cargoHandlerSpeed = -0.5;
 	
-	private double
+	private final double
 		maxIntakeSpeed = -0.7,
 		maxShooterSpeed = -0.7;
 	
@@ -64,9 +63,6 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.stop();
 		intake.stop();
 		shooter.stop();
-		
-		SmartDashboard.putNumber("Max Intake Speed", maxIntakeSpeed);
-		SmartDashboard.putNumber("Max Shooter Speed", maxShooterSpeed);
 	}
 	
 	@Override
@@ -76,16 +72,12 @@ public class CentralSystem extends CommandBase {
 			CommandScheduler.getInstance().schedule(new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
 		
 		int r = (reverseButton.getAsBoolean() ? -1 : 1); //r is a numerical value of true or false for reversebutton
-
+		
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed * r : 0);
-
-		maxIntakeSpeed = SmartDashboard.getNumber("Max Intake Speed", 0);
-		maxShooterSpeed = SmartDashboard.getNumber("Max Shooter Speed", 0);
+		
 		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * maxIntakeSpeed;
 		double shooterSpeed = r * centralSystemInputHandler.apply(runShooter.getAsDouble()) * maxShooterSpeed;
 		
-		SmartDashboard.putNumber("Current Intake Speed", intakeSpeed);
-		SmartDashboard.putNumber("Current Shooter Speed", shooterSpeed);
 		intake.setSpeed(intakeSpeed);
 		shooter.setSpeed(shooterSpeed);
 	}

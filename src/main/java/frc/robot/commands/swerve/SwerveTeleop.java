@@ -50,7 +50,6 @@ public class SwerveTeleop extends CommandBase {
 		this.slowMode = slowMode;
 		this.resetGyro = resetGyro;
 		
-		// SmartDashboard commands
 		addRequirements(swerveDrive);
 	}
 	
