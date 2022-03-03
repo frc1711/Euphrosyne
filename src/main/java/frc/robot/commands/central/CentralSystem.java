@@ -1,12 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-// Sequence for the shooter (reverse ball handler, start shooter, then user can hit ball handling), shooter controlled by toggle
-// Ball handling, intake, shooter reverse mode
-// Slow mode, turbo mode
-// Cameras, switchable
-
 package frc.robot.commands.central;
 
 import java.util.function.BooleanSupplier;
