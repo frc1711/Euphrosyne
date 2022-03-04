@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.commands.CameraChooser;
-import frc.robot.commands.auton.AutoShootAndDriveBack;
+import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
@@ -115,12 +115,13 @@ public class RobotContainer {
 			.withPosition(2, 0).withSize(2, 3);
 		controlBoard.add("Gyro", swerveDrive.getGyro())
 			.withPosition(4, 0).withSize(2, 3);
+		// TODO: controlBoard.addCamera()
 	}
 	
 	private Command[] getAutonCommands () {
 		return new Command[] {
 			new AutoTaxi(swerveDrive),
-			new AutoShootAndDriveBack(swerveDrive, shooter, cargoHandler),
+			new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
 		};
 	}
 	
