@@ -58,7 +58,7 @@ public class RobotContainer {
 		cameraSystem = CameraSystem.getInstance();
 		cameraChooser = new CameraChooser(
 			CameraSystem.getInstance(),
-			() -> driveController.getAButtonPressed(),
+			() -> driveController.getAButtonPressed() || centralController.getYButtonPressed(),		// Next camera button
 			() -> false);
 		cameraSystem.setDefaultCommand(cameraChooser);
 		
