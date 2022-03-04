@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.CameraChooser;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
@@ -103,6 +104,7 @@ public class RobotContainer {
 			autonSelector.addOption(command != null ? command.getName() : "No Auton", command);
 		autonSelector.setDefaultOption("No Auton", null);
 		SmartDashboard.putData("Auton Selector", autonSelector);
+		SmartDashboard.putNumber("Auton Wait Period", 0);
 		
 		// Control Board (Shuffleboard)
 		controlBoard.add(new SetSwerveModulePositions(swerveDrive))
@@ -128,7 +130,9 @@ public class RobotContainer {
 	}
 	
 	public Command getAutonomousCommand () {
-		return autonSelector.getSelected();
+		return new SequentialCommandGroup(
+			new WaitCommand(SmartDashboard.getNumber("Auton Wait Period", 0)),
+			autonSelector.getSelected());
 	}
 	
 	public void onFirstRobotEnable () {
