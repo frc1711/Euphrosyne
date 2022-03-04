@@ -119,8 +119,8 @@ public class RobotContainer {
 	
 	private Command[] getAutonCommands () {
 		return new Command[] {
-			new AutoShootAndDriveBack(swerveDrive, shooter, cargoHandler),
 			new AutoTaxi(swerveDrive),
+			new AutoShootAndDriveBack(swerveDrive, shooter, cargoHandler),
 		};
 	}
 	

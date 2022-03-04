@@ -22,7 +22,7 @@ public class Climber extends SubsystemBase {
 	// The maximum offsets from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
 	private static final double rotationEncoderMaxOffset = -39;
-	private static final double extensionEncoderMaxOffset = 149.2;
+	private static final double extensionEncoderMaxOffset = 147;
 	
 	// Positive extension is extending upwards, negative is retracting downwards
 	// Positive rotation is pulling into limit switch, negative is pushing away

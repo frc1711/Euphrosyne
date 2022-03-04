@@ -30,21 +30,6 @@
               "imageHeight": -1
             }
           },
-          "0,0": {
-            "size": [
-              2,
-              3
-            ],
-            "content": {
-              "_type": "Gyro",
-              "_source0": "network_table:///Shuffleboard/SmartDashboard/navX-Sensor[4]",
-              "_title": "/Shuffleboard/SmartDashboard/navX-Sensor[4]",
-              "Visuals/Major tick spacing": 45.0,
-              "Visuals/Starting angle": 180.0,
-              "Visuals/Show tick mark ring": true,
-              "Visuals/Counter clockwise": false
-            }
-          },
           "0,3": {
             "size": [
               2,
@@ -55,15 +40,30 @@
               "_source0": "network_table:///SmartDashboard/Auton Selector",
               "_title": "Auton Selector"
             }
+          },
+          "0,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///Shuffleboard/Control Board/Gyro",
+              "_title": "Shuffleboard/Control Board/Gyro",
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 0.0,
-    "width": 1536.0,
-    "height": 864.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 878.4000244140625
   }
 }
