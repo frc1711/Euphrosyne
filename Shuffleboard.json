@@ -1,0 +1,69 @@
+{
+  "tabPane": [
+    {
+      "title": "SmartDashboard",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "SmartDashboard/",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 1,
+        "tiles": {
+          "2,0": {
+            "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://Camera",
+              "_title": "Camera",
+              "Crosshair/Show crosshair": false,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "0,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auton Selector",
+              "_title": "Auton Selector"
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///Shuffleboard/Control Board/Gyro",
+              "_title": "Shuffleboard/Control Board/Gyro",
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 878.4000244140625
+  }
+}

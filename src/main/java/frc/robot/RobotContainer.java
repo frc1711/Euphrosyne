@@ -1,19 +1,18 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.commands.central.AutoShooterSequence;
 import frc.robot.commands.CameraChooser;
+import frc.robot.commands.auton.AutoShootAndDriveBack;
+import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -26,43 +25,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.SwerveModule;
-import frc.team1711.swerve.commands.AutonDrive;
-import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
-	
-	private static final int
-		frontLeftDriveID = 1,
-		frontRightDriveID = 3,
-		rearLeftDriveID = 5,
-		rearRightDriveID = 7,
-		
-		frontLeftSteerID = 2,
-		frontRightSteerID = 4,
-		rearLeftSteerID = 6,
-		rearRightSteerID = 8,
-		
-		frontLeftSteerEncoderID = 9,
-		frontRightSteerEncoderID = 10,
-		rearLeftSteerEncoderID = 11,
-		rearRightSteerEncoderID = 12;
-	
-	private static final int
-		intakeID = 13,
-		
-		cargoHandlerID = 14,
-		
-		shooterID = 15,
-		
-		rotatorID = 16,
-		extenderID = 17,
-		
-		leftRotationLimitSwitchID = 1,
-		rightRotationLimitSwitchID = 0,
-		
-		leftExtensionLimitSwitchID = 3,
-		rightExtensionLimitSwitchID = 2;
 	
 	private final XboxController driveController, centralController;
 	
@@ -78,26 +42,26 @@ public class RobotContainer {
 	private final ClimberCommand climberCommand;
 	private final CameraChooser cameraChooser;
 	
+	public static final ShuffleboardTab controlBoard = Shuffleboard.getTab("Control Board");
+	
+	private NetworkTableEntry climberOverrideMode;
+	
+	private SendableChooser<Command> autonSelector;
+	
 	public RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
 		
 		// Camera System
-		cameraSystem = new CameraSystem();
+		cameraSystem = CameraSystem.getInstance();
 		cameraChooser = new CameraChooser(
-			cameraSystem,
+			CameraSystem.getInstance(),
 			() -> driveController.getAButtonPressed(),
 			() -> false);
 		cameraSystem.setDefaultCommand(cameraChooser);
 		
 		// Swerve Teleop
-		AHRS gyro = new AHRS();
-		swerveDrive = new Swerve(
-			gyro,
-			new SwerveModule("Front Left Module", frontLeftSteerID, frontLeftDriveID, frontLeftSteerEncoderID),
-			new SwerveModule("Front Right Module", frontRightSteerID, frontRightDriveID, frontRightSteerEncoderID),
-			new SwerveModule("Rear Left Module", rearLeftSteerID, rearLeftDriveID, rearLeftSteerEncoderID),
-			new SwerveModule("Rear Right Module", rearRightSteerID, rearRightDriveID, rearRightSteerEncoderID));
+		swerveDrive = Swerve.getInstance();
 		swerveTeleop = new SwerveTeleop(
 			swerveDrive,
 			() -> driveController.getLeftX(),											// Strafe X
@@ -109,24 +73,18 @@ public class RobotContainer {
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		
 		// Climber Command
-		climber = new Climber(
-			extenderID,
-			rotatorID,
-			leftRotationLimitSwitchID,
-			rightRotationLimitSwitchID,
-			leftExtensionLimitSwitchID,
-			rightExtensionLimitSwitchID);
+		climber = Climber.getInstance();
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> -centralController.getRightY(),	// Extension
-			() -> centralController.getLeftY(),		// Rotation
-			() -> SmartDashboard.getBoolean("Climber Override Mode", false));
+			() -> -centralController.getRightY(),					// Extension
+			() -> centralController.getLeftY(),						// Rotation
+			() -> climberOverrideMode.getBoolean(false));			// Climber override limits
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System
-		cargoHandler = new CargoHandler(cargoHandlerID);
-		intake = new Intake(intakeID);
-		shooter = new Shooter(shooterID);
+		cargoHandler = CargoHandler.getInstance();
+		intake = Intake.getInstance();
+		shooter = Shooter.getInstance();
 		centralSystem = new CentralSystem(
 			cargoHandler, intake, shooter,
 			() -> centralController.getAButton(),					// CargoHandler
@@ -136,19 +94,38 @@ public class RobotContainer {
 			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
-		// SmartDashboard
-		SmartDashboard.putData(new SetSwerveModulePositions(swerveDrive));
-		SmartDashboard.putData(new ResetGyro(swerveDrive));
-		SmartDashboard.putData("Swerve Drive", swerveDrive);
-		SmartDashboard.putData(gyro);
+		// Auton selector
+		autonSelector = new SendableChooser<Command>();
+		Command[] autonCommands = getAutonCommands();
+		for (Command command : autonCommands)
+			autonSelector.addOption(command != null ? command.getName() : "No Auton", command);
+		autonSelector.setDefaultOption("No Auton", null);
+		SmartDashboard.putData("Auton Selector", autonSelector);
 		
-		SmartDashboard.putBoolean("Climber Override Mode", false);
+		// Control Board (Shuffleboard)
+		controlBoard.add(new SetSwerveModulePositions(swerveDrive))
+			.withPosition(0, 0).withSize(2, 1);
+		controlBoard.add(new ResetGyro(swerveDrive))
+			.withPosition(0, 1).withSize(2, 1);
+		climberOverrideMode = controlBoard.add("Climber Override Mode", false)
+			.withWidget(BuiltInWidgets.kToggleSwitch)
+			.withPosition(0, 2).withSize(2, 1)
+			.getEntry();
+		controlBoard.add("Swerve Drive", swerveDrive)
+			.withPosition(2, 0).withSize(2, 3);
+		controlBoard.add("Gyro", swerveDrive.getGyro())
+			.withPosition(4, 0).withSize(2, 3);
+	}
+	
+	private Command[] getAutonCommands () {
+		return new Command[] {
+			new AutoTaxi(swerveDrive),
+			new AutoShootAndDriveBack(swerveDrive, shooter, cargoHandler),
+		};
 	}
 	
 	public Command getAutonomousCommand () {
-		return new SequentialCommandGroup(
-			new AutoShooterSequence(shooter, cargoHandler, 1.5),
-			new AutonDrive(swerveDrive, 0, 200, 0.1, 5, 0.01, FrameOfReference.ROBOT));
+		return autonSelector.getSelected();
 	}
 	
 	public void onFirstRobotEnable () {

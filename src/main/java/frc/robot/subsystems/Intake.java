@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -10,11 +6,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.IDMap;
+
 public class Intake extends SubsystemBase {
+	
+	private static Intake intakeInstance;
+	
+	public static Intake getInstance () {
+		if (intakeInstance == null) intakeInstance = new Intake();
+		return intakeInstance;
+	}
+	
 	private final CANSparkMax intakeMotor;
 	
-	public Intake (int intakeID) {
-		intakeMotor = new CANSparkMax(intakeID, MotorType.kBrushless);
+	private Intake () {
+		intakeMotor = new CANSparkMax(IDMap.CAN.INTAKE.ID, MotorType.kBrushless);
 		intakeMotor.setIdleMode(IdleMode.kBrake);
 	}
 	
@@ -25,4 +31,5 @@ public class Intake extends SubsystemBase {
 	public void stop () {
 		intakeMotor.set(0);
 	}
+	
 }
