@@ -11,7 +11,7 @@
         "vgap": 16.0,
         "titleType": 1,
         "tiles": {
-          "0,3": {
+          "8,0": {
             "size": [
               2,
               1
@@ -54,6 +54,21 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/Auton Wait Period",
+              "_title": "Auton Wait Period",
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 10.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
             }
           }
         }
