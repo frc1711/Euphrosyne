@@ -78,10 +78,7 @@ public class ClimberCommand extends CommandBase {
 				}
 				
 				// Prevent rotating towards upright, making height exceed limit
-				if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) { // Pushing away from limit switch
-					rotationSpeed = 0;
-					pushingClimberLimit = true;
-				}
+				// [Purposely nothing stopping from overextending while pushing away from limit switch--it gets trapped in a corner]
 				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) { // Pulling toward limit switch
 					rotationSpeed = 0;
 					pushingClimberLimit = true;
