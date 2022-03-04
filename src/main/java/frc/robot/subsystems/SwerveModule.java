@@ -7,11 +7,12 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 
-import frc.team1711.swerve.subsystems.SwerveWheel;
+import frc.team1711.swerve.subsystems.AutoSwerveWheel;
 import frc.team1711.swerve.util.Angles;
 
 import java.io.BufferedReader;
@@ -19,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 
-public class SwerveModule extends SwerveWheel {
+public class SwerveModule extends AutoSwerveWheel {
 		
 	private static final double
 		steerPIDkp = 2.2,
@@ -27,11 +28,15 @@ public class SwerveModule extends SwerveWheel {
 		steerPIDkd = 0;
 	
 	private final String name;
-	private final int steerEncoderID;
-	private final CANCoder steerEncoder;
+	
+	private double drivePositionOffset;
 	private final PIDController steerPID;
 	private double directionAbsoluteOffset;
 	private final CANSparkMax driveController, steerController;
+	
+	private final int steerEncoderID;
+	private final CANCoder steerEncoder;
+	private final RelativeEncoder driveEncoder;
 	
 	public SwerveModule (String name, int steerControllerID, int driveControllerID, int steerEncoderID) {
 		this.name = name;
@@ -42,12 +47,13 @@ public class SwerveModule extends SwerveWheel {
 		driveController.setIdleMode(IdleMode.kBrake);
 		steerController.setIdleMode(IdleMode.kBrake);
 		
-		steerEncoder = new CANCoder(steerEncoderID);
 		this.steerEncoderID = steerEncoderID;
-		
+		steerEncoder = new CANCoder(steerEncoderID);
 		directionAbsoluteOffset = getDirectionAbsoluteOffset();
-		
 		steerPID = new PIDController(steerPIDkp, steerPIDki, steerPIDkd);
+		
+		driveEncoder = driveController.getEncoder();
+		drivePositionOffset = 0;
 	}
 	
 	// Direction methods
@@ -145,6 +151,16 @@ public class SwerveModule extends SwerveWheel {
 	@Override
 	protected void setDriveSpeed (double speed) {
 		driveController.set(speed);
+	}
+	
+	@Override
+	protected double getPositionDifference () {
+		return driveEncoder.getPosition() - drivePositionOffset;
+	}
+	
+	@Override
+	protected void resetDriveEncoder () {
+		drivePositionOffset = driveEncoder.getPosition();
 	}
 	
 }

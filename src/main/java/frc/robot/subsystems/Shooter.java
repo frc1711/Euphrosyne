@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -10,11 +6,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.IDMap;
+
 public class Shooter extends SubsystemBase {
+	
+	private static Shooter shooterInstance;
+	
+	public static Shooter getInstance () {
+		if (shooterInstance == null) shooterInstance = new Shooter();
+		return shooterInstance;
+	}
+	
 	private final CANSparkMax shooter;
 	
-	public Shooter (int shooterID) {
-		shooter = new CANSparkMax(shooterID, MotorType.kBrushless);
+	public Shooter () {
+		shooter = new CANSparkMax(IDMap.CAN.SHOOTER.ID, MotorType.kBrushless);
 		shooter.setIdleMode(IdleMode.kCoast);
 	}
 	
@@ -25,4 +31,5 @@ public class Shooter extends SubsystemBase {
 	public void stop () {
 		shooter.set(0);
 	}
+	
 }

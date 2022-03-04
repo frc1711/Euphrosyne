@@ -2,10 +2,34 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import frc.team1711.swerve.subsystems.GyroSwerveDrive;
-import frc.team1711.swerve.util.Angles;
+import frc.robot.IDMap;
+import frc.team1711.swerve.subsystems.AutoSwerveDrive;
 
-public class Swerve extends GyroSwerveDrive {
+public class Swerve extends AutoSwerveDrive {
+	
+	private static Swerve swerveInstance;
+	
+	public static Swerve getInstance () {
+		if (swerveInstance == null) swerveInstance = new Swerve(
+			new AHRS(),
+			new SwerveModule("Front Left Module",
+				IDMap.CAN.FRONT_LEFT_STEER.ID,
+				IDMap.CAN.FRONT_LEFT_DRIVE.ID,
+				IDMap.CAN.FRONT_LEFT_STEER_ENCODER.ID),
+			new SwerveModule("Front Right Module",
+				IDMap.CAN.FRONT_RIGHT_STEER.ID,
+				IDMap.CAN.FRONT_RIGHT_DRIVE.ID,
+				IDMap.CAN.FRONT_RIGHT_STEER_ENCODER.ID),
+			new SwerveModule("Rear Left Module",
+				IDMap.CAN.REAR_LEFT_STEER.ID,
+				IDMap.CAN.REAR_LEFT_DRIVE.ID,
+				IDMap.CAN.REAR_LEFT_STEER_ENCODER.ID),
+			new SwerveModule("Rear Right Module",
+				IDMap.CAN.REAR_RIGHT_STEER.ID,
+				IDMap.CAN.REAR_RIGHT_DRIVE.ID,
+				IDMap.CAN.REAR_RIGHT_STEER_ENCODER.ID));
+		return swerveInstance;
+	}
 	
 	private static final double trackToWheelbaseRatio = 1/1;
 	
@@ -17,7 +41,7 @@ public class Swerve extends GyroSwerveDrive {
 		rlWheel,
 		rrWheel;
 	
-	public Swerve (
+	private Swerve (
 			AHRS gyro,
 			SwerveModule flWheel,
 			SwerveModule frWheel,
@@ -39,15 +63,8 @@ public class Swerve extends GyroSwerveDrive {
 		rrWheel.configDirectionEncoder();
 	}
 	
-	@Override
-	public double getGyroAngle () {
-		return Angles.wrapDegrees(gyro.getAngle());
-	}
-	
-	@Override
-	public void resetGyro () {
-		gyro.calibrate();
-		gyro.reset();
+	public AHRS getGyro () {
+		return gyro;
 	}
 	
 }

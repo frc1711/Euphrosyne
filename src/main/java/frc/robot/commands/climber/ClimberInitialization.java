@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -15,8 +11,8 @@ import frc.robot.subsystems.Climber;
  * <br><br>Does essentially the same for the extension of the climber.
  */
 public class ClimberInitialization extends CommandBase {
-	private static final double rotationSpeed = 0.12; // Must be positive, so climber is rotated toward limit switch
-	private static final double extensionSpeed = -0.15; // Must be negative, so climber is retracted toward limit switch
+	private static final double rotationSpeed = 0.24; // Must be positive, so climber is rotated toward limit switch
+	private static final double extensionSpeed = -0.3; // Must be negative, so climber is retracted toward limit switch
 	
 	private final Climber climber;
 	private boolean trippedRotationLimitSwitch = false, trippedExtensionLimitSwitch = false;

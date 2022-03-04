@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
@@ -10,15 +6,22 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.climber.ClimberCommand;
+import frc.robot.IDMap;
 import frc.robot.util.LinearInterpolator;
 
 public class Climber extends SubsystemBase {
 	
+	private static Climber climberInstance;
+	
+	public static Climber getInstance () {
+		if (climberInstance == null) climberInstance = new Climber();
+		return climberInstance;
+	}
+	
 	// The maximum offsets from the fully-wrapped spindle encoder position
 	// so that it doesn't wrap in the wrong direction
 	private static final double rotationEncoderMaxOffset = -39;
-	private static final double extensionEncoderMaxOffset = 149.2;
+	private static final double extensionEncoderMaxOffset = 147;
 	
 	// Positive extension is extending upwards, negative is retracting downwards
 	// Positive rotation is pulling into limit switch, negative is pushing away
@@ -30,19 +33,13 @@ public class Climber extends SubsystemBase {
 		leftExtensionLimitSwitch,
 		rightExtensionLimitSwitch;
 	
-	public Climber (
-			int extenderID,
-			int rotatorID,
-			int leftRotationLimitSwitchID,
-			int rightRotationLimitSwitchID,
-			int leftExtensionLimitSwitchID,
-			int rightExtensionLimitSwitchID) {
-		extender = new CANSparkMax(extenderID, MotorType.kBrushless);
-		rotator = new CANSparkMax(rotatorID, MotorType.kBrushless);
-		leftRotationLimitSwitch = new DigitalInput(leftRotationLimitSwitchID);
-		rightRotationLimitSwitch = new DigitalInput(rightRotationLimitSwitchID);
-		leftExtensionLimitSwitch = new DigitalInput(leftExtensionLimitSwitchID);
-		rightExtensionLimitSwitch = new DigitalInput(rightExtensionLimitSwitchID);
+	private Climber () {
+		extender = new CANSparkMax(IDMap.CAN.CLIMBER_EXTENDER.ID, MotorType.kBrushless);
+		rotator = new CANSparkMax(IDMap.CAN.CLIMBER_ROTATOR.ID, MotorType.kBrushless);
+		leftRotationLimitSwitch = new DigitalInput(IDMap.DIO.LEFT_ROTATION_LIMIT_SWITCH.ID);
+		rightRotationLimitSwitch = new DigitalInput(IDMap.DIO.RIGHT_ROTATION_LIMIT_SWITCH.ID);
+		leftExtensionLimitSwitch = new DigitalInput(IDMap.DIO.LEFT_EXTENSION_LIMIT_SWITCH.ID);
+		rightExtensionLimitSwitch = new DigitalInput(IDMap.DIO.RIGHT_EXTENSION_LIMIT_SWITCH.ID);
 		rotationEncoder = rotator.getEncoder();
 		extensionEncoder = extender.getEncoder();
 	}
@@ -162,4 +159,5 @@ public class Climber extends SubsystemBase {
 		extender.set(0);
 		rotator.set(0);
 	}
+	
 }
