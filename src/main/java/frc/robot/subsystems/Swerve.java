@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-
 import frc.robot.IDMap;
 import frc.team1711.swerve.subsystems.AutoSwerveDrive;
 
@@ -65,7 +63,7 @@ public class Swerve extends AutoSwerveDrive {
 		rrWheel.configDirectionEncoder();
 	}
 	
-	public Gyro getGyro () {
+	public AHRS getGyro () {
 		return gyro;
 	}
 	

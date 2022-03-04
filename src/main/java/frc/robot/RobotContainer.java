@@ -5,12 +5,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.commands.central.AutoShooterSequence;
 import frc.robot.commands.CameraChooser;
+import frc.robot.commands.auton.AutoShootAndDriveBack;
+import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -23,8 +25,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
-import frc.team1711.swerve.commands.AutonDrive;
-import frc.team1711.swerve.commands.FrameOfReference;
 
 public class RobotContainer {
 	
@@ -45,6 +45,8 @@ public class RobotContainer {
 	public static final ShuffleboardTab controlBoard = Shuffleboard.getTab("Control Board");
 	
 	private NetworkTableEntry climberOverrideMode;
+	
+	private SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
 		driveController = new XboxController(0);
@@ -92,13 +94,21 @@ public class RobotContainer {
 			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
+		// Auton selector
+		autonSelector = new SendableChooser<Command>();
+		Command[] autonCommands = getAutonCommands();
+		for (Command command : autonCommands)
+			autonSelector.addOption(command != null ? command.getName() : "No Auton", command);
+		autonSelector.setDefaultOption("No Auton", null);
+		SmartDashboard.putData("Auton Selector", autonSelector);
+		
 		// Control Board (Shuffleboard)
 		controlBoard.add(new SetSwerveModulePositions(swerveDrive))
 			.withPosition(0, 0).withSize(2, 1);
 		controlBoard.add(new ResetGyro(swerveDrive))
 			.withPosition(0, 1).withSize(2, 1);
 		climberOverrideMode = controlBoard.add("Climber Override Mode", false)
-			.withWidget(BuiltInWidgets.kField)
+			.withWidget(BuiltInWidgets.kToggleSwitch)
 			.withPosition(0, 2).withSize(2, 1)
 			.getEntry();
 		controlBoard.add("Swerve Drive", swerveDrive)
@@ -107,10 +117,15 @@ public class RobotContainer {
 			.withPosition(4, 0).withSize(2, 3);
 	}
 	
+	private Command[] getAutonCommands () {
+		return new Command[] {
+			new AutoShootAndDriveBack(swerveDrive, shooter, cargoHandler),
+			new AutoTaxi(swerveDrive),
+		};
+	}
+	
 	public Command getAutonomousCommand () {
-		return new SequentialCommandGroup(
-			new AutoShooterSequence(shooter, cargoHandler, 1.5),
-			new AutonDrive(swerveDrive, 0, 200, 0.1, 5, 0.01, FrameOfReference.ROBOT));
+		return autonSelector.getSelected();
 	}
 	
 	public void onFirstRobotEnable () {
