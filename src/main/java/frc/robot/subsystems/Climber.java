@@ -56,7 +56,8 @@ public class Climber extends SubsystemBase {
 		} else if (speed < 0) {
 			extender.set(checkCanExtendNegative() ? speed : 0);
 			return !checkCanExtendNegative();
-		} return false;
+		} extender.set(0);
+		return false;
 	}
 	
 	public void setExtensionSpeedOverride (double speed) {
@@ -86,7 +87,8 @@ public class Climber extends SubsystemBase {
 		} else if (speed < 0) {
 			rotator.set(checkCanRotateNegative() ? speed : 0);
 			return !checkCanRotateNegative();
-		} return false;
+		} rotator.set(0);
+		return false;
 	}
 	
 	public void setRotationSpeedOverride (double speed) {
