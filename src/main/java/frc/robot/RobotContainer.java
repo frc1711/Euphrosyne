@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -76,9 +77,10 @@ public class RobotContainer {
 		climber = Climber.getInstance();
 		climberCommand = new ClimberCommand(
 			climber,
-			() -> -centralController.getRightY(),					// Extension
-			() -> centralController.getLeftY(),						// Rotation
-			() -> climberOverrideMode.getBoolean(false));			// Climber override limits
+			() -> -centralController.getRightY(),										// Extension
+			() -> centralController.getLeftY(),											// Rotation
+			() -> climberOverrideMode.getBoolean(false),								// Climber override limits
+			(x) -> centralController.setRumble(RumbleType.kLeftRumble, x ? 0.7 : 0));	// Rumble for hitting climber limit
 		climber.setDefaultCommand(climberCommand);
 		
 		// Central System

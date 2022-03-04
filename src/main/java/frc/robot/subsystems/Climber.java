@@ -6,7 +6,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import frc.robot.IDMap;
 import frc.robot.util.LinearInterpolator;
 
@@ -47,10 +46,18 @@ public class Climber extends SubsystemBase {
 	
 	/**
 	 * Positive extension is extending upwards, negative is retracting downwards
+	 * @return {@code true} if the rotation speed was limited due to a limit,
+	 * {@code false} otherwise
 	 */
-	public void setExtensionSpeed (double speed) {
-		if (speed > 0)	extender.set(checkCanExtendPositive() ? speed : 0);
-		else			extender.set(checkCanExtendNegative() ? speed : 0);
+	public boolean setExtensionSpeed (double speed) {
+		if (speed > 0) {
+			extender.set(checkCanExtendPositive() ? speed : 0);
+			return !checkCanExtendPositive();
+		} else if (speed < 0) {
+			extender.set(checkCanExtendNegative() ? speed : 0);
+			return !checkCanExtendNegative();
+		} extender.set(0);
+		return false;
 	}
 	
 	public void setExtensionSpeedOverride (double speed) {
@@ -67,13 +74,21 @@ public class Climber extends SubsystemBase {
 		// Can only retract further down (negative extension speed) if the limit switch isn't tripped
 		return !getExtensionLimitSwitch();
 	}
-	
+
 	/**
 	 * Positive rotation is pulling into limit switch, negative is pushing away
+	 * @return {@code true} if the rotation speed was limited due to a limit,
+	 * {@code false} otherwise
 	 */
-	public void setRotationSpeed (double speed) {
-		if (speed > 0)	rotator.set(checkCanRotatePositive() ? speed : 0);
-		else			rotator.set(checkCanRotateNegative() ? speed : 0);
+	public boolean setRotationSpeed (double speed) {
+		if (speed > 0) {
+			rotator.set(checkCanRotatePositive() ? speed : 0);
+			return !checkCanRotatePositive();
+		} else if (speed < 0) {
+			rotator.set(checkCanRotateNegative() ? speed : 0);
+			return !checkCanRotateNegative();
+		} rotator.set(0);
+		return false;
 	}
 	
 	public void setRotationSpeedOverride (double speed) {

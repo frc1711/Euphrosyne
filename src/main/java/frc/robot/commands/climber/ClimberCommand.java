@@ -1,12 +1,14 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.util.function.BooleanConsumer;
 
 import frc.robot.subsystems.Climber;
 import frc.team1711.swerve.util.InputHandler;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
+
 
 public class ClimberCommand extends CommandBase {
 	
@@ -20,16 +22,19 @@ public class ClimberCommand extends CommandBase {
 	
 	private final DoubleSupplier extensionInput, rotationInput;
 	private final BooleanSupplier overrideMode;
+	private final BooleanConsumer climbLimitReached;
 	
 	public ClimberCommand (
 			Climber climber,
 			DoubleSupplier extensionInput,
 			DoubleSupplier rotationInput,
-			BooleanSupplier overrideMode) {
+			BooleanSupplier overrideMode,
+			BooleanConsumer climbLimitReached) {
 		this.climber = climber;
 		this.extensionInput = extensionInput;
 		this.rotationInput = rotationInput;
 		this.overrideMode = overrideMode;
+		this.climbLimitReached = climbLimitReached;
 		addRequirements(climber);
 	}
 	
@@ -50,6 +55,7 @@ public class ClimberCommand extends CommandBase {
 	@Override
 	public void execute () {
 		
+		
 		// Calculate extension and rotation speeds
 		double extensionSpeed = extensionMaxSpeed * climberInputHandler.apply(extensionInput.getAsDouble());
 		double rotationSpeed = rotationMaxSpeed * climberInputHandler.apply(rotationInput.getAsDouble());
@@ -59,20 +65,32 @@ public class ClimberCommand extends CommandBase {
 			climber.setExtensionSpeedOverride(extensionSpeed);
 			climber.setRotationSpeedOverride(rotationSpeed);
 		} else {
+			// Whether the user is actively trying to move in a direction that we are preventing them from moving in
+			boolean pushingClimberLimit = false;
+			
 			// Default mode (non-override)
 			// Restrictions on climber height
 			if (exceedesClimberHeight()) {
 				// Prevent extending past height limit
-				if (extensionSpeed > 0) extensionSpeed = 0;
+				if (extensionSpeed > 0) {
+					extensionSpeed = 0;
+					pushingClimberLimit = true;
+				}
 				
 				// Prevent rotating towards upright, making height exceed limit
-				if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) rotationSpeed = 0; // Pushing away from limit switch
-				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) rotationSpeed = 0; // Pulling toward limit switch
+				// [Purposely nothing stopping from overextending while pushing away from limit switch--it gets trapped in a corner]
+				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) { // Pulling toward limit switch
+					rotationSpeed = 0;
+					pushingClimberLimit = true;
+				}
 			}
 			
-			climber.setExtensionSpeed(extensionSpeed);
-			climber.setRotationSpeed(rotationSpeed);
+			if (climber.setExtensionSpeed(extensionSpeed) || climber.setRotationSpeed(rotationSpeed))
+				pushingClimberLimit = true;
+			
+			climbLimitReached.accept(pushingClimberLimit);
 		}
+		
 	}
 	
 	@Override
