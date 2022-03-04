@@ -10,7 +10,7 @@ import java.util.function.BooleanSupplier;
 
 public class AutoShooterSequence extends SequentialCommandGroup {
 	
-	private static final double cargoHandlerSpeed = -0.3;
+	private static final double cargoHandlerSpeed = -0.5;
 	private static final double shooterSpeed = -0.7;
 	
 	private final Shooter shooter;
@@ -40,12 +40,11 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 	
 	private AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, double shooterRunLength, BooleanSupplier stopCommand) {
 		super(
-			new AutoCargoHandler(cargoHandler, 1, cargoHandlerSpeed),							// Push cargo to top of pulley
-			new AutoCargoHandler(cargoHandler, 0.5, -cargoHandlerSpeed),						// Pull back to avoid hitting shooter
+			new AutoCargoHandler(cargoHandler, 0.24, -cargoHandlerSpeed),						// Pull back to avoid hitting shooter
 			new ParallelCommandGroup(
-				new AutoShooter(shooter, shooterRunLength + 0.5, shooterSpeed),					// Run shooter (will run until stopped)
+				new AutoShooter(shooter, shooterRunLength + 0.2, shooterSpeed),					// Run shooter (will run until stopped)
 				new SequentialCommandGroup(
-					new AutoCargoHandler(cargoHandler, 0.5, 0),									// Wait before running cargo handler
+					new AutoCargoHandler(cargoHandler, 0.2, 0),									// Wait before running cargo handler
 					new AutoCargoHandler(cargoHandler, shooterRunLength, cargoHandlerSpeed)		// Run cargo handler
 				)
 			)

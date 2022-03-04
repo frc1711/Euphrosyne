@@ -7,9 +7,9 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
-public class AutoShootAndDriveBack extends SequentialCommandGroup {
+public class AutoLowGoalTaxi extends SequentialCommandGroup {
 	
-	public AutoShootAndDriveBack (Swerve swerveDrive, Shooter shooter, CargoHandler cargoHandler) {
+	public AutoLowGoalTaxi (Swerve swerveDrive, Shooter shooter, CargoHandler cargoHandler) {
 		super(
 			new AutoShooterSequence(shooter, cargoHandler, 1.5),
 			new AutoTaxi(swerveDrive));
