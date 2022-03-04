@@ -65,22 +65,33 @@ public class ClimberCommand extends CommandBase {
 			climber.setExtensionSpeedOverride(extensionSpeed);
 			climber.setRotationSpeedOverride(rotationSpeed);
 		} else {
+			// Whether the user is actively trying to move in a direction that we are preventing them from moving in
+			boolean pushingClimberLimit = false;
+			
 			// Default mode (non-override)
 			// Restrictions on climber height
 			if (exceedesClimberHeight()) {
 				// Prevent extending past height limit
-				if (extensionSpeed > 0) extensionSpeed = 0;
+				if (extensionSpeed > 0) {
+					extensionSpeed = 0;
+					pushingClimberLimit = true;
+				}
 				
 				// Prevent rotating towards upright, making height exceed limit
-				if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) rotationSpeed = 0; // Pushing away from limit switch
-				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) rotationSpeed = 0; // Pulling toward limit switch
+				if (rotationSpeed < 0 && climber.getRotationDegrees() > 90) { // Pushing away from limit switch
+					rotationSpeed = 0;
+					pushingClimberLimit = true;
+				}
+				if (rotationSpeed > 0 && climber.getRotationDegrees() < 90) { // Pulling toward limit switch
+					rotationSpeed = 0;
+					pushingClimberLimit = true;
+				}
 			}
 			
-			final boolean limitReached =
-				climber.setExtensionSpeed(extensionSpeed) ||
-				climber.setRotationSpeed(rotationSpeed);
+			if (climber.setExtensionSpeed(extensionSpeed) || climber.setRotationSpeed(rotationSpeed))
+				pushingClimberLimit = true;
 			
-			climbLimitReached.accept(limitReached);
+			climbLimitReached.accept(pushingClimberLimit);
 		}
 		
 	}
