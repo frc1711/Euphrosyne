@@ -12,9 +12,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 import frc.robot.commands.CameraChooser;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
+import frc.robot.commands.auton.base.AutoDriveIntakeHandler;
+import frc.robot.commands.auton.base.AutoIntakeDriveCollect;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -126,10 +129,12 @@ public class RobotContainer {
 		return new Command[] {
 			new AutoTaxi(swerveDrive),
 			new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
+			new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, 5),
 		};
 	}
 	
 	public Command getAutonomousCommand () {
+		if (autonSelector.getSelected() == null) return null;
 		return new SequentialCommandGroup(
 			new WaitCommand(SmartDashboard.getNumber("Auton Wait Period", 0)),
 			autonSelector.getSelected());

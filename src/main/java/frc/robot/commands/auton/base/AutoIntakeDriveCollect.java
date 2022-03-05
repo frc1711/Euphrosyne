@@ -9,7 +9,7 @@ import frc.robot.subsystems.Swerve;
 
 /**
  * Drives in the direction of intake, running the intake and cargo handler, stopping once the cargo handler
- * senses there's a cargo ball.
+ * senses there's a cargo ball or once the maximum time is reached.
  */
 public class AutoIntakeDriveCollect extends ParallelCommandGroup {
 	
