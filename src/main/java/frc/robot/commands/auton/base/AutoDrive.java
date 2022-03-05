@@ -12,12 +12,12 @@ public class AutoDrive extends AutonDrive {
 	private final OnCommandEnd onCommandEnd;
 	private final Swerve swerveDrive;
 	
-	public AutoDrive (Swerve swerveDrive, double distance) {
-		this(swerveDrive, distance, x -> {});
+	public AutoDrive (Swerve swerveDrive, double distance, double speedMult) {
+		this(swerveDrive, distance, speedMult, x -> {});
 	}
 	
-	public AutoDrive (Swerve swerveDrive, double distance, OnCommandEnd onCommandEnd) {
-		super(swerveDrive, distance < 0 ? 180 : 0, Math.abs(distance), 0.1, 5, 0.01, FrameOfReference.ROBOT);
+	public AutoDrive (Swerve swerveDrive, double distance, double speedMult, OnCommandEnd onCommandEnd) {
+		super(swerveDrive, distance < 0 ? 180 : 0, Math.abs(distance), 0.1 * speedMult, 5, 0.01, FrameOfReference.ROBOT);
 		this.swerveDrive = swerveDrive;
 		this.onCommandEnd = onCommandEnd;
 	}

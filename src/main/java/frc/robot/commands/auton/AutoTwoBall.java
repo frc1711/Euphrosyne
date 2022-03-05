@@ -35,8 +35,14 @@ public class AutoTwoBall extends SequentialCommandGroup {
 	
 	@Override
 	public void end (boolean interrupted) {
-		driveIntakeCargoHandler = new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -distanceTraveled);
-		driveIntakeCargoHandler.andThen(shootSecondBall).schedule();
+		if (distanceTraveled != 0) {
+			driveIntakeCargoHandler = new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -distanceTraveled, 2);
+			driveIntakeCargoHandler.andThen(shootSecondBall).schedule();
+		} else {
+			cargoHandler.stop();
+			swerveDrive.stop();
+			intake.stop();
+		}
 	}
 	
 }

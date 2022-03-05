@@ -23,7 +23,7 @@ public class AutoIntakeDriveCollect extends ParallelCommandGroup {
 	private boolean gotCargo = false;
 	
 	public AutoIntakeDriveCollect (Swerve swerveDrive, CargoHandler cargoHandler, Intake intake, double maxTime, OnCommandEnd onCommandEnd) {
-		autoDrive = new AutoDrive(swerveDrive, Double.POSITIVE_INFINITY, onCommandEnd);
+		autoDrive = new AutoDrive(swerveDrive, Double.POSITIVE_INFINITY, 1, onCommandEnd);
 		autoIntake = new AutoIntake(intake, Double.POSITIVE_INFINITY, -0.7);
 		autoSensitiveCargoHandler = new AutoSensitiveCargoHandler(cargoHandler, Double.POSITIVE_INFINITY, -0.5, () -> gotCargo = true);
 		
