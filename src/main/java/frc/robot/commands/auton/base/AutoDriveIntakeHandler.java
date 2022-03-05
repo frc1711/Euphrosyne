@@ -21,6 +21,7 @@ public class AutoDriveIntakeHandler extends ParallelCommandGroup {
 		autoDrive = new AutoDrive(swerveDrive, distance, d -> finished = true);
 		autoIntake = new AutoIntake(intake, Double.POSITIVE_INFINITY, -0.7);
 		autoCargoHandler = new AutoCargoHandler(cargoHandler, Double.POSITIVE_INFINITY, -0.5);
+		
 		addCommands(
 			autoDrive,
 			autoIntake,

@@ -128,7 +128,7 @@ public class RobotContainer {
 		return new Command[] {
 			new AutoTaxi(swerveDrive),
 			new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
-			new AutoTwoBall(swerveDrive, shooter, intake, cargoHandler, 5)
+			new AutoTwoBall(swerveDrive, shooter, intake, cargoHandler, 8)
 		};
 	}
 	

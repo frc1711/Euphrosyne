@@ -17,7 +17,7 @@ public class AutoDrive extends AutonDrive {
 	}
 	
 	public AutoDrive (Swerve swerveDrive, double distance, OnCommandEnd onCommandEnd) {
-		super(swerveDrive, 0, distance, 0.1, 5, 0.01, FrameOfReference.ROBOT);
+		super(swerveDrive, distance < 0 ? 180 : 0, Math.abs(distance), 0.1, 5, 0.01, FrameOfReference.ROBOT);
 		this.swerveDrive = swerveDrive;
 		this.onCommandEnd = onCommandEnd;
 	}

@@ -8,25 +8,35 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
-import frc.robot.util.CommandWrapper;
 
 public class AutoTwoBall extends SequentialCommandGroup {
 	
+	private final Swerve swerveDrive;
+	private final Intake intake;
+	private final CargoHandler cargoHandler;
+	private double distanceTraveled;
+	
 	private final AutoShooterSequence shootFirstBall, shootSecondBall;
 	private final AutoIntakeDriveCollect driveIntakeCollect;
-	private double distanceTraveled;
-	private final CommandWrapper driveIntakeCargoHandler;
+	private AutoDriveIntakeHandler driveIntakeCargoHandler;
 	
 	public AutoTwoBall (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler, double maxTime) {
-		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 1.5);
-		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, maxTime, x -> distanceTraveled = x);
-		driveIntakeCargoHandler = new CommandWrapper(() -> new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -distanceTraveled));
-		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 1.5);
+		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 1.5, false);
+		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, maxTime, x -> { distanceTraveled = x; });
+		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 1.5, true);
 		addCommands(
-			shootFirstBall,				// Shoots the first cargo ball
-			driveIntakeCollect,			// Drives in direction of intake, intaking and running cargo handler, stopping once we get a ball
-			driveIntakeCargoHandler,	// Drives in the opposite direction the same distance, running the cargo handler
-			shootSecondBall);			// Gets the second ballw
+			shootFirstBall,
+			driveIntakeCollect);		// Drives in direction of intake, intaking and running cargo handler, stopping once we get a ball
+		
+		this.swerveDrive = swerveDrive;
+		this.intake = intake;
+		this.cargoHandler = cargoHandler;
+	}
+	
+	@Override
+	public void end (boolean interrupted) {
+		driveIntakeCargoHandler = new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -distanceTraveled);
+		driveIntakeCargoHandler.andThen(shootSecondBall).schedule();
 	}
 	
 }

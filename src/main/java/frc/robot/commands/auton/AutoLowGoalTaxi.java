@@ -10,7 +10,7 @@ public class AutoLowGoalTaxi extends SequentialCommandGroup {
 	
 	public AutoLowGoalTaxi (Swerve swerveDrive, Shooter shooter, CargoHandler cargoHandler) {
 		super(
-			new AutoShooterSequence(shooter, cargoHandler, 1.5),
+			new AutoShooterSequence(shooter, cargoHandler, 1.5, false),
 			new AutoTaxi(swerveDrive));
 	}
 	

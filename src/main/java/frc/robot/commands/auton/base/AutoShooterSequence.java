@@ -23,8 +23,8 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 	 * @param cargoHandler
 	 * @param shooterRunLength
 	 */
-	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, double shooterRunLength) {
-		this(shooter, cargoHandler, shooterRunLength, () -> false);
+	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, double shooterRunLength, boolean runInitialReverse) {
+		this(shooter, cargoHandler, shooterRunLength, () -> false, runInitialReverse);
 	}
 	
 	/**
@@ -34,18 +34,23 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 	 * @param cargoHandler
 	 * @param stopCommand
 	 */
-	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, BooleanSupplier stopCommand) {
-		this(shooter, cargoHandler, Double.POSITIVE_INFINITY, stopCommand);
+	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, BooleanSupplier stopCommand, boolean runInitialReverse) {
+		this(shooter, cargoHandler, Double.POSITIVE_INFINITY, stopCommand, runInitialReverse);
 	}
 	
-	private AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, double shooterRunLength, BooleanSupplier stopCommand) {
+	private AutoShooterSequence (
+			Shooter shooter,
+			CargoHandler cargoHandler,
+			double shooterRunLength,
+			BooleanSupplier stopCommand,
+			boolean runInitialReverse) {
 		super(
-			new AutoCargoHandler(cargoHandler, 0.24, -cargoHandlerSpeed),						// Pull back to avoid hitting shooter
+			new AutoCargoHandler(cargoHandler, runInitialReverse ? 0.24 : 0, -cargoHandlerSpeed),	// Pull back to avoid hitting shooter
 			new ParallelCommandGroup(
-				new AutoShooter(shooter, shooterRunLength + 0.2, shooterSpeed),					// Run shooter (will run until stopped)
+				new AutoShooter(shooter, shooterRunLength + 0.2, shooterSpeed),						// Run shooter (will run until stopped)
 				new SequentialCommandGroup(
-					new AutoCargoHandler(cargoHandler, 0.2, 0),									// Wait before running cargo handler
-					new AutoCargoHandler(cargoHandler, shooterRunLength, cargoHandlerSpeed)		// Run cargo handler
+					new AutoCargoHandler(cargoHandler, 0.2, 0),										// Wait before running cargo handler
+					new AutoCargoHandler(cargoHandler, shooterRunLength, cargoHandlerSpeed)			// Run cargo handler
 				)
 			)
 		);
