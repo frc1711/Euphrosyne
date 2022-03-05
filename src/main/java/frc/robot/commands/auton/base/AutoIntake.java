@@ -1,43 +1,44 @@
-package frc.robot.commands.central;
+package frc.robot.commands.auton.base;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake;
 
-public class AutoShooter extends CommandBase {
+public class AutoIntake extends CommandBase {
 	
-	private final Shooter shooter;
+	private final Intake intake;
 	private final double duration, speed;
 	private final Timer timer;
 	
-	public AutoShooter (Shooter shooter, double duration, double speed) {
-		this.shooter = shooter;
+	public AutoIntake (Intake intake, double duration, double speed) {
+		this.intake = intake;
 		this.duration = duration;
 		this.speed = speed;
 		
 		timer = new Timer();
-		addRequirements(shooter);
+		addRequirements(intake);
 	}
 	
 	@Override
 	public void initialize () {
 		timer.start();
-		shooter.stop();
+		intake.stop();
 	}
 	
 	@Override
 	public void execute () {
-		shooter.setSpeed(speed);
+		intake.setSpeed(speed);
 	}
 	
 	@Override
 	public void end (boolean interrupted) {
-		shooter.stop();
+		intake.stop();
 	}
 	
 	@Override
 	public boolean isFinished () {
 		return timer.get() >= duration;
 	}
+	
 }

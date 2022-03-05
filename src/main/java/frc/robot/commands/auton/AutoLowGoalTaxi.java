@@ -1,8 +1,7 @@
 package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
-import frc.robot.commands.central.AutoShooterSequence;
+import frc.robot.commands.auton.base.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;

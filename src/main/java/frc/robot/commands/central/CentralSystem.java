@@ -2,7 +2,7 @@ package frc.robot.commands.central;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.commands.auton.base.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
