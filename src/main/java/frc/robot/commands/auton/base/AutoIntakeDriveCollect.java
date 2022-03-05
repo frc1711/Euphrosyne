@@ -2,7 +2,7 @@ package frc.robot.commands.auton.base;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-
+import frc.robot.commands.auton.base.AutoDrive.OnCommandEnd;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
@@ -22,8 +22,8 @@ public class AutoIntakeDriveCollect extends ParallelCommandGroup {
 	
 	private boolean gotCargo = false;
 	
-	public AutoIntakeDriveCollect (Swerve swerveDrive, CargoHandler cargoHandler, Intake intake, double maxTime) {
-		autoDrive = new AutoDrive(swerveDrive, Double.POSITIVE_INFINITY);
+	public AutoIntakeDriveCollect (Swerve swerveDrive, CargoHandler cargoHandler, Intake intake, double maxTime, OnCommandEnd onCommandEnd) {
+		autoDrive = new AutoDrive(swerveDrive, Double.POSITIVE_INFINITY, onCommandEnd);
 		autoIntake = new AutoIntake(intake, Double.POSITIVE_INFINITY, -0.7);
 		autoSensitiveCargoHandler = new AutoSensitiveCargoHandler(cargoHandler, Double.POSITIVE_INFINITY, -0.5, () -> gotCargo = true);
 		

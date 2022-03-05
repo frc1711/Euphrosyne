@@ -1,6 +1,5 @@
 package frc.robot.commands.auton.base;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Swerve;
 import frc.team1711.swerve.commands.AutonDrive;
 import frc.team1711.swerve.commands.FrameOfReference;
