@@ -5,7 +5,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -55,8 +55,11 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.stop();
 		intake.stop();
 		shooter.stop();
+		RobotContainer.controlBoard.addBoolean("Current Rising Edge", () -> currentRisingEdge).withPosition(7, 3);
 	}
 	
+	private boolean currentRisingEdge = false;
+	private int framesSinceStart = 0;
 	@Override
 	public void execute () {
 		// Attempting to run the shooter sequence
@@ -72,6 +75,18 @@ public class CentralSystem extends CommandBase {
 		
 		intake.setSpeed(intakeSpeed);
 		shooter.setSpeed(shooterSpeed);
+		
+		// TODO: TEMPORARY
+		cargoHandler.tempUpdateCurrentOverFrames();
+		if (!runCargoHandler.getAsBoolean()) {
+			currentRisingEdge = false;
+			framesSinceStart = 0;
+		} else {
+			framesSinceStart ++;
+			if (cargoHandler.getAverageCurrent() > 5 && framesSinceStart > 8) {
+				currentRisingEdge = true;
+			}
+		}
 	}
 	
 	@Override
