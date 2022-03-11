@@ -5,7 +5,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -16,10 +16,6 @@ public class CentralSystem extends CommandBase {
 	private static final InputHandler centralSystemInputHandler = new InputHandler(0.10, InputHandler.Curve.linearCurve);
 	
 	private static final double cargoHandlerSpeed = -0.5;
-	
-	private final double
-		maxIntakeSpeed = -0.7,
-		maxShooterSpeed = -0.7;
 	
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
@@ -67,8 +63,9 @@ public class CentralSystem extends CommandBase {
 		
 		cargoHandler.setSpeed(runCargoHandler.getAsBoolean() ? cargoHandlerSpeed * r : 0);
 		
-		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * maxIntakeSpeed;
-		double shooterSpeed = r * centralSystemInputHandler.apply(runShooter.getAsDouble()) * maxShooterSpeed;
+		RobotContainer container = RobotContainer.getInstance();
+		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * container.intakeMaxSpeed.getFromDashboard();
+		double shooterSpeed = r * centralSystemInputHandler.apply(runShooter.getAsDouble()) * container.shooterMaxSpeed.getFromDashboard();
 		
 		intake.setSpeed(intakeSpeed);
 		shooter.setSpeed(shooterSpeed);

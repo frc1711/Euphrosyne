@@ -26,6 +26,13 @@ import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
 	
+	private static RobotContainer robotContainerInstance;
+	
+	public static RobotContainer getInstance () {
+		if (robotContainerInstance == null) robotContainerInstance = new RobotContainer();
+		return robotContainerInstance;
+	}
+	
 	private final XboxController driveController, centralController;
 	
 	private final Swerve swerveDrive;
@@ -41,12 +48,14 @@ public class RobotContainer {
 	private final CameraChooser cameraChooser;
 	
 	// Dashboard
-	private final Dashboard.Entry<Boolean> climberOverrideMode = Dashboard.Entry.getBooleanEntry("Climber Override Mode", false);
-	private final Dashboard.Entry<Double>
-		autonWaitPeriod = Dashboard.Entry.getDoubleEntry("Auton Wait Period", 0);
-	private SendableChooser<Command> autonSelector;
+	public final Dashboard.Entry<Boolean> climberOverrideMode = Dashboard.Entry.getBooleanEntry("Climber Override Mode", false);
+	public final Dashboard.Entry<Double>
+		autonWaitPeriod = Dashboard.Entry.getDoubleEntry("Auton Wait Period", 0),
+		shooterMaxSpeed = Dashboard.Entry.getDoubleEntry("Max Shooter Speed", -0.7),
+		intakeMaxSpeed = Dashboard.Entry.getDoubleEntry("Max Intake Speed", -0.7);
+	public SendableChooser<Command> autonSelector;
 	
-	public RobotContainer () {
+	private RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
 		
