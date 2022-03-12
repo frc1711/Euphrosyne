@@ -12,7 +12,7 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void robotInit () {
-		m_robotContainer = RobotContainer.getInstance();
+		m_robotContainer = new RobotContainer();
 	}
 	
 	@Override

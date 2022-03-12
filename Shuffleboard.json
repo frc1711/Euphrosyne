@@ -11,37 +11,37 @@
         "vgap": 16.0,
         "titleType": 1,
         "tiles": {
-          "7,0": {
+          "6,0": {
             "size": [
-              3,
+              4,
               1
             ],
             "content": {
               "_type": "Basic FMS Info",
               "_source0": "network_table:///FMSInfo",
-              "_title": "/FMSInfo"
+              "_title": "FMS Info"
             }
           },
-          "7,1": {
+          "6,1": {
             "size": [
-              3,
+              2,
               1
             ],
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Auton Selector",
-              "_title": "SmartDashboard/Auton Selector"
+              "_title": "Auton Selector"
             }
           },
-          "7,2": {
+          "6,2": {
             "size": [
-              3,
+              2,
               2
             ],
             "content": {
               "_type": "Gyro",
               "_source0": "network_table:///SmartDashboard/Gyro",
-              "_title": "SmartDashboard/Gyro",
+              "_title": "Gyro",
               "Visuals/Major tick spacing": 45.0,
               "Visuals/Starting angle": 180.0,
               "Visuals/Show tick mark ring": true,
@@ -50,21 +50,32 @@
           },
           "0,0": {
             "size": [
-              7,
+              6,
               4
             ],
             "content": {
               "_type": "Camera Stream",
               "_source0": "camera_server://Camera",
               "_title": "Camera",
-              "Crosshair/Show crosshair": true,
+              "Crosshair/Show crosshair": false,
               "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
+              "Controls/Show controls": false,
               "Controls/Rotation": "HALF",
               "compression": -1.0,
               "fps": -1,
               "imageWidth": 0,
               "imageHeight": 0
+            }
+          },
+          "8,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Auton Wait Period",
+              "_title": "Auton Wait Period"
             }
           }
         }
@@ -81,7 +92,7 @@
         "vgap": 16.0,
         "titleType": 1,
         "tiles": {
-          "7,0": {
+          "6,0": {
             "size": [
               3,
               1
@@ -89,10 +100,10 @@
             "content": {
               "_type": "Basic FMS Info",
               "_source0": "network_table:///FMSInfo",
-              "_title": "/FMSInfo"
+              "_title": "FMS Info"
             }
           },
-          "7,1": {
+          "6,1": {
             "size": [
               3,
               2
@@ -107,22 +118,7 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "5,0": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Auton Wait Period",
-              "_title": "Auton Wait Period",
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 10.0,
-              "Slider Settings/Block increment": 0.0625,
-              "Visuals/Display value": true
-            }
-          },
-          "5,2": {
+          "4,2": {
             "size": [
               2,
               1
@@ -133,7 +129,7 @@
               "_title": "Climber Override Mode"
             }
           },
-          "5,1": {
+          "4,0": {
             "size": [
               1,
               1
@@ -144,7 +140,7 @@
               "_title": "Max Intake Speed"
             }
           },
-          "6,1": {
+          "5,0": {
             "size": [
               1,
               1
@@ -155,38 +151,59 @@
               "_title": "Max Shooter Speed"
             }
           },
-          "3,0": {
+          "0,0": {
             "size": [
               2,
-              4
+              1
             ],
             "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Swerve",
-              "_title": "LiveWindow/Swerve",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Swerve/Front Left Module",
-                  "_title": "Front Left Module"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Swerve/Front Right Module",
-                  "_title": "Front Right Module"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Swerve/Rear Left Module",
-                  "_title": "Rear Left Module"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Swerve/Rear Right Module",
-                  "_title": "Rear Right Module"
-                }
-              ]
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Reset Gyro",
+              "_title": "Reset Gyro"
+            }
+          },
+          "0,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Swerve Module Positions",
+              "_title": "Swerve Module Positions"
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Climber Initialization",
+              "_title": "Climber Initialization"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Swerve Drive",
+              "_title": "Swerve Drive"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Cargo Handler Speed",
+              "_title": "Cargo Handler Speed"
             }
           }
         }

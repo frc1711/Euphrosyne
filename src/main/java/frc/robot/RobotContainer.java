@@ -26,13 +26,6 @@ import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
 	
-	private static RobotContainer robotContainerInstance;
-	
-	public static RobotContainer getInstance () {
-		if (robotContainerInstance == null) robotContainerInstance = new RobotContainer();
-		return robotContainerInstance;
-	}
-	
 	private final XboxController driveController, centralController;
 	
 	private final Swerve swerveDrive;
@@ -47,15 +40,9 @@ public class RobotContainer {
 	private final ClimberCommand climberCommand;
 	private final CameraChooser cameraChooser;
 	
-	// Dashboard
-	public final Dashboard.Entry<Boolean> climberOverrideMode = Dashboard.Entry.getBooleanEntry("Climber Override Mode", false);
-	public final Dashboard.Entry<Double>
-		autonWaitPeriod = Dashboard.Entry.getDoubleEntry("Auton Wait Period", 0),
-		shooterMaxSpeed = Dashboard.Entry.getDoubleEntry("Max Shooter Speed", -0.7),
-		intakeMaxSpeed = Dashboard.Entry.getDoubleEntry("Max Intake Speed", -0.7);
-	public SendableChooser<Command> autonSelector;
+	private SendableChooser<Command> autonSelector;
 	
-	private RobotContainer () {
+	public RobotContainer () {
 		driveController = new XboxController(0);
 		centralController = new XboxController(1);
 		
@@ -85,7 +72,7 @@ public class RobotContainer {
 			climber,
 			() -> -centralController.getRightY(),										// Extension
 			() -> centralController.getLeftY(),											// Rotation
-			() -> climberOverrideMode.getFromDashboard(),								// Climber override limits
+			() -> Dashboard.CLIMBER_OVERRIDE_MODE.get(),								// Climber override limits
 			(x) -> centralController.setRumble(RumbleType.kLeftRumble, x ? 0.7 : 0));	// Rumble for hitting climber limit
 		climber.setDefaultCommand(climberCommand);
 		
@@ -112,6 +99,7 @@ public class RobotContainer {
 		
 		// Control Board (Shuffleboard)
 		Dashboard.putSendable("Swerve Module Positions", new SetSwerveModulePositions(swerveDrive));
+		Dashboard.putSendable("Climber Initialization", new ClimberInitialization(climber));
 		Dashboard.putSendable("Reset Gyro", new ResetGyro(swerveDrive));
 		Dashboard.putSendable("Swerve Drive", swerveDrive);
 		Dashboard.putSendable("Gyro", swerveDrive.getGyro());
@@ -126,7 +114,7 @@ public class RobotContainer {
 	
 	public Command getAutonomousCommand () {
 		return new SequentialCommandGroup(
-			new WaitCommand(autonWaitPeriod.getFromDashboard()),
+			new WaitCommand(Dashboard.AUTON_WAIT_PERIOD.get()),
 			autonSelector.getSelected());
 	}
 	

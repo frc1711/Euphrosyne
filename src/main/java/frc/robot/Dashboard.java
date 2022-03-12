@@ -8,6 +8,14 @@ import java.util.function.Supplier;
 
 public class Dashboard {
 	
+	
+	public static final Entry<Boolean> CLIMBER_OVERRIDE_MODE = Entry.getBooleanEntry("Climber Override Mode", false);
+	public static final Entry<Double>
+		AUTON_WAIT_PERIOD = Entry.getDoubleEntry("Auton Wait Period", 0),
+		CARGO_HANDLER_SPEED = Entry.getDoubleEntry("Cargo Handler Speed", -0.5),
+		SHOOTER_MAX_SPEED = Entry.getDoubleEntry("Max Shooter Speed", -0.7),
+		INTAKE_MAX_SPEED = Entry.getDoubleEntry("Max Intake Speed", -0.7);
+	
 	private Dashboard () { }
 	
 	public static void putSendable (String name, Sendable sendable) {
@@ -24,11 +32,11 @@ public class Dashboard {
 			this.putValue = putValue;
 		}
 		
-		public T getFromDashboard () {
+		public T get () {
 			return getValue.get();
 		}
 		
-		public void putToDashboard (T newValue) {
+		public void put (T newValue) {
 			putValue.accept(newValue);
 		}
 		
