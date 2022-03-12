@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
@@ -98,9 +99,9 @@ public class RobotContainer {
 		Dashboard.putSendable("Auton Selector", autonSelector);
 		
 		// Control Board (Shuffleboard)
-		Dashboard.putSendable("Swerve Module Positions", new SetSwerveModulePositions(swerveDrive));
-		Dashboard.putSendable("Climber Initialization", new ClimberInitialization(climber));
-		Dashboard.putSendable("Reset Gyro", new ResetGyro(swerveDrive));
+		Dashboard.putSendable("Swerve Module Positions", new InstantCommand(() -> new SetSwerveModulePositions(swerveDrive).schedule()));
+		Dashboard.putSendable("Climber Initialization", new InstantCommand(() -> new ClimberInitialization(climber).schedule()));
+		Dashboard.putSendable("Reset Gyro", new InstantCommand(() -> new ResetGyro(swerveDrive).schedule()));
 		Dashboard.putSendable("Swerve Drive", swerveDrive);
 		Dashboard.putSendable("Gyro", swerveDrive.getGyro());
 	}
