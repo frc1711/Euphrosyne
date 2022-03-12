@@ -27,67 +27,57 @@ import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
 	
-	private final XboxController driveController, centralController;
+	private final XboxController
+		driveController = new XboxController(0),
+		centralController = new XboxController(1);
 	
-	private final Swerve swerveDrive;
-	private final CargoHandler cargoHandler;
-	private final Intake intake;
-	private final Shooter shooter;
-	private final Climber climber;
-	private final CameraSystem cameraSystem;
+	private final Swerve swerveDrive = Swerve.getInstance();
+	private final CargoHandler cargoHandler = CargoHandler.getInstance();
+	private final Intake intake = Intake.getInstance();
+	private final Shooter shooter = Shooter.getInstance();
+	private final Climber climber = Climber.getInstance();
+	private final CameraSystem cameraSystem = CameraSystem.getInstance();
 	
-	private final SwerveTeleop swerveTeleop;
-	private final CentralSystem centralSystem;
-	private final ClimberCommand climberCommand;
-	private final CameraChooser cameraChooser;
+	// Camera chooser command
+	private final CameraChooser cameraChooser = new CameraChooser(
+		cameraSystem,
+		() -> driveController.getAButtonPressed() || centralController.getYButtonPressed(),		// Next camera button
+		() -> false);																			// Previous camera button
 	
-	private SendableChooser<Command> autonSelector;
+	// Swerve teleop command
+	private final SwerveTeleop swerveTeleop = new SwerveTeleop(
+		swerveDrive,
+		() -> driveController.getLeftX(),											// Strafe X
+		() -> -driveController.getLeftY(),											// Strafe Y
+		() -> driveController.getRightX(),											// Steering
+		() -> driveController.getRightTriggerAxis() > 0.4,							// Fast mode
+		() -> driveController.getLeftTriggerAxis() > 0.4,							// Slow mode
+		() -> driveController.getLeftBumper() && driveController.getRightBumper());	// Reset gyro
+	
+	// Central system command
+	private final CentralSystem centralSystem = new CentralSystem(
+		cargoHandler, intake, shooter,
+		() -> centralController.getAButton(),										// CargoHandler
+		() -> centralController.getRightTriggerAxis(),								// Intake
+		() -> centralController.getLeftTriggerAxis(),								// Shooter
+		() -> centralController.getRightBumper(),									// Shooter sequence
+		() -> centralController.getXButton());										// Reverse mode
+	
+	// Climber command
+	private final ClimberCommand climberCommand = new ClimberCommand(
+		climber,
+		() -> -centralController.getRightY(),										// Extension
+		() -> centralController.getLeftY(),											// Rotation
+		() -> Dashboard.CLIMBER_OVERRIDE_MODE.get(),								// Climber override limits
+		(x) -> centralController.setRumble(RumbleType.kLeftRumble, x ? 0.7 : 0));	// Rumble for hitting climber limit
+	
+	private final SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
-		driveController = new XboxController(0);
-		centralController = new XboxController(1);
-		
-		// Camera System
-		cameraSystem = CameraSystem.getInstance();
-		cameraChooser = new CameraChooser(
-			CameraSystem.getInstance(),
-			() -> driveController.getAButtonPressed() || centralController.getYButtonPressed(),		// Next camera button
-			() -> false);
+		// Automatically run default commands
 		cameraSystem.setDefaultCommand(cameraChooser);
-		
-		// Swerve Teleop
-		swerveDrive = Swerve.getInstance();
-		swerveTeleop = new SwerveTeleop(
-			swerveDrive,
-			() -> driveController.getLeftX(),											// Strafe X
-			() -> -driveController.getLeftY(),											// Strafe Y
-			() -> driveController.getRightX(),											// Steering
-			() -> driveController.getRightTriggerAxis() > 0.4,							// Fast mode
-			() -> driveController.getLeftTriggerAxis() > 0.4,							// Slow mode
-			() -> driveController.getLeftBumper() && driveController.getRightBumper());	// Reset gyro
 		swerveDrive.setDefaultCommand(swerveTeleop);
-		
-		// Climber Command
-		climber = Climber.getInstance();
-		climberCommand = new ClimberCommand(
-			climber,
-			() -> -centralController.getRightY(),										// Extension
-			() -> centralController.getLeftY(),											// Rotation
-			() -> Dashboard.CLIMBER_OVERRIDE_MODE.get(),								// Climber override limits
-			(x) -> centralController.setRumble(RumbleType.kLeftRumble, x ? 0.7 : 0));	// Rumble for hitting climber limit
 		climber.setDefaultCommand(climberCommand);
-		
-		// Central System
-		cargoHandler = CargoHandler.getInstance();
-		intake = Intake.getInstance();
-		shooter = Shooter.getInstance();
-		centralSystem = new CentralSystem(
-			cargoHandler, intake, shooter,
-			() -> centralController.getAButton(),					// CargoHandler
-			() -> centralController.getRightTriggerAxis(),			// Intake
-			() -> centralController.getLeftTriggerAxis(),			// Shooter
-			() -> centralController.getRightBumper(),				// Shooter sequence
-			() -> centralController.getXButton());					// Reverse mode
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// Auton selector
@@ -96,9 +86,13 @@ public class RobotContainer {
 		for (Command command : autonCommands)
 			autonSelector.addOption(command != null ? command.getName() : "No Auton", command);
 		autonSelector.setDefaultOption("No Auton", null);
-		Dashboard.putSendable("Auton Selector", autonSelector);
 		
-		// Control Board (Shuffleboard)
+		// Put sendables to dashboard
+		putSendablesToDashboard();
+	}
+	
+	private void putSendablesToDashboard () {
+		Dashboard.putSendable("Auton Selector", autonSelector);
 		Dashboard.putSendable("Swerve Module Positions", new InstantCommand(() -> new SetSwerveModulePositions(swerveDrive).schedule()));
 		Dashboard.putSendable("Climber Initialization", new InstantCommand(() -> new ClimberInitialization(climber).schedule()));
 		Dashboard.putSendable("Reset Gyro", new InstantCommand(() -> new ResetGyro(swerveDrive).schedule()));
