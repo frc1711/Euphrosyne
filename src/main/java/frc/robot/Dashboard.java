@@ -34,10 +34,12 @@ public class Dashboard {
 		
 		// Smart Dashboard entries
 		public static Entry<Double> getDoubleEntry (String name, double defaultValue) {
+			SmartDashboard.putNumber(name, defaultValue);
 			return new Entry<Double>(() -> SmartDashboard.getNumber(name, defaultValue), (x) -> SmartDashboard.putNumber(name, x));
 		}
 		
 		public static Entry<Boolean> getBooleanEntry (String name, boolean defaultValue) {
+			SmartDashboard.putBoolean(name, defaultValue);
 			return new Entry<Boolean>(() -> SmartDashboard.getBoolean(name, defaultValue), (x) -> SmartDashboard.putBoolean(name, x));
 		}
 		
