@@ -1,39 +1,39 @@
-package frc.robot.commands.central;
+package frc.robot.commands.auton.base;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.CargoHandler;
 
-public class AutoShooter extends CommandBase {
+public class AutoCargoHandler extends CommandBase {
 	
-	private final Shooter shooter;
+	private final CargoHandler cargoHandler;
 	private final double duration, speed;
 	private final Timer timer;
 	
-	public AutoShooter (Shooter shooter, double duration, double speed) {
-		this.shooter = shooter;
+	public AutoCargoHandler (CargoHandler cargoHandler, double duration, double speed) {
+		this.cargoHandler = cargoHandler;
 		this.duration = duration;
 		this.speed = speed;
 		
 		timer = new Timer();
-		addRequirements(shooter);
+		addRequirements(cargoHandler);
 	}
 	
 	@Override
 	public void initialize () {
 		timer.start();
-		shooter.stop();
+		cargoHandler.stop();
 	}
 	
 	@Override
 	public void execute () {
-		shooter.setSpeed(speed);
+		cargoHandler.setSpeed(speed);
 	}
 	
 	@Override
 	public void end (boolean interrupted) {
-		shooter.stop();
+		cargoHandler.stop();
 	}
 	
 	@Override

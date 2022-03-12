@@ -32,4 +32,8 @@ public class CargoHandler extends SubsystemBase {
 		pulley.set(0);
 	}
 	
+	public double getCurrent () {
+		return pulley.getOutputCurrent();
+	}
+	
 }

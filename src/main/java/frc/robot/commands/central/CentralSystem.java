@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Dashboard;
+import frc.robot.commands.auton.base.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -56,7 +57,8 @@ public class CentralSystem extends CommandBase {
 	public void execute () {
 		// Attempting to run the shooter sequence
 		if (runShooterSequence.getAsBoolean())
-			CommandScheduler.getInstance().schedule(new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
+			CommandScheduler.getInstance().schedule(
+				new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean(), true));
 		
 		int r = (reverseButton.getAsBoolean() ? -1 : 1); //r is a numerical value of true or false for reversebutton
 		
