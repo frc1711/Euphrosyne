@@ -1,9 +1,9 @@
 {
   "tabPane": [
     {
-      "title": "SmartDashboard",
+      "title": "Main Board",
       "autoPopulate": true,
-      "autoPopulatePrefix": "SmartDashboard/",
+      "autoPopulatePrefix": "",
       "widgetPane": {
         "gridSize": 128.0,
         "showGrid": true,
@@ -11,7 +11,18 @@
         "vgap": 16.0,
         "titleType": 1,
         "tiles": {
-          "8,0": {
+          "6,0": {
+            "size": [
+              4,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMS Info"
+            }
+          },
+          "6,1": {
             "size": [
               2,
               1
@@ -22,22 +33,22 @@
               "_title": "Auton Selector"
             }
           },
-          "0,0": {
+          "6,2": {
             "size": [
               2,
-              3
+              2
             ],
             "content": {
               "_type": "Gyro",
-              "_source0": "network_table:///Shuffleboard/Control Board/Gyro",
-              "_title": "Shuffleboard/Control Board/Gyro",
+              "_source0": "network_table:///SmartDashboard/Gyro",
+              "_title": "Gyro",
               "Visuals/Major tick spacing": 45.0,
               "Visuals/Starting angle": 180.0,
               "Visuals/Show tick mark ring": true,
               "Visuals/Counter clockwise": false
             }
           },
-          "2,0": {
+          "0,0": {
             "size": [
               6,
               4
@@ -52,8 +63,8 @@
               "Controls/Rotation": "HALF",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           },
           "8,1": {
@@ -62,13 +73,137 @@
               1
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Auton Wait Period",
-              "_title": "Auton Wait Period",
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 10.0,
-              "Slider Settings/Block increment": 0.0625,
-              "Visuals/Display value": true
+              "_title": "Auton Wait Period"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Control Board",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 1,
+        "tiles": {
+          "6,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMS Info"
+            }
+          },
+          "6,1": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Gyro",
+              "_source0": "network_table:///SmartDashboard/Gyro",
+              "_title": "Gyro",
+              "Visuals/Major tick spacing": 45.0,
+              "Visuals/Starting angle": 180.0,
+              "Visuals/Show tick mark ring": true,
+              "Visuals/Counter clockwise": false
+            }
+          },
+          "4,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/Climber Override Mode",
+              "_title": "Climber Override Mode"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Max Intake Speed",
+              "_title": "Max Intake Speed"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Max Shooter Speed",
+              "_title": "Max Shooter Speed"
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Reset Gyro",
+              "_title": "Reset Gyro"
+            }
+          },
+          "0,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Swerve Module Positions",
+              "_title": "Swerve Module Positions"
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Command",
+              "_source0": "network_table:///SmartDashboard/Climber Initialization",
+              "_title": "Climber Initialization"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              3
+            ],
+            "content": {
+              "_type": "Network Table Tree",
+              "_source0": "network_table:///SmartDashboard/Swerve Drive",
+              "_title": "Swerve Drive"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Cargo Handler Speed",
+              "_title": "Cargo Handler Speed"
             }
           }
         }
