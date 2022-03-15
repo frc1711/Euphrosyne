@@ -34,6 +34,8 @@ public class IDMap {
 	}
 	
 	public enum DIO {
+		TOP_PROXIMITY_SENSOR (4),
+		
 		LEFT_ROTATION_LIMIT_SWITCH (1),
 		RIGHT_ROTATION_LIMIT_SWITCH (0),
 		

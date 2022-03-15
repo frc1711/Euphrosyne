@@ -9,14 +9,23 @@ public class AutoCargoHandler extends CommandBase {
 	
 	private final CargoHandler cargoHandler;
 	private final double duration, speed;
-	private final Timer timer;
+	
+	private final Timer timer = new Timer();
+	private final StopOnSensor stopOnSensor;
 	
 	public AutoCargoHandler (CargoHandler cargoHandler, double duration, double speed) {
+		this(cargoHandler, duration, speed, x -> false);
+	}
+	
+	public AutoCargoHandler (CargoHandler cargoHandler, double speed, StopOnSensor stopOnSensor) {
+		this(cargoHandler, Double.POSITIVE_INFINITY, speed, stopOnSensor);
+	}
+	
+	private AutoCargoHandler (CargoHandler cargoHandler, double duration, double speed, StopOnSensor stopOnSensor) {
 		this.cargoHandler = cargoHandler;
 		this.duration = duration;
 		this.speed = speed;
-		
-		timer = new Timer();
+		this.stopOnSensor = stopOnSensor;
 		addRequirements(cargoHandler);
 	}
 	
@@ -38,6 +47,12 @@ public class AutoCargoHandler extends CommandBase {
 	
 	@Override
 	public boolean isFinished () {
-		return timer.get() >= duration;
+		return timer.get() >= duration || stopOnSensor.shouldStopCommand(cargoHandler.checkBallAtSensor());
 	}
+	
+	@FunctionalInterface
+	public interface StopOnSensor {
+		public boolean shouldStopCommand (boolean ballTrippingSensor);
+	}
+	
 }

@@ -21,9 +21,9 @@ public class AutoTwoBall extends SequentialCommandGroup {
 	private AutoDriveIntakeHandler driveIntakeCargoHandler;
 	
 	public AutoTwoBall (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler, double maxTime) {
-		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 1.5, false);
+		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 1.5);
 		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, maxTime, x -> { distanceTraveled = x; });
-		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 1.5, true);
+		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 1.5);
 		addCommands(
 			shootFirstBall,
 			driveIntakeCollect);		// Drives in direction of intake, intaking and running cargo handler, stopping once we get a ball
