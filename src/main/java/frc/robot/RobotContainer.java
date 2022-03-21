@@ -58,7 +58,8 @@ public class RobotContainer {
 	// Central system command
 	private final CentralSystem centralSystem = new CentralSystem(
 		cargoHandler, intake, shooter,
-		() -> centralController.getAButton(),										// CargoHandler
+		() -> centralController.getAButton(),										// Cargo handler AND intake
+		() -> centralController.getBButton(),										// Cargo handler
 		() -> centralController.getRightTriggerAxis(),								// Intake
 		() -> centralController.getLeftTriggerAxis(),								// Shooter
 		() -> centralController.getRightBumper(),									// Shooter sequence
