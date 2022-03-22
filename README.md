@@ -15,4 +15,4 @@ Started creating a README.md file for the folders in src\main.  Just do document
 
 ## The code
 ### Auton Code
-[Auton ReadMe](./src/main/java/frc/robot/commands/auton/README.md)
+[Auton ReadMe](./src/main/java/frc/robot/commands/auton/)
