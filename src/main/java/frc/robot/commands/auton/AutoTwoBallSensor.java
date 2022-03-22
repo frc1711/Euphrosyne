@@ -9,7 +9,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
-public class AutoTwoBall extends SequentialCommandGroup {
+public class AutoTwoBallSensor extends SequentialCommandGroup {
 	
 	private final Swerve swerveDrive;
 	private final Intake intake;
@@ -20,10 +20,10 @@ public class AutoTwoBall extends SequentialCommandGroup {
 	private final AutoIntakeDriveCollect driveIntakeCollect;
 	private AutoDriveIntakeHandler driveIntakeCargoHandler;
 	
-	public AutoTwoBall (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler, double maxTime) {
-		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 1.5);
-		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, maxTime, x -> { distanceTraveled = x; });
-		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 1.5);
+	public AutoTwoBallSensor (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler, double maxTime) {
+		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 0.5);
+		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, maxTime, x -> { distanceTraveled = x; }, 1.5);
+		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 0.5);
 		addCommands(
 			shootFirstBall,
 			driveIntakeCollect);		// Drives in direction of intake, intaking and running cargo handler, stopping once we get a ball
@@ -36,7 +36,7 @@ public class AutoTwoBall extends SequentialCommandGroup {
 	@Override
 	public void end (boolean interrupted) {
 		if (distanceTraveled != 0) {
-			driveIntakeCargoHandler = new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -distanceTraveled, 2);
+			driveIntakeCargoHandler = new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -distanceTraveled, 3);
 			driveIntakeCargoHandler.andThen(shootSecondBall).schedule();
 		} else {
 			cargoHandler.stop();

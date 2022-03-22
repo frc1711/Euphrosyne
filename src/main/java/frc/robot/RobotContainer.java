@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.CameraChooser;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
-import frc.robot.commands.auton.AutoTwoBall;
+import frc.robot.commands.auton.AutoTwoBallSensor;
+import frc.robot.commands.auton.AutoTwoBallWall;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -106,7 +107,8 @@ public class RobotContainer {
 		return new Command[] {
 			new AutoTaxi(swerveDrive),
 			new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
-			new AutoTwoBall(swerveDrive, shooter, intake, cargoHandler, 8)
+			new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler, 8),
+			new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler)
 		};
 	}
 	

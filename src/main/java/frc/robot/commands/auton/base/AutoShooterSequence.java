@@ -1,6 +1,5 @@
 package frc.robot.commands.auton.base;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
@@ -50,7 +49,7 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 				new AutoCargoHandler(cargoHandler, Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> sensorTripped),
 				new AutoShooter(shooter, Double.POSITIVE_INFINITY, Dashboard.SHOOTER_MAX_SPEED.get())
 			),
-			new ParallelCommandGroup(
+			new ParallelRaceGroup(
 				// Run shooter (will run until stopped)
 				new AutoShooter(shooter, Double.POSITIVE_INFINITY, Dashboard.SHOOTER_MAX_SPEED.get()),
 				new SequentialCommandGroup(
