@@ -7,6 +7,7 @@ What do these files and folders do for the robot.  @gabrielseaver9678 did a real
 
 This folder contains all the individual auton commands
 
+[Base folder ReadMe](./base/README.md)
 ## Files
 
 * **_AutoLowGoalTaxi.java_** - Is a SequentialCommandGroup method with all the commands needed to run a lowgoal, and then taxi off the tarmac. 
