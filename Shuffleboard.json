@@ -60,7 +60,7 @@
               "Crosshair/Show crosshair": false,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": false,
-              "Controls/Rotation": "HALF",
+              "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
               "imageWidth": 0,
@@ -76,6 +76,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Auton Wait Period",
               "_title": "Auton Wait Period"
+            }
+          },
+          "8,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/TEMPORARY Rotation 1",
+              "_title": "SmartDashboard/TEMPORARY Rotation 1"
             }
           }
         }

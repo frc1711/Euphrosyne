@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.CameraChooser;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
-import frc.robot.commands.auton.AutoTwoBall;
+import frc.robot.commands.auton.AutoTrifecta;
+import frc.robot.commands.auton.AutoTwoBallSensor;
+import frc.robot.commands.auton.AutoTwoBallWall;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -58,7 +60,8 @@ public class RobotContainer {
 	// Central system command
 	private final CentralSystem centralSystem = new CentralSystem(
 		cargoHandler, intake, shooter,
-		() -> centralController.getAButton(),										// CargoHandler
+		() -> centralController.getAButton(),										// Cargo handler AND intake
+		() -> centralController.getBButton(),										// Cargo handler
 		() -> centralController.getRightTriggerAxis(),								// Intake
 		() -> centralController.getLeftTriggerAxis(),								// Shooter
 		() -> centralController.getRightBumper(),									// Shooter sequence
@@ -105,7 +108,9 @@ public class RobotContainer {
 		return new Command[] {
 			new AutoTaxi(swerveDrive),
 			new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
-			new AutoTwoBall(swerveDrive, shooter, intake, cargoHandler, 8)
+			new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler, 8),
+			new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler),
+			new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler)
 		};
 	}
 	

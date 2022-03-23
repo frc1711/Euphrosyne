@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -17,11 +18,15 @@ public class Shooter extends SubsystemBase {
 		return shooterInstance;
 	}
 	
-	private final CANSparkMax shooter;
+	private final CANSparkMax shooter = new CANSparkMax(IDMap.CAN.SHOOTER.ID, MotorType.kBrushless);
+	private final RelativeEncoder shooterEncoder = shooter.getEncoder();
 	
 	public Shooter () {
-		shooter = new CANSparkMax(IDMap.CAN.SHOOTER.ID, MotorType.kBrushless);
 		shooter.setIdleMode(IdleMode.kCoast);
+	}
+	
+	public double getSpeed () {
+		return shooterEncoder.getVelocity();
 	}
 	
 	public void setSpeed (double speed) {

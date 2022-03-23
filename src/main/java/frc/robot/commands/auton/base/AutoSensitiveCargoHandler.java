@@ -6,6 +6,8 @@ import frc.robot.subsystems.CargoHandler;
 
 public class AutoSensitiveCargoHandler extends AutoCargoHandler {
 	
+	private static final double SPEED = -0.5;
+	
 	private static final int
 		FRAME_COUNT = 5, // Number of frames averaged in finding the current
 		DEADZONE_FRAMES = 25; // Number of frames that aren't counted at the beginning (current is unnaturally high at start)
@@ -16,8 +18,8 @@ public class AutoSensitiveCargoHandler extends AutoCargoHandler {
 	private final OnCargoBall onCargoBall;
 	private int frameNum = 0;
 	
-	public AutoSensitiveCargoHandler (CargoHandler cargoHandler, double duration, double speed, OnCargoBall onCargoBall) {
-		super(cargoHandler, duration, speed);
+	public AutoSensitiveCargoHandler (CargoHandler cargoHandler, double duration, OnCargoBall onCargoBall) {
+		super(cargoHandler, duration, SPEED);
 		this.cargoHandler = cargoHandler;
 		this.onCargoBall = onCargoBall;
 		
