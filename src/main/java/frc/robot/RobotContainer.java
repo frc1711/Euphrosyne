@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -9,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.commands.CameraChooser;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.auton.AutoTrifecta;
@@ -21,7 +21,6 @@ import frc.robot.commands.climber.ClimberInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
-import frc.robot.subsystems.CameraSystem;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
@@ -39,13 +38,6 @@ public class RobotContainer {
 	private final Intake intake = Intake.getInstance();
 	private final Shooter shooter = Shooter.getInstance();
 	private final Climber climber = Climber.getInstance();
-	private final CameraSystem cameraSystem = CameraSystem.getInstance();
-	
-	// Camera chooser command
-	private final CameraChooser cameraChooser = new CameraChooser(
-		cameraSystem,
-		() -> driveController.getAButtonPressed() || centralController.getYButtonPressed(),		// Next camera button
-		() -> false);																			// Previous camera button
 	
 	// Swerve teleop command
 	private final SwerveTeleop swerveTeleop = new SwerveTeleop(
@@ -78,8 +70,11 @@ public class RobotContainer {
 	private final SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
+		// Instantiate cameras
+		CameraServer.startAutomaticCapture(0);
+		CameraServer.startAutomaticCapture(1);
+		
 		// Automatically run default commands
-		cameraSystem.setDefaultCommand(cameraChooser);
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
 		cargoHandler.setDefaultCommand(centralSystem);
