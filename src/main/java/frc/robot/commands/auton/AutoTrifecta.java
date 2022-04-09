@@ -10,12 +10,17 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
+import frc.team1711.swerve.util.Angles;
 import frc.robot.Dashboard;
 
 public class AutoTrifecta extends SequentialCommandGroup {
 	
+	private final double startDir;
+	
 	public AutoTrifecta (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler) {
-		super(
+		startDir = swerveDrive.getGyroAngle();
+		
+		addCommands(
 			// Shoot initial ball
 			new AutoShooterSequence(shooter, cargoHandler, 0.5),
 			
@@ -23,22 +28,26 @@ public class AutoTrifecta extends SequentialCommandGroup {
 			new AutoIntake(intake, 0.5, Dashboard.INTAKE_MAX_SPEED.get()),
 			
 			// Get first balldelpo
-			new AutoDrive(swerveDrive, 300, 3),
-			new AutoTurn(swerveDrive, -22, 2.5),
+			new AutoDrive(swerveDrive, 350, 3),
+			autoTurn(swerveDrive, -20),
 			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, 215, 3),
 			
 			// Get second ball
 			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -215, 3),
-			new AutoTurn(swerveDrive, 93, 2.5),
-			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, 465, 3),
+			autoTurn(swerveDrive, 61),
+			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, 515, 3),
 			
 			// Go back
-			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -450, 3),
-			new AutoTurn(swerveDrive, -67, 2.5),
+			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -500, 3),
+			autoTurn(swerveDrive, 4),
 			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -300, 3),
 			
 			// Shoot
 			new AutoShooterSequence(shooter, cargoHandler, 1.5));
+	}
+	
+	private AutoTurn autoTurn (Swerve swerveDrive, double startDirOffset) {
+		return new AutoTurn(swerveDrive, Angles.wrapDegreesZeroCenter(startDirOffset + startDir), 2.5, true);
 	}
 	
 }

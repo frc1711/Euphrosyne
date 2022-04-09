@@ -16,10 +16,10 @@ public class AutoTwoBallWall extends SequentialCommandGroup {
 		super(
 			new AutoShooterSequence(shooter, cargoHandler, 0.5),
 			new AutoDrive(swerveDrive, 300, 2),
-			new AutoTurn(swerveDrive, -28, 2),
+			new AutoTurn(swerveDrive, -28, 2, false),
 			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, 230, 2),
 			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -230, 2),
-			new AutoTurn(swerveDrive, 28, 2),
+			new AutoTurn(swerveDrive, 28, 2, false),
 			new AutoDriveIntakeHandler(swerveDrive, intake, cargoHandler, -300, 2),
 			new AutoShooterSequence(shooter, cargoHandler, 0.5));
 	}

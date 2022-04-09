@@ -11,9 +11,9 @@
         "vgap": 16.0,
         "titleType": 1,
         "tiles": {
-          "7,4": {
+          "0,4": {
             "size": [
-              3,
+              10,
               1
             ],
             "content": {
@@ -48,17 +48,6 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "9,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Auton Wait Period",
-              "_title": "Auton Wait Period"
-            }
-          },
           "8,3": {
             "size": [
               2,
@@ -66,8 +55,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/TEMPORARY Rotation 1",
-              "_title": "SmartDashboard/TEMPORARY Rotation 1"
+              "_source0": "network_table:///SmartDashboard/Auton Wait Period",
+              "_title": "Auton Wait Period"
             }
           },
           "0,0": {
@@ -91,14 +80,14 @@
           },
           "6,0": {
             "size": [
-              3,
+              4,
               2
             ],
             "content": {
               "_type": "Camera Stream",
               "_source0": "camera_server://USB Camera 1",
               "_title": "USB Camera 1",
-              "Crosshair/Show crosshair": true,
+              "Crosshair/Show crosshair": false,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": false,
               "Controls/Rotation": "NONE",
