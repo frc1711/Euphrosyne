@@ -114,7 +114,7 @@ public class RobotContainer {
 				"AutoLowGoalTaxi",
 				swerveDrive, shooter, cargoHandler),
 			new CommandWrapper(
-				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler, 8),
+				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler),
 				"AutoTwoBallSensor",
 				swerveDrive, shooter, intake, cargoHandler),
 			new CommandWrapper(

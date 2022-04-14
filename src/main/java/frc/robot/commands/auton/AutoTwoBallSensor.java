@@ -11,6 +11,8 @@ import frc.robot.subsystems.Swerve;
 
 public class AutoTwoBallSensor extends SequentialCommandGroup {
 	
+	private static final double MAX_DRIVE_TIME = 8;
+	
 	private final Swerve swerveDrive;
 	private final Intake intake;
 	private final CargoHandler cargoHandler;
@@ -20,9 +22,9 @@ public class AutoTwoBallSensor extends SequentialCommandGroup {
 	private final AutoIntakeDriveCollect driveIntakeCollect;
 	private AutoDriveIntakeHandler driveIntakeCargoHandler;
 	
-	public AutoTwoBallSensor (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler, double maxTime) {
+	public AutoTwoBallSensor (Swerve swerveDrive, Shooter shooter, Intake intake, CargoHandler cargoHandler) {
 		shootFirstBall = new AutoShooterSequence(shooter, cargoHandler, 0.5);
-		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, maxTime, x -> { distanceTraveled = x; }, 1.5);
+		driveIntakeCollect = new AutoIntakeDriveCollect(swerveDrive, cargoHandler, intake, MAX_DRIVE_TIME, x -> { distanceTraveled = x; }, 1.5);
 		shootSecondBall = new AutoShooterSequence(shooter, cargoHandler, 0.5);
 		addCommands(
 			shootFirstBall,
