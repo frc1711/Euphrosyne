@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.util.function.Supplier;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -7,9 +10,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.commands.CameraChooser;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.auton.AutoTrifecta;
@@ -21,7 +24,6 @@ import frc.robot.commands.climber.ClimberInitialization;
 import frc.robot.commands.swerve.ResetGyro;
 import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
-import frc.robot.subsystems.CameraSystem;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
@@ -39,13 +41,6 @@ public class RobotContainer {
 	private final Intake intake = Intake.getInstance();
 	private final Shooter shooter = Shooter.getInstance();
 	private final Climber climber = Climber.getInstance();
-	private final CameraSystem cameraSystem = CameraSystem.getInstance();
-	
-	// Camera chooser command
-	private final CameraChooser cameraChooser = new CameraChooser(
-		cameraSystem,
-		() -> driveController.getAButtonPressed() || centralController.getYButtonPressed(),		// Next camera button
-		() -> false);																			// Previous camera button
 	
 	// Swerve teleop command
 	private final SwerveTeleop swerveTeleop = new SwerveTeleop(
@@ -78,17 +73,20 @@ public class RobotContainer {
 	private final SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
+		// Instantiate cameras
+		CameraServer.startAutomaticCapture(0);
+		CameraServer.startAutomaticCapture(1);
+		
 		// Automatically run default commands
-		cameraSystem.setDefaultCommand(cameraChooser);
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
 		cargoHandler.setDefaultCommand(centralSystem);
 		
 		// Auton selector
 		autonSelector = new SendableChooser<Command>();
-		Command[] autonCommands = getAutonCommands();
-		for (Command command : autonCommands)
-			autonSelector.addOption(command != null ? command.getName() : "No Auton", command);
+		CommandWrapper[] autonCommands = getAutonCommands();
+		for (CommandWrapper command : autonCommands)
+			autonSelector.addOption(command.commandName, command);
 		autonSelector.setDefaultOption("No Auton", null);
 		
 		// Put sendables to dashboard
@@ -104,14 +102,41 @@ public class RobotContainer {
 		Dashboard.putSendable("Gyro", swerveDrive.getGyro());
 	}
 	
-	private Command[] getAutonCommands () {
-		return new Command[] {
-			new AutoTaxi(swerveDrive),
-			new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
-			new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler, 8),
-			new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler),
-			new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler)
+	private CommandWrapper[] getAutonCommands () {
+		return new CommandWrapper[] {
+			new CommandWrapper(
+				() -> new AutoTaxi(swerveDrive),
+				"AutoTaxi",
+				swerveDrive),
+			new CommandWrapper(
+				() -> new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
+				"AutoLowGoalTaxi",
+				swerveDrive, shooter, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler, 8),
+				"AutoTwoBallSensor",
+				swerveDrive, shooter, intake, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler),
+				"AutoTwoBallWall",
+				swerveDrive, shooter, intake, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler),
+				"AutoTrifecta",
+				swerveDrive, shooter, intake, cargoHandler)
 		};
+	}
+	
+	private class CommandWrapper extends InstantCommand {
+		
+		private final String commandName;
+		
+		private CommandWrapper (Supplier<Command> commandSupplier, String commandName, Subsystem... requiredSubsystems) {
+			super(() -> commandSupplier.get().schedule());
+			addRequirements(requiredSubsystems);
+			this.commandName = commandName;
+		}
+		
 	}
 	
 	public Command getAutonomousCommand () {

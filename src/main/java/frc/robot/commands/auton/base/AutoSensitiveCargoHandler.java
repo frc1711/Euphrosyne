@@ -10,7 +10,7 @@ public class AutoSensitiveCargoHandler extends AutoCargoHandler {
 	
 	private static final int
 		FRAME_COUNT = 5, // Number of frames averaged in finding the current
-		DEADZONE_FRAMES = 25; // Number of frames that aren't counted at the beginning (current is unnaturally high at start)
+		DEADZONE_FRAMES = 75; // Number of frames that aren't counted at the beginning (current is unnaturally high at start)
 	private static final double CURRENT_CUTOFF = 5; // Mininum current (in amps) for tripping the sensing of the cargo ball
 	
 	private final ArrayList<Double> currents = new ArrayList<Double>();

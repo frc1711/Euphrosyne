@@ -11,9 +11,9 @@
         "vgap": 16.0,
         "titleType": 1,
         "tiles": {
-          "6,0": {
+          "0,4": {
             "size": [
-              4,
+              10,
               1
             ],
             "content": {
@@ -22,7 +22,7 @@
               "_title": "FMS Info"
             }
           },
-          "6,1": {
+          "8,2": {
             "size": [
               2,
               1
@@ -48,26 +48,7 @@
               "Visuals/Counter clockwise": false
             }
           },
-          "0,0": {
-            "size": [
-              6,
-              4
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Camera",
-              "_title": "Camera",
-              "Crosshair/Show crosshair": false,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": false,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
-            }
-          },
-          "8,1": {
+          "8,3": {
             "size": [
               2,
               1
@@ -78,15 +59,42 @@
               "_title": "Auton Wait Period"
             }
           },
-          "8,2": {
+          "0,0": {
             "size": [
-              2,
-              1
+              6,
+              4
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/TEMPORARY Rotation 1",
-              "_title": "SmartDashboard/TEMPORARY Rotation 1"
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": false,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "6,0": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 1",
+              "_title": "USB Camera 1",
+              "Crosshair/Show crosshair": false,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
