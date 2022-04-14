@@ -78,9 +78,9 @@
               "imageHeight": -1
             }
           },
-          "6,0": {
+          "7,0": {
             "size": [
-              4,
+              3,
               2
             ],
             "content": {
@@ -95,6 +95,19 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Field Relative",
+              "_title": "Field Relative",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }

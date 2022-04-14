@@ -1,13 +1,14 @@
 package frc.robot.commands.swerve;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import frc.robot.Dashboard;
 import frc.robot.subsystems.Swerve;
 import frc.team1711.swerve.subsystems.SwerveDrive;
 import frc.team1711.swerve.util.InputHandler;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 public class SwerveTeleop extends CommandBase {
 	
@@ -62,6 +63,7 @@ public class SwerveTeleop extends CommandBase {
 	@Override
 	public void execute () {
 		if (toggleFieldRelative.getAsBoolean()) fieldRelative = !fieldRelative;
+		Dashboard.IS_FIELD_RELATIVE.put(fieldRelative);
 		
 		// Reset gyro
 		if (resetGyro.getAsBoolean()) swerveDrive.resetGyro();
