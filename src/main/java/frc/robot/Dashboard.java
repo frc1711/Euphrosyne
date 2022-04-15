@@ -15,7 +15,7 @@ public class Dashboard {
 	public static final Entry<Double>
 		AUTON_WAIT_PERIOD = Entry.getDoubleEntry("Auton Wait Period", 0),
 		CARGO_HANDLER_SPEED = Entry.getDoubleEntry("Cargo Handler Speed", -0.5),
-		SHOOTER_MAX_SPEED = Entry.getDoubleEntry("Max Shooter Speed", -0.7),
+		SHOOTER_MAX_SPEED = Entry.getDoubleEntry("Max Shooter Speed", -0.75),
 		INTAKE_MAX_SPEED = Entry.getDoubleEntry("Max Intake Speed", -0.7);
 	
 	private Dashboard () { }
