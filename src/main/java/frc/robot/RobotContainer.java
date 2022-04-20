@@ -50,7 +50,8 @@ public class RobotContainer {
 		() -> driveController.getRightX(),											// Steering
 		() -> driveController.getRightTriggerAxis() > 0.4,							// Fast mode
 		() -> driveController.getLeftTriggerAxis() > 0.4,							// Slow mode
-		() -> driveController.getLeftBumper() && driveController.getRightBumper());	// Reset gyro
+		() -> driveController.getLeftBumper() && driveController.getRightBumper(),	// Reset gyro
+		() -> driveController.getBButtonPressed());								// Field relative toggle
 	
 	// Central system command
 	private final CentralSystem centralSystem = new CentralSystem(
@@ -113,7 +114,7 @@ public class RobotContainer {
 				"AutoLowGoalTaxi",
 				swerveDrive, shooter, cargoHandler),
 			new CommandWrapper(
-				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler, 8),
+				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler),
 				"AutoTwoBallSensor",
 				swerveDrive, shooter, intake, cargoHandler),
 			new CommandWrapper(

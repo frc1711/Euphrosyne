@@ -1,13 +1,14 @@
 package frc.robot.commands.swerve;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+import frc.robot.Dashboard;
 import frc.robot.subsystems.Swerve;
 import frc.team1711.swerve.subsystems.SwerveDrive;
 import frc.team1711.swerve.util.InputHandler;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
 public class SwerveTeleop extends CommandBase {
 	
@@ -26,7 +27,10 @@ public class SwerveTeleop extends CommandBase {
 	private final BooleanSupplier
 		fastMode,
 		slowMode,
-		resetGyro;
+		resetGyro,
+		toggleFieldRelative;
+	
+	private boolean fieldRelative = true;
 	
 	public SwerveTeleop (
 			Swerve swerveDrive,
@@ -35,7 +39,8 @@ public class SwerveTeleop extends CommandBase {
 			DoubleSupplier steering,
 			BooleanSupplier fastMode,
 			BooleanSupplier slowMode,
-			BooleanSupplier resetGyro) {
+			BooleanSupplier resetGyro,
+			BooleanSupplier toggleFieldRelative) {
 		
 		this.swerveDrive = swerveDrive;
 		
@@ -45,6 +50,7 @@ public class SwerveTeleop extends CommandBase {
 		this.fastMode = fastMode;
 		this.slowMode = slowMode;
 		this.resetGyro = resetGyro;
+		this.toggleFieldRelative = toggleFieldRelative;
 		
 		addRequirements(swerveDrive);
 	}
@@ -56,14 +62,28 @@ public class SwerveTeleop extends CommandBase {
 	
 	@Override
 	public void execute () {
+		if (toggleFieldRelative.getAsBoolean()) fieldRelative = !fieldRelative;
+		Dashboard.IS_FIELD_RELATIVE.put(fieldRelative);
+		
 		// Reset gyro
 		if (resetGyro.getAsBoolean()) swerveDrive.resetGyro();
 		
 		// Sets the current controls configuration
 		SwerveDrive.ControlsConfig controlsConfig = getControlsConfig();
 		
-		// Performs field-relative driving for the swerve system with input deadbands turned on
-		swerveDrive.fieldRelativeUserInputDrive(strafeX.getAsDouble(), strafeY.getAsDouble(), steering.getAsDouble(), controlsConfig);
+		// Performs driving for the swerve system with input deadbands turned on
+		if (fieldRelative)
+			swerveDrive.fieldRelativeUserInputDrive(
+				strafeX.getAsDouble(),
+				strafeY.getAsDouble(),
+				steering.getAsDouble(),
+				controlsConfig);
+		else
+			swerveDrive.userInputDrive(
+				strafeX.getAsDouble(),
+				strafeY.getAsDouble(),
+				steering.getAsDouble(),
+				controlsConfig);
 	}
 	
 	private SwerveDrive.ControlsConfig getControlsConfig () {
