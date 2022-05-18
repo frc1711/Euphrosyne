@@ -20,7 +20,8 @@
 Slow mode and fast mode speed up the movement controls on the robot's swerve drive. In fast mode, the speed
 is fast enough for strafing and steering to conflict at max speeds, meaning that if you start turning at max
 speed your strafing speed may decrease. Fast mode is best used if you need to either *only turn* or *only strafe*
-very quickly.
+very quickly.  
+In outreach safety mode, you cannot reset the gyro, change speed modes, or toggle field relativity.
 
 ### Central Controller
 ![](./info/central-controller.png)
@@ -28,7 +29,8 @@ When the climber begins to hit the "invisible ceiling" (preventing the climber f
 of the robot), the controller will vibrate. The reverse input speeds button will only reverse the speeds of systems when
 they are controlled by one of the gray inputs (direct shooter, direct intake, and direct cargo handler). Because the grayed
 inputs are more "direct," it is recommended that they are used sparingly because many of the systems are automated with the
-black inputs.
+black inputs.  
+In outreach safety mode, press Y to brake.
 
 ## Auton Paths
 ### AutoTaxi

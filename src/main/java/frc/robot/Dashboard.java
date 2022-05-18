@@ -8,10 +8,10 @@ import java.util.function.Supplier;
 
 public class Dashboard {
 	
-	
 	public static final Entry<Boolean>
 		CLIMBER_OVERRIDE_MODE = Entry.getBooleanEntry("Climber Override Mode", false),
-		IS_FIELD_RELATIVE = Entry.getBooleanEntry("Field Relative", true);
+		IS_FIELD_RELATIVE = Entry.getBooleanEntry("Field Relative", true),
+		OUTREACH_SAFETY_MODE = Entry.getBooleanEntry("Outreach Safety Mode", false);
 	public static final Entry<Double>
 		AUTON_WAIT_PERIOD = Entry.getDoubleEntry("Auton Wait Period", 0),
 		CARGO_HANDLER_SPEED = Entry.getDoubleEntry("Cargo Handler Speed", -0.5),

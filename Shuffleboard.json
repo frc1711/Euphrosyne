@@ -219,7 +219,7 @@
           "2,0": {
             "size": [
               2,
-              3
+              2
             ],
             "content": {
               "_type": "Network Table Tree",
@@ -236,6 +236,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Cargo Handler Speed",
               "_title": "Cargo Handler Speed"
+            }
+          },
+          "2,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/Outreach Safety Mode",
+              "_title": "Outreach Safety Mode"
             }
           }
         }
