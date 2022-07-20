@@ -18,6 +18,7 @@ import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.auton.AutoTrifecta;
 import frc.robot.commands.auton.AutoTwoBallSensor;
 import frc.robot.commands.auton.AutoTwoBallWall;
+import frc.robot.commands.auton.FollowTargetCommand;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -125,7 +126,11 @@ public class RobotContainer {
 			new CommandWrapper(
 				() -> new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler),
 				"AutoTrifecta",
-				swerveDrive, shooter, intake, cargoHandler)
+				swerveDrive, shooter, intake, cargoHandler),
+			new CommandWrapper(
+				() -> new FollowTargetCommand(swerveDrive),
+				"FollowTargetCommand",
+				swerveDrive),
 		};
 	}
 	
