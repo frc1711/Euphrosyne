@@ -18,8 +18,8 @@ public class Dashboard {
 		SHOOTER_MAX_SPEED = Entry.getDoubleEntry("Max Shooter Speed", -0.75),
 		INTAKE_MAX_SPEED = Entry.getDoubleEntry("Max Intake Speed", -0.7),
 		
-		HOODED_SHOOTER_UPPER_SPEED = Entry.getDoubleEntry("Hooded Shooter Upper Speed", 0),
-		HOODED_SHOOTER_LOWER_SPEED = Entry.getDoubleEntry("Hooded Shooter Lower Speed", 0);
+		HOODED_SHOOTER_UPPER_SPEED = Entry.getDoubleEntry("Hooded Shooter Upper Speed", -0.42),
+		HOODED_SHOOTER_LOWER_SPEED = Entry.getDoubleEntry("Hooded Shooter Lower Speed", 0.42);
 	
 	private Dashboard () { }
 	

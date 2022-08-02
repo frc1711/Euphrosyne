@@ -1,15 +1,15 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.IDMap;
+import frc.robot.Dashboard;
 
 public class Shooter extends SubsystemBase {
+	
+	/**
+	 * TODO: FIX THIS
+	 * For now, Shooter just redirects inputs to the HoodedShooter singleton.
+	 * DO NOT USE SHOOTER AND HOODEDSHOOTER AT THE SAME TIME
+	 */
 	
 	private static Shooter shooterInstance;
 	
@@ -18,23 +18,16 @@ public class Shooter extends SubsystemBase {
 		return shooterInstance;
 	}
 	
-	private final CANSparkMax shooter = new CANSparkMax(IDMap.CAN.SHOOTER.ID, MotorType.kBrushless);
-	private final RelativeEncoder shooterEncoder = shooter.getEncoder();
-	
-	public Shooter () {
-		shooter.setIdleMode(IdleMode.kCoast);
-	}
-	
 	public double getSpeed () {
-		return shooterEncoder.getVelocity();
+		return 0;
 	}
 	
 	public void setSpeed (double speed) {
-		shooter.set(speed);
+		HoodedShooter.getInstance().setSpeed(Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(), Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
 	}
 	
 	public void stop () {
-		shooter.set(0);
+		HoodedShooter.getInstance().stop();
 	}
 	
 }

@@ -21,10 +21,8 @@ public class IDMap {
 		REAR_RIGHT_STEER_ENCODER (12),
 		
 		INTAKE (13),
-		CARGO_HANDLER (14),
-		SHOOTER (15),			// For the original shooter design
 		
-		UPPER_SHOOTER (14),		// TODO: Get IDs for the motor controllers for the new hooded shooter
+		UPPER_SHOOTER (14),
 		LOWER_SHOOTER (15),
 		
 		CLIMBER_ROTATOR (16),

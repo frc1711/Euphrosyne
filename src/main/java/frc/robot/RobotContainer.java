@@ -40,9 +40,11 @@ public class RobotContainer {
 		centralController = new XboxController(1);
 	
 	private final Swerve swerveDrive = Swerve.getInstance();
+	private final CargoHandler cargoHandler = CargoHandler.getInstance();
 	private final Intake intake = Intake.getInstance();
 	private final Climber climber = Climber.getInstance();
 	
+	private final Shooter shooter = Shooter.getInstance(); // TODO: REMOVE THIS; TEMPORARY
 	private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
 	
 	// Swerve teleop command
@@ -57,15 +59,15 @@ public class RobotContainer {
 		() -> driveController.getBButtonPressed(),									// Field relative toggle
 		() -> centralController.getYButton());
 	
-	// // Central system command
-	// private final CentralSystem centralSystem = new CentralSystem(
-	// 	cargoHandler, intake, shooter,
-	// 	() -> centralController.getAButton(),										// Cargo handler AND intake
-	// 	() -> centralController.getBButton(),										// Cargo handler
-	// 	() -> centralController.getRightTriggerAxis(),								// Intake
-	// 	() -> centralController.getLeftTriggerAxis(),								// Shooter
-	// 	() -> centralController.getRightBumper(),									// Shooter sequence
-	// 	() -> centralController.getXButton());										// Reverse mode
+	// Central system command
+	private final CentralSystem centralSystem = new CentralSystem(
+		cargoHandler, intake, shooter,
+		() -> centralController.getAButton(),										// Cargo handler AND intake
+		() -> centralController.getBButton(),										// Cargo handler
+		() -> centralController.getRightTriggerAxis(),								// Intake
+		() -> centralController.getLeftTriggerAxis(),								// Shooter
+		() -> centralController.getRightBumper(),									// Shooter sequence
+		() -> centralController.getXButton());										// Reverse mode
 	
 	private final HoodedShooterTest hoodedShooterTest = new HoodedShooterTest(
 		hoodedShooter,
@@ -91,7 +93,7 @@ public class RobotContainer {
 		// Automatically run default commands
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
-		// cargoHandler.setDefaultCommand(centralSystem);
+		cargoHandler.setDefaultCommand(centralSystem);
 		hoodedShooter.setDefaultCommand(hoodedShooterTest);
 		
 		// Auton selector
@@ -120,22 +122,22 @@ public class RobotContainer {
 				() -> new AutoTaxi(swerveDrive),
 				"AutoTaxi",
 				swerveDrive),
-			// new CommandWrapper(
-			// 	() -> new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
-			// 	"AutoLowGoalTaxi",
-			// 	swerveDrive, shooter, cargoHandler),
-			// new CommandWrapper(
-			// 	() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler),
-			// 	"AutoTwoBallSensor",
-			// 	swerveDrive, shooter, intake, cargoHandler),
-			// new CommandWrapper(
-			// 	() -> new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler),
-			// 	"AutoTwoBallWall",
-			// 	swerveDrive, shooter, intake, cargoHandler),
-			// new CommandWrapper(
-			// 	() -> new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler),
-			// 	"AutoTrifecta",
-			// 	swerveDrive, shooter, intake, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
+				"AutoLowGoalTaxi",
+				swerveDrive, shooter, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler),
+				"AutoTwoBallSensor",
+				swerveDrive, shooter, intake, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler),
+				"AutoTwoBallWall",
+				swerveDrive, shooter, intake, cargoHandler),
+			new CommandWrapper(
+				() -> new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler),
+				"AutoTrifecta",
+				swerveDrive, shooter, intake, cargoHandler),
 			new CommandWrapper(
 				() -> new FollowTargetCommand(swerveDrive),
 				"FollowTargetCommand",
