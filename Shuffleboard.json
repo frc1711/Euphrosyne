@@ -248,15 +248,37 @@
               "_source0": "network_table:///SmartDashboard/Outreach Safety Mode",
               "_title": "Outreach Safety Mode"
             }
+          },
+          "0,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hooded Shooter Upper Speed",
+              "_title": "Hooded Shooter Upper Speed"
+            }
+          },
+          "2,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hooded Shooter Lower Speed",
+              "_title": "Hooded Shooter Lower Speed"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
+    "x": -40.0,
+    "y": 34.400001525878906,
     "width": 1550.4000244140625,
-    "height": 878.4000244140625
+    "height": 712.0
   }
 }

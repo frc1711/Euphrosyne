@@ -16,7 +16,10 @@ public class Dashboard {
 		AUTON_WAIT_PERIOD = Entry.getDoubleEntry("Auton Wait Period", 0),
 		CARGO_HANDLER_SPEED = Entry.getDoubleEntry("Cargo Handler Speed", -0.5),
 		SHOOTER_MAX_SPEED = Entry.getDoubleEntry("Max Shooter Speed", -0.75),
-		INTAKE_MAX_SPEED = Entry.getDoubleEntry("Max Intake Speed", -0.7);
+		INTAKE_MAX_SPEED = Entry.getDoubleEntry("Max Intake Speed", -0.7),
+		
+		HOODED_SHOOTER_UPPER_SPEED = Entry.getDoubleEntry("Hooded Shooter Upper Speed", 0),
+		HOODED_SHOOTER_LOWER_SPEED = Entry.getDoubleEntry("Hooded Shooter Lower Speed", 0);
 	
 	private Dashboard () { }
 	

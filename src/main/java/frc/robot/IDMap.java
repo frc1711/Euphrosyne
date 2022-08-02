@@ -24,8 +24,8 @@ public class IDMap {
 		CARGO_HANDLER (14),
 		SHOOTER (15),			// For the original shooter design
 		
-		UPPER_SHOOTER (0),		// TODO: Get IDs for the motor controllers for the new hooded shooter
-		LOWER_SHOOTER (0),
+		UPPER_SHOOTER (14),		// TODO: Get IDs for the motor controllers for the new hooded shooter
+		LOWER_SHOOTER (15),
 		
 		CLIMBER_ROTATOR (16),
 		CLIMBER_EXTENDER (17);
