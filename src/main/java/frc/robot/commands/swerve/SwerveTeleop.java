@@ -17,7 +17,8 @@ public class SwerveTeleop extends CommandBase {
 	public static final SwerveDrive.ControlsConfig
 		normalConfig = new SwerveDrive.ControlsConfig(0.5, 0.5, swerveInputHandler),
 		fastConfig = new SwerveDrive.ControlsConfig(1, 1, swerveInputHandler),
-		slowConfig = new SwerveDrive.ControlsConfig(0.1, 0.1, swerveInputHandler);
+		slowConfig = new SwerveDrive.ControlsConfig(0.1, 0.1, swerveInputHandler),
+		outreachSafetyConfig = new SwerveDrive.ControlsConfig(0.15, 0.15, swerveInputHandler);
 	
 	private final Swerve swerveDrive;
 	private final DoubleSupplier
@@ -28,7 +29,8 @@ public class SwerveTeleop extends CommandBase {
 		fastMode,
 		slowMode,
 		resetGyro,
-		toggleFieldRelative;
+		toggleFieldRelative,
+		outreachSafetyBrake;
 	
 	private boolean fieldRelative = true;
 	
@@ -40,7 +42,8 @@ public class SwerveTeleop extends CommandBase {
 			BooleanSupplier fastMode,
 			BooleanSupplier slowMode,
 			BooleanSupplier resetGyro,
-			BooleanSupplier toggleFieldRelative) {
+			BooleanSupplier toggleFieldRelative,
+			BooleanSupplier outreachSafetyBrake) {
 		
 		this.swerveDrive = swerveDrive;
 		
@@ -51,6 +54,7 @@ public class SwerveTeleop extends CommandBase {
 		this.slowMode = slowMode;
 		this.resetGyro = resetGyro;
 		this.toggleFieldRelative = toggleFieldRelative;
+		this.outreachSafetyBrake = outreachSafetyBrake;
 		
 		addRequirements(swerveDrive);
 	}
@@ -62,32 +66,41 @@ public class SwerveTeleop extends CommandBase {
 	
 	@Override
 	public void execute () {
-		if (toggleFieldRelative.getAsBoolean()) fieldRelative = !fieldRelative;
+		// The field relativity cannot be toggled in outreach safety mode (to prevent confusion)
+		if (toggleFieldRelative.getAsBoolean() && !Dashboard.OUTREACH_SAFETY_MODE.get())
+			fieldRelative = !fieldRelative;
 		Dashboard.IS_FIELD_RELATIVE.put(fieldRelative);
 		
-		// Reset gyro
-		if (resetGyro.getAsBoolean()) swerveDrive.resetGyro();
+		// Gyro cannot be reset during outreach safety mode (to prevent confusion)
+		if (resetGyro.getAsBoolean() && !Dashboard.OUTREACH_SAFETY_MODE.get())
+			swerveDrive.resetGyro();
 		
 		// Sets the current controls configuration
 		SwerveDrive.ControlsConfig controlsConfig = getControlsConfig();
 		
-		// Performs driving for the swerve system with input deadbands turned on
-		if (fieldRelative)
-			swerveDrive.fieldRelativeUserInputDrive(
-				strafeX.getAsDouble(),
-				strafeY.getAsDouble(),
-				steering.getAsDouble(),
-				controlsConfig);
-		else
-			swerveDrive.userInputDrive(
-				strafeX.getAsDouble(),
-				strafeY.getAsDouble(),
-				steering.getAsDouble(),
-				controlsConfig);
+		if (outreachSafetyBrake.getAsBoolean()) {
+			swerveDrive.stop();
+		} else {
+			// Performs driving for the swerve system with input deadbands turned on
+			if (fieldRelative) {
+				swerveDrive.fieldRelativeUserInputDrive(
+					strafeX.getAsDouble(),
+					strafeY.getAsDouble(),
+					steering.getAsDouble(),
+					controlsConfig);
+			} else {
+				swerveDrive.userInputDrive(
+					strafeX.getAsDouble(),
+					strafeY.getAsDouble(),
+					steering.getAsDouble(),
+					controlsConfig);
+			}
+		}
 	}
 	
 	private SwerveDrive.ControlsConfig getControlsConfig () {
-		if (slowMode.getAsBoolean()) return slowConfig;
+		if (Dashboard.OUTREACH_SAFETY_MODE.get()) return outreachSafetyConfig;
+		else if (slowMode.getAsBoolean()) return slowConfig;
 		else if (fastMode.getAsBoolean()) return fastConfig;
 		else return normalConfig;
 	}

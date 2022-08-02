@@ -51,7 +51,8 @@ public class RobotContainer {
 		() -> driveController.getRightTriggerAxis() > 0.4,							// Fast mode
 		() -> driveController.getLeftTriggerAxis() > 0.4,							// Slow mode
 		() -> driveController.getLeftBumper() && driveController.getRightBumper(),	// Reset gyro
-		() -> driveController.getBButtonPressed());								// Field relative toggle
+		() -> driveController.getBButtonPressed(),									// Field relative toggle
+		() -> centralController.getYButton());
 	
 	// Central system command
 	private final CentralSystem centralSystem = new CentralSystem(
