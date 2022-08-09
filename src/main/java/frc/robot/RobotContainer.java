@@ -13,14 +13,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.commands.auton.AutoLowGoalTaxi;
 import frc.robot.commands.auton.AutoTaxi;
-import frc.robot.commands.auton.AutoTrifecta;
-import frc.robot.commands.auton.AutoTwoBallSensor;
-import frc.robot.commands.auton.AutoTwoBallWall;
 import frc.robot.commands.auton.FollowTargetCommand;
 import frc.robot.commands.central.CentralSystem;
-import frc.robot.commands.central.HoodedShooterTest;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
 import frc.robot.commands.swerve.ResetGyro;
@@ -30,7 +25,6 @@ import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
@@ -43,8 +37,6 @@ public class RobotContainer {
 	private final CargoHandler cargoHandler = CargoHandler.getInstance();
 	private final Intake intake = Intake.getInstance();
 	private final Climber climber = Climber.getInstance();
-	
-	private final Shooter shooter = Shooter.getInstance(); // TODO: REMOVE THIS; TEMPORARY
 	private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
 	
 	// Swerve teleop command
@@ -61,19 +53,13 @@ public class RobotContainer {
 	
 	// Central system command
 	private final CentralSystem centralSystem = new CentralSystem(
-		cargoHandler, intake, shooter,
+		cargoHandler, intake, hoodedShooter,
 		() -> centralController.getAButton(),										// Cargo handler AND intake
 		() -> centralController.getBButton(),										// Cargo handler
 		() -> centralController.getRightTriggerAxis(),								// Intake
 		() -> centralController.getLeftTriggerAxis(),								// Shooter
 		() -> centralController.getRightBumper(),									// Shooter sequence
 		() -> centralController.getXButton());										// Reverse mode
-	
-	// private final HoodedShooterTest hoodedShooterTest = new HoodedShooterTest(
-	// 	hoodedShooter,
-	// 	() -> centralController.getAButton(),
-	// 	() -> Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(),
-	// 	() -> Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
 	
 	// Climber command
 	private final ClimberCommand climberCommand = new ClimberCommand(
@@ -122,22 +108,6 @@ public class RobotContainer {
 				() -> new AutoTaxi(swerveDrive),
 				"AutoTaxi",
 				swerveDrive),
-			new CommandWrapper(
-				() -> new AutoLowGoalTaxi(swerveDrive, shooter, cargoHandler),
-				"AutoLowGoalTaxi",
-				swerveDrive, shooter, cargoHandler),
-			new CommandWrapper(
-				() -> new AutoTwoBallSensor(swerveDrive, shooter, intake, cargoHandler),
-				"AutoTwoBallSensor",
-				swerveDrive, shooter, intake, cargoHandler),
-			new CommandWrapper(
-				() -> new AutoTwoBallWall(swerveDrive, shooter, intake, cargoHandler),
-				"AutoTwoBallWall",
-				swerveDrive, shooter, intake, cargoHandler),
-			new CommandWrapper(
-				() -> new AutoTrifecta(swerveDrive, shooter, intake, cargoHandler),
-				"AutoTrifecta",
-				swerveDrive, shooter, intake, cargoHandler),
 			new CommandWrapper(
 				() -> new FollowTargetCommand(swerveDrive),
 				"FollowTargetCommand",

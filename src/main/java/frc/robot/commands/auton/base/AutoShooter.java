@@ -2,19 +2,18 @@ package frc.robot.commands.auton.base;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-import frc.robot.subsystems.Shooter;
+import frc.robot.Dashboard;
+import frc.robot.subsystems.HoodedShooter;
 
 public class AutoShooter extends CommandBase {
 	
-	private final Shooter shooter;
-	private final double duration, speed;
+	private final HoodedShooter shooter;
+	private final double duration;
 	private final Timer timer;
 	
-	public AutoShooter (Shooter shooter, double duration, double speed) {
+	public AutoShooter (HoodedShooter shooter, double duration, double speed) {
 		this.shooter = shooter;
 		this.duration = duration;
-		this.speed = speed;
 		
 		timer = new Timer();
 		addRequirements(shooter);
@@ -28,7 +27,7 @@ public class AutoShooter extends CommandBase {
 	
 	@Override
 	public void execute () {
-		shooter.setSpeed(speed);
+		shooter.setSpeed(Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(), Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
 	}
 	
 	@Override

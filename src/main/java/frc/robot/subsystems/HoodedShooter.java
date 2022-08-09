@@ -9,12 +9,6 @@ import frc.robot.IDMap;
 
 public class HoodedShooter extends SubsystemBase {
 	
-	/**
-	 * TODO: FIX THIS
-	 * For now, Shooter just redirects inputs to the HoodedShooter singleton.
-	 * DO NOT USE SHOOTER AND HOODEDSHOOTER AT THE SAME TIME
-	 */
-	
 	private static HoodedShooter hoodedShooterInstance;
 	
 	public static HoodedShooter getInstance () {

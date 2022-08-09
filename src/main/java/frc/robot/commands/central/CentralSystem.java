@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Dashboard;
 import frc.robot.commands.auton.base.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
+import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 import frc.team1711.swerve.util.InputHandler;
 
 import java.util.function.BooleanSupplier;
@@ -19,15 +19,15 @@ public class CentralSystem extends CommandBase {
 	
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
-	private final Shooter shooter;
+	private final HoodedShooter shooter;
 	
 	private final BooleanSupplier runHandlerAndIntake, runCargoHandler, reverseButton, runShooterSequence;
-	private final DoubleSupplier runIntake, runShooter;
+	private final DoubleSupplier runIntake;
 	
 	public CentralSystem (
 			CargoHandler cargoHandler,
 			Intake intake,
-			Shooter shooter,
+			HoodedShooter shooter,
 			BooleanSupplier runHandlerAndIntake,
 			BooleanSupplier runCargoHandler,
 			DoubleSupplier runIntake,
@@ -41,7 +41,6 @@ public class CentralSystem extends CommandBase {
 		this.runHandlerAndIntake = runHandlerAndIntake;
 		this.runCargoHandler = runCargoHandler;
 		this.runIntake = runIntake;
-		this.runShooter = runShooter;
 		this.runShooterSequence = runShooterSequence;
 		this.reverseButton = reverseButton;
 		
@@ -57,12 +56,13 @@ public class CentralSystem extends CommandBase {
 	
 	@Override
 	public void execute () {
-		// Attempting to run the shooter sequence
+		// Run the shooter command if necessary
 		if (runShooterSequence.getAsBoolean())
 			CommandScheduler.getInstance().schedule(
 				new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
 		
-		int r = (reverseButton.getAsBoolean() ? -1 : 1); //r is a numerical value of true or false for reversebutton
+		// Checks whether the reverse button is pressed; r represents a scalar for speed inputs depending on the reverse mode
+		int r = reverseButton.getAsBoolean() ? -1 : 1;
 		
 		boolean runCargoHandlerBool = runCargoHandler.getAsBoolean() || runHandlerAndIntake.getAsBoolean();
 		cargoHandler.setSpeed(runCargoHandlerBool ? Dashboard.CARGO_HANDLER_SPEED.get() * r : 0);
@@ -70,10 +70,8 @@ public class CentralSystem extends CommandBase {
 		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * Dashboard.INTAKE_MAX_SPEED.get();
 		if (runHandlerAndIntake.getAsBoolean()) intakeSpeed = r * Dashboard.INTAKE_MAX_SPEED.get();
 		
-		double shooterSpeed = r * centralSystemInputHandler.apply(runShooter.getAsDouble()) * Dashboard.SHOOTER_MAX_SPEED.get();
-		
 		intake.setSpeed(intakeSpeed);
-		shooter.setSpeed(shooterSpeed);
+		shooter.stop();
 	}
 	
 	@Override

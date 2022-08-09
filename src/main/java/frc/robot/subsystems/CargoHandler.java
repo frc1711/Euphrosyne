@@ -22,7 +22,6 @@ public class CargoHandler extends SubsystemBase {
 	private final DigitalInput topProximitySensor = new DigitalInput(IDMap.DIO.TOP_PROXIMITY_SENSOR.ID);
 	
 	private CargoHandler () {
-		// TODO: FIX THIS
 		pulley = new CANSparkMax(IDMap.CAN.CARGO_PULLEY.ID, MotorType.kBrushless);
 		pulley.setIdleMode(IdleMode.kBrake);
 	}
@@ -40,7 +39,7 @@ public class CargoHandler extends SubsystemBase {
 	}
 	
 	public double getCurrent () {
-		return 0; // pulley.getOutputCurrent();
+		return pulley.getOutputCurrent();
 	}
 	
 }

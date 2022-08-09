@@ -5,13 +5,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.Dashboard;
 import frc.robot.subsystems.CargoHandler;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.HoodedShooter;
 
 import java.util.function.BooleanSupplier;
 
 public class AutoShooterSequence extends SequentialCommandGroup {
 	
-	private final Shooter shooter;
+	private final HoodedShooter shooter;
 	private final CargoHandler cargoHandler;
 	private final BooleanSupplier stopCommand;
 	
@@ -21,7 +21,7 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 	 * @param cargoHandler
 	 * @param shooterRunLength
 	 */
-	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, double shooterRunLength) {
+	public AutoShooterSequence (HoodedShooter shooter, CargoHandler cargoHandler, double shooterRunLength) {
 		this(shooter, cargoHandler, shooterRunLength, () -> false);
 	}
 	
@@ -32,23 +32,25 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 	 * @param cargoHandler
 	 * @param stopCommand
 	 */
-	public AutoShooterSequence (Shooter shooter, CargoHandler cargoHandler, BooleanSupplier stopCommand) {
+	public AutoShooterSequence (HoodedShooter shooter, CargoHandler cargoHandler, BooleanSupplier stopCommand) {
 		this(shooter, cargoHandler, Double.POSITIVE_INFINITY, stopCommand);
 	}
 	
 	private AutoShooterSequence (
-			Shooter shooter,
+			HoodedShooter shooter,
 			CargoHandler cargoHandler,
 			double shooterRunLength,
 			BooleanSupplier stopCommand) {
 		super(
-			// Intake until sensor is not tripped
-			new AutoCargoHandler(cargoHandler, -Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> !sensorTripped),
-			// Then intake until sensor is tripped
+			// Intake until sensor is tripped (ball at top of pulley)
+			new AutoCargoHandler(cargoHandler, Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> sensorTripped),
+			
+			// Intake backwards until sensor is not tripped (ball just below the kicker so the shooter can get up to speed)
 			new ParallelRaceGroup(
-				new AutoCargoHandler(cargoHandler, Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> sensorTripped),
+				new AutoCargoHandler(cargoHandler, -Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> !sensorTripped),
 				new AutoShooter(shooter, Double.POSITIVE_INFINITY, Dashboard.SHOOTER_MAX_SPEED.get())
 			),
+			
 			new ParallelRaceGroup(
 				// Run shooter (will run until stopped)
 				new AutoShooter(shooter, Double.POSITIVE_INFINITY, Dashboard.SHOOTER_MAX_SPEED.get()),
