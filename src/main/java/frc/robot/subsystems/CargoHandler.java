@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -14,12 +18,13 @@ public class CargoHandler extends SubsystemBase {
 		return cargoHandlerInstance;
 	}
 	
+	private final CANSparkMax pulley;
 	private final DigitalInput topProximitySensor = new DigitalInput(IDMap.DIO.TOP_PROXIMITY_SENSOR.ID);
 	
 	private CargoHandler () {
 		// TODO: FIX THIS
-		// pulley = new CANSparkMax(IDMap.CAN.CARGO_HANDLER.ID, MotorType.kBrushless);
-		// pulley.setIdleMode(IdleMode.kBrake);
+		pulley = new CANSparkMax(IDMap.CAN.CARGO_PULLEY.ID, MotorType.kBrushless);
+		pulley.setIdleMode(IdleMode.kBrake);
 	}
 	
 	public boolean checkBallAtSensor () {
@@ -27,11 +32,11 @@ public class CargoHandler extends SubsystemBase {
 	}
 	
 	public void setSpeed (double speed) {
-		// pulley.set(speed);
+		pulley.set(speed);
 	}
 	
 	public void stop () {
-		// pulley.set(0);
+		pulley.set(0);
 	}
 	
 	public double getCurrent () {

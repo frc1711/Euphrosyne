@@ -22,11 +22,13 @@ public class IDMap {
 		
 		INTAKE (13),
 		
-		UPPER_SHOOTER (14),
-		LOWER_SHOOTER (15),
+		UPPER_SHOOTER (15),
+		LOWER_SHOOTER (14),
 		
 		CLIMBER_ROTATOR (16),
-		CLIMBER_EXTENDER (17);
+		CLIMBER_EXTENDER (17),
+		
+		CARGO_PULLEY (18);
 		
 		public final int ID;
 		private CAN (int id) {

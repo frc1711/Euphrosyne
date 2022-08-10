@@ -69,11 +69,11 @@ public class RobotContainer {
 		() -> centralController.getRightBumper(),									// Shooter sequence
 		() -> centralController.getXButton());										// Reverse mode
 	
-	private final HoodedShooterTest hoodedShooterTest = new HoodedShooterTest(
-		hoodedShooter,
-		() -> centralController.getAButton(),
-		() -> Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(),
-		() -> Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
+	// private final HoodedShooterTest hoodedShooterTest = new HoodedShooterTest(
+	// 	hoodedShooter,
+	// 	() -> centralController.getAButton(),
+	// 	() -> Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(),
+	// 	() -> Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
 	
 	// Climber command
 	private final ClimberCommand climberCommand = new ClimberCommand(
@@ -94,7 +94,7 @@ public class RobotContainer {
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
 		cargoHandler.setDefaultCommand(centralSystem);
-		hoodedShooter.setDefaultCommand(hoodedShooterTest);
+		// hoodedShooter.setDefaultCommand(hoodedShooterTest);
 		
 		// Auton selector
 		autonSelector = new SendableChooser<Command>();

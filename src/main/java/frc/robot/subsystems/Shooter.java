@@ -23,7 +23,11 @@ public class Shooter extends SubsystemBase {
 	}
 	
 	public void setSpeed (double speed) {
-		HoodedShooter.getInstance().setSpeed(Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(), Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
+		HoodedShooter hoodedShooter = HoodedShooter.getInstance();
+		if (speed != 0) hoodedShooter.setSpeed(
+			Dashboard.HOODED_SHOOTER_UPPER_SPEED.get(),
+			Dashboard.HOODED_SHOOTER_LOWER_SPEED.get());
+		else hoodedShooter.stop();
 	}
 	
 	public void stop () {
