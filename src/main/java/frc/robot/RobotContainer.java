@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.commands.auton.AutoTaxi;
-import frc.robot.commands.auton.FollowTargetCommand;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -107,10 +106,6 @@ public class RobotContainer {
 			new CommandWrapper(
 				() -> new AutoTaxi(swerveDrive),
 				"AutoTaxi",
-				swerveDrive),
-			new CommandWrapper(
-				() -> new FollowTargetCommand(swerveDrive),
-				"FollowTargetCommand",
 				swerveDrive),
 		};
 	}
