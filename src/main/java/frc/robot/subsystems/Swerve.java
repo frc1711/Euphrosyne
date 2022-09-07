@@ -2,11 +2,19 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.IDMap;
 import frc.team1711.swerve.subsystems.AutoSwerveDrive;
+import frc.team1711.swerve.util.Angles;
+import frc.team1711.swerve.util.odometry.Position;
 
 public class Swerve extends AutoSwerveDrive {
 	
+    private static final double INCHES_TO_METERS = 0.0254;
+    private final Field2d field = new Field2d();
+    
 	private static Swerve swerveInstance;
 	
 	public static Swerve getInstance () {
@@ -55,6 +63,12 @@ public class Swerve extends AutoSwerveDrive {
 		
 		this.gyro = gyro;
 	}
+    
+    @Override
+    public void autoDrive (double strafeX, double strafeY, double steering) {
+        field.setRobotPose(getPositionAsPose());
+        super.autoDrive(strafeX, strafeY, steering);
+    }
 	
 	public void configDirectionEncoders () {
 		flWheel.configDirectionEncoder();
@@ -66,5 +80,21 @@ public class Swerve extends AutoSwerveDrive {
 	public AHRS getGyro () {
 		return gyro;
 	}
+    
+    public Pose2d getPositionAsPose () {
+        return positionToPose(getPosition());
+    }
+    
+    public Field2d getField () {
+        return field;
+    }
+    
+    private static Pose2d positionToPose (Position position) {
+        final double
+            x = position.getLocation().getX(),
+            y = position.getLocation().getY();
+        
+        return new Pose2d(x*INCHES_TO_METERS, y*INCHES_TO_METERS, new Rotation2d(Math.toRadians(position.getDirection())));
+    }
 	
 }

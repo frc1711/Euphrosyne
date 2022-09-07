@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -99,15 +98,11 @@ public class RobotContainer {
 		Dashboard.putSendable("Reset Gyro", new InstantCommand(() -> new ResetGyro(swerveDrive).schedule()));
 		Dashboard.putSendable("Swerve Drive", swerveDrive);
 		Dashboard.putSendable("Gyro", swerveDrive.getGyro());
+        Dashboard.putSendable("Field", swerveDrive.getField());
 	}
 	
 	private CommandWrapper[] getAutonCommands () {
-		return new CommandWrapper[] {
-			new CommandWrapper(
-				() -> new AutoTaxi(swerveDrive),
-				"AutoTaxi",
-				swerveDrive),
-		};
+		return new CommandWrapper[] {};
 	}
 	
 	private class CommandWrapper extends InstantCommand {

@@ -21,15 +21,16 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 
 public class SwerveModule extends AutoSwerveWheel {
-		
-	private static final double
+	
+    private static final double
 		steerPIDkp = 2.2,
 		steerPIDki = 0,
-		steerPIDkd = 0;
+		steerPIDkd = 0,
+        
+        ENCODER_TO_INCHES_FACTOR = 1;
 	
 	private final String name;
 	
-	private double drivePositionOffset;
 	private final PIDController steerPID;
 	private double directionAbsoluteOffset;
 	private final CANSparkMax driveController, steerController;
@@ -53,12 +54,16 @@ public class SwerveModule extends AutoSwerveWheel {
 		steerPID = new PIDController(steerPIDkp, steerPIDki, steerPIDkd);
 		
 		driveEncoder = driveController.getEncoder();
-		drivePositionOffset = 0;
 	}
 	
+    @Override
+    public double getEncoderDistance () {
+        return driveEncoder.getPosition() * ENCODER_TO_INCHES_FACTOR;
+    }
+    
 	// Direction methods
 	@Override
-	protected double getDirection () {
+	public double getDirection () {
 		return Angles.wrapDegrees(getRawDirection());
 	}
 	
@@ -151,16 +156,6 @@ public class SwerveModule extends AutoSwerveWheel {
 	@Override
 	protected void setDriveSpeed (double speed) {
 		driveController.set(speed);
-	}
-	
-	@Override
-	protected double getPositionDifference () {
-		return driveEncoder.getPosition() - drivePositionOffset;
-	}
-	
-	@Override
-	protected void resetDriveEncoder () {
-		drivePositionOffset = driveEncoder.getPosition();
 	}
 	
 }
