@@ -2,7 +2,6 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -12,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-
+import frc.robot.commands.auton.WheelDistances;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -24,6 +23,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.SwerveModule;
 
 public class RobotContainer {
 	
@@ -70,10 +70,6 @@ public class RobotContainer {
 	private final SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
-		// Instantiate cameras
-		CameraServer.startAutomaticCapture(0);
-		CameraServer.startAutomaticCapture(1);
-		
 		// Automatically run default commands
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
@@ -86,7 +82,7 @@ public class RobotContainer {
 		for (CommandWrapper command : autonCommands)
 			autonSelector.addOption(command.commandName, command);
 		autonSelector.setDefaultOption("No Auton", null);
-		
+        
 		// Put sendables to dashboard
 		putSendablesToDashboard();
 	}
@@ -102,7 +98,10 @@ public class RobotContainer {
 	}
 	
 	private CommandWrapper[] getAutonCommands () {
-		return new CommandWrapper[] {};
+		return new CommandWrapper[] {
+            new CommandWrapper(() -> new WheelDistances(
+                swerveDrive, 2.5, 0.3), "WheelDistances", swerveDrive),
+        };
 	}
 	
 	private class CommandWrapper extends InstantCommand {
