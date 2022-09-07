@@ -98,7 +98,7 @@ public class RobotContainer {
 		Dashboard.putSendable("Reset Gyro", new InstantCommand(() -> new ResetGyro(swerveDrive).schedule()));
 		Dashboard.putSendable("Swerve Drive", swerveDrive);
 		Dashboard.putSendable("Gyro", swerveDrive.getGyro());
-        Dashboard.putSendable("Field", swerveDrive.getField());
+        Dashboard.putSendable("Odometry-Field2D", swerveDrive.getField());
 	}
 	
 	private CommandWrapper[] getAutonCommands () {

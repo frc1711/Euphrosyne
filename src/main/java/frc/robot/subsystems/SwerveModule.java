@@ -27,7 +27,7 @@ public class SwerveModule extends AutoSwerveWheel {
 		steerPIDki = 0,
 		steerPIDkd = 0,
         
-        ENCODER_TO_INCHES_FACTOR = 1;
+        ENCODER_TO_INCHES_FACTOR = 0.3;
 	
 	private final String name;
 	

@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.IDMap;
 import frc.team1711.swerve.subsystems.AutoSwerveDrive;
@@ -76,6 +77,15 @@ public class Swerve extends AutoSwerveDrive {
 		rlWheel.configDirectionEncoder();
 		rrWheel.configDirectionEncoder();
 	}
+    
+    @Override
+    public void initSendable (SendableBuilder builder) {
+        builder.addDoubleProperty("Front Left Distance", () -> flWheel.getEncoderDistance(), s -> {});
+        builder.addDoubleProperty("Front Right Distance", () -> frWheel.getEncoderDistance(), s -> {});
+        builder.addDoubleProperty("Rear Left Distance", () -> rlWheel.getEncoderDistance(), s -> {});
+        builder.addDoubleProperty("Rear Right Distance", () -> rrWheel.getEncoderDistance(), s -> {});
+        super.initSendable(builder);
+    }
 	
 	public AHRS getGyro () {
 		return gyro;
@@ -94,7 +104,7 @@ public class Swerve extends AutoSwerveDrive {
             x = position.getLocation().getX(),
             y = position.getLocation().getY();
         
-        return new Pose2d(x*INCHES_TO_METERS, y*INCHES_TO_METERS, new Rotation2d(Math.toRadians(position.getDirection())));
+        return new Pose2d(x*INCHES_TO_METERS, y*INCHES_TO_METERS, new Rotation2d(Angles.degreesToRadians(position.getDirection())));
     }
 	
 }
