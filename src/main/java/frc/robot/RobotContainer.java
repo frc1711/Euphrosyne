@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auton.AutoMove;
 import frc.robot.commands.auton.WheelDistances;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
@@ -101,6 +102,7 @@ public class RobotContainer {
 		return new CommandWrapper[] {
             new CommandWrapper(() -> new WheelDistances(
                 swerveDrive, 2.5, 0.3), "WheelDistances", swerveDrive),
+            new CommandWrapper(() -> new AutoMove(swerveDrive), "AutoMove", swerveDrive),
         };
 	}
 	
