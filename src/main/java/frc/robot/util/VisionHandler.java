@@ -56,7 +56,7 @@ public class VisionHandler {
 		return (HUB_TAPE_HEIGHT - Z_OFFSET) / Math.tan(Math.toRadians(PITCH + getTargetY())) - Y_OFFSET;
 	}
 	
-	private boolean getTargetExists () {
+	public boolean getTargetExists () {
 		return targetExists.getDouble(0) == 1;
 	}
 	

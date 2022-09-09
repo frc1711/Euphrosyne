@@ -46,10 +46,7 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 			new AutoCargoHandler(cargoHandler, Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> sensorTripped),
 			
 			// Intake backwards until sensor is not tripped (ball just below the kicker so the shooter can get up to speed)
-			new ParallelRaceGroup(
-				new AutoCargoHandler(cargoHandler, -Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> !sensorTripped),
-				new AutoShooter(shooter, Double.POSITIVE_INFINITY, Dashboard.SHOOTER_MAX_SPEED.get())
-			),
+            new AutoCargoHandler(cargoHandler, -Dashboard.CARGO_HANDLER_SPEED.get(), sensorTripped -> !sensorTripped),
 			
 			new ParallelRaceGroup(
 				// Run shooter (will run until stopped)
