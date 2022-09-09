@@ -12,8 +12,8 @@ import frc.team1711.swerve.util.odometry.TurnManner;
 
 public class AutoMove extends AutonDrive {
     
-    private static final MovementManner.MovementSpeedSupplier moveSpeedSupplier = MovementManner.MovementSpeedSupplier.proportionalSpeed(0.4, 0.08);
-    private static final TurnManner.TurnSpeedSupplier turnSpeedSupplier = TurnManner.TurnSpeedSupplier.proportionalSpeed(0.2, 0.12);
+    private static final MovementManner.MovementSpeedSupplier moveSpeedSupplier = MovementManner.MovementSpeedSupplier.speedWithSlowdown(0.5, 3*12, 0.08);
+    private static final TurnManner.TurnSpeedSupplier turnSpeedSupplier = TurnManner.TurnSpeedSupplier.speedWithSlowdown(0.2, 10, 0.08);
     
     private static final MovementManner MOVEMENT_MANNER = new MovementManner(3, moveSpeedSupplier);
     private static final TurnManner TURN_MANNER = new TurnManner(3, turnSpeedSupplier);
@@ -22,8 +22,8 @@ public class AutoMove extends AutonDrive {
     private static final RobotTurn TURN = new RobotTurn(-30, FrameOfReference.FIELD, TURN_MANNER);
     
     public AutoMove (Swerve swerve) {
-        super(swerve, MOVEMENT, TURN);
         // super(swerve, MOVEMENT, TURN);
+        super(swerve, new Position(Vector.ZERO, 0), MOVEMENT_MANNER, TURN_MANNER);
     }
     
 }
