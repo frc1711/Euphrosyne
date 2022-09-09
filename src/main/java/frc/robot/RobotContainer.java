@@ -24,7 +24,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.SwerveModule;
 
 public class RobotContainer {
 	
@@ -101,7 +100,7 @@ public class RobotContainer {
 	private CommandWrapper[] getAutonCommands () {
 		return new CommandWrapper[] {
             new CommandWrapper(() -> new WheelDistances(
-                swerveDrive, 2.5, 0.3), "WheelDistances", swerveDrive),
+                swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
             new CommandWrapper(() -> new AutoMove(swerveDrive), "AutoMove", swerveDrive),
         };
 	}

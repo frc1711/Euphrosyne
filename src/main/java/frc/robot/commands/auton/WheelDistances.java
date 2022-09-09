@@ -41,7 +41,7 @@ public class WheelDistances extends CommandBase {
             if (initialPosition == null) initialPosition = swerve.getPosition();
             
             // Drive the robot directly 
-            swerve.steerAndDriveAll(0, 0.2);
+            swerve.steerAndDriveAll(0, speed);
             
             secondsToDrive -= 0.02; // around 20ms per execute frame
             if (secondsToDrive <= 0) stage ++;
