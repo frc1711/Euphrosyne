@@ -8,6 +8,7 @@ import frc.robot.commands.auton.base.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Swerve;
 import frc.team1711.swerve.util.InputHandler;
 
 import java.util.function.BooleanSupplier;
@@ -17,6 +18,12 @@ public class CentralSystem extends CommandBase {
 	
 	private static final InputHandler centralSystemInputHandler = new InputHandler(0.10, InputHandler.Curve.linearCurve);
 	
+    /**
+     * <b>DO NOT CALL METHODS ON SWERVE IN THIS COMMAND. THIS IS ONLY KEPT AS A FIELD HERE TO BE PASSED TO THE
+     * AUTOSHOOTERSEQUENCE COMMAND WHEN NECESSARY.</b>
+     */
+    private final Swerve swerve;
+    
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
 	private final HoodedShooter shooter;
@@ -24,6 +31,11 @@ public class CentralSystem extends CommandBase {
 	private final BooleanSupplier runHandlerAndIntake, runCargoHandler, reverseButton, runShooterSequence;
 	private final DoubleSupplier runIntake;
 	
+    /**
+     * NOTE: {@code swerve} is not added as a requirement for this command. This command
+     * only accepts it as an argument in the constructor for use in scheduling the
+     * {@link AutoShooterSequence} command.
+     */
 	public CentralSystem (
 			CargoHandler cargoHandler,
 			Intake intake,
@@ -33,7 +45,8 @@ public class CentralSystem extends CommandBase {
 			DoubleSupplier runIntake,
 			DoubleSupplier runShooter,
 			BooleanSupplier runShooterSequence,
-			BooleanSupplier reverseButton) {
+			BooleanSupplier reverseButton,
+            Swerve swerve) {
 		this.cargoHandler = cargoHandler;
 		this.intake = intake;
 		this.shooter = shooter;
@@ -45,6 +58,9 @@ public class CentralSystem extends CommandBase {
 		this.reverseButton = reverseButton;
 		
 		addRequirements(cargoHandler, intake, shooter);
+        
+        // the swerve drive is not used in this command but is instead passed into another command to be scheduled
+        this.swerve = swerve; 
 	}
 	
 	@Override
@@ -59,7 +75,7 @@ public class CentralSystem extends CommandBase {
 		// Run the shooter command if necessary
 		if (runShooterSequence.getAsBoolean())
 			CommandScheduler.getInstance().schedule(
-				new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
+				new AutoShooterSequence(swerve, shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
 		
 		// Checks whether the reverse button is pressed; r represents a scalar for speed inputs depending on the reverse mode
 		int r = reverseButton.getAsBoolean() ? -1 : 1;

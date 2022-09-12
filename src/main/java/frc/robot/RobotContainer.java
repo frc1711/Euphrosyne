@@ -58,7 +58,8 @@ public class RobotContainer {
 		() -> centralController.getRightTriggerAxis(),								// Intake
 		() -> centralController.getLeftTriggerAxis(),								// Shooter
 		() -> centralController.getRightBumper(),									// Shooter sequence
-		() -> centralController.getXButton());										// Reverse mode
+		() -> centralController.getXButton(),                                       // Reverse mode
+        swerveDrive); // neither added as a requirement in the command nor used except for scheduling other commands
 	
 	// Climber command
 	private final ClimberCommand climberCommand = new ClimberCommand(
