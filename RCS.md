@@ -86,3 +86,15 @@ errors in the auton paths compound and have the potential to make the final path
 
 ## Usage Notes
 \[Usage notes here]
+
+## Programming Notes
+### Odometry
+The location (0, 0) is considered to be in the very center of the field (in the middle of the hub). The x-axis is
+parallel to our driver station wall, with +x being to the right of our driver station. The y-axis is perpendicular to
+the driver station wall, with +y extending forward relative to the drivers.
+
+Additionally, a direction of 0 degrees would be equivalent to our robot facing the opposing alliance's driver station,
+where the intake is considered to be the front of the robot. Direction increases as the robot turns clockwise. See the image
+below. **Note: odometry measurements of direction are completely separate from the gyro reset functionality used to help
+in teleop driving. Manually resetting the gyro in teleop will not affect field odometry.**
+![](./info/field-odometry.png)

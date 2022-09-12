@@ -1,10 +1,8 @@
 package frc.robot.commands.auton.base;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Dashboard;
+
 import frc.robot.subsystems.CargoHandler;
 
 public class AutoCargoHandler extends CommandBase {
@@ -49,12 +47,6 @@ public class AutoCargoHandler extends CommandBase {
 	
 	@Override
 	public boolean isFinished () {
-        Dashboard.putSendable("Should stop", new Sendable() {
-            @Override
-            public void initSendable (SendableBuilder builder) {
-                builder.addBooleanProperty("s", () -> stopOnSensor.shouldStopCommand(cargoHandler.checkBallAtSensor()), a -> {});
-            }
-        });
         return timer.get() >= duration || stopOnSensor.shouldStopCommand(cargoHandler.checkBallAtSensor());
 	}
 	
