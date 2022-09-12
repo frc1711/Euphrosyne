@@ -53,7 +53,7 @@ public class AutoShooterSequence extends SequentialCommandGroup {
 				new AutoShooter(shooter, Double.POSITIVE_INFINITY, Dashboard.SHOOTER_MAX_SPEED.get()),
 				new SequentialCommandGroup(
 					// Wait before running cargo handler
-					new AutoCargoHandler(cargoHandler, 0.2, 0),
+					new AutoCargoHandler(cargoHandler, 0.5, 0),
 					// Run cargo handler
 					new AutoCargoHandler(cargoHandler, shooterRunLength, Dashboard.CARGO_HANDLER_SPEED.get())
 				)
