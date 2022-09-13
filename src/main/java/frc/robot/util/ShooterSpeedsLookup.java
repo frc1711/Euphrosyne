@@ -6,9 +6,14 @@ public class ShooterSpeedsLookup {
     
     // Must be ordered from least to greatest distance
     private static final ShooterSpeed[] allSpeeds = {
+        // current:         116.7           -0.40           0.43
         //               distance    upper speed     lower speed
-        new ShooterSpeed(   86,         -0.38,          0.42),
-        new ShooterSpeed(   112,        -0.41,          0.45),
+        new ShooterSpeed(   70.7,           -0.14,          0.53),
+        new ShooterSpeed(   106.7,          -0.335,         0.435),
+        new ShooterSpeed(   116.7,          -0.39,          0.42),
+        new ShooterSpeed(   132.7,          -0.41,          0.45),
+        new ShooterSpeed(   174.7,          -0.41,          0.45),
+        new ShooterSpeed(   196.2,          -0.56,          0.52),
     };
     
     public static ShooterSpeed getShooterSpeed (double distance) {

@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Dashboard;
 import frc.robot.IDMap;
 
 public class HoodedShooter extends SubsystemBase {
@@ -25,6 +26,9 @@ public class HoodedShooter extends SubsystemBase {
 	}
 	
 	public void setSpeed (double upper, double lower) {
+        // upper = Dashboard.HOODED_SHOOTER_UPPER_SPEED.get();
+        // lower = Dashboard.HOODED_SHOOTER_LOWER_SPEED.get();
+        System.out.println("UPPER " + upper + ",    LOWER: " + lower);
 		upperMotor.set(upper);
 		lowerMotor.set(lower);
 	}

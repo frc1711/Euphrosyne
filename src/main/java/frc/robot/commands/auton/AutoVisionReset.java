@@ -21,7 +21,7 @@ public class AutoVisionReset extends SequentialCommandGroup {
         private static final TurnSpeedSupplier TURN_SPEED_SUPPLIER = TurnSpeedSupplier.speedWithSlowdown(0.15, 10, 0.02);
         private static final double MARGIN_OF_ERROR = 0.4; // This has to be really small for accurate limelight readings
         // The number of frames the direction needs to be in the margin of error before the auton stops:
-        private static final int NUM_FRAMES_IN_MARGIN = 8;
+        private static final int NUM_FRAMES_IN_MARGIN = 3;
         
         private final VisionHandler visionHandler = VisionHandler.getInstance();
         private final Swerve swerve;
@@ -79,7 +79,11 @@ public class AutoVisionReset extends SequentialCommandGroup {
             final double direction = swerve.getPosition().getDirection();
             
             // Direction is negated because the limelight is facing AWAY from the front of the robot but TOWARD the hub
-            final Vector location = Vector.fromPolarDegrees(-direction, visionHandler.getDistanceFromHub());
+            final Vector location = Vector.fromPolarDegrees(direction, visionHandler.getDistanceFromHub());
+            
+            System.out.println("\n\n\nDISTANCE FROM HUB: "+visionHandler.getDistanceFromHub());
+            System.out.println("LOCATION: ("+location.getX()+", "+location.getY()+")");
+            System.out.println("DIRECTION: "+direction);
             
             // Return the final position
             return new Position(location, direction);

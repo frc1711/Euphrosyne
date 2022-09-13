@@ -59,25 +59,6 @@
               "_title": "Auton Wait Period"
             }
           },
-          "0,0": {
-            "size": [
-              6,
-              4
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
-              "Crosshair/Show crosshair": false,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": false,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
           "7,0": {
             "size": [
               3,
@@ -108,6 +89,20 @@
               "_title": "Field Relative",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,0": {
+            "size": [
+              6,
+              4
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Odometry-Field2D",
+              "_title": "SmartDashboard/Odometry-Field2D",
+              "Game/Game": "A2022_Rapid_React",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false
             }
           }
         }
@@ -276,9 +271,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -40.0,
-    "y": 34.400001525878906,
-    "width": 1550.4000244140625,
+    "x": -6.400000095367432,
+    "y": 0.0,
+    "width": 1548.800048828125,
     "height": 712.0
   }
 }

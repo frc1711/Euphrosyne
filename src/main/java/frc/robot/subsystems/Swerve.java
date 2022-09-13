@@ -101,10 +101,10 @@ public class Swerve extends AutoSwerveDrive {
     
     private static Pose2d positionToPose (Position position) {
         final double
-            x = position.getLocation().getX(),
-            y = position.getLocation().getY();
+            x = -position.getLocation().getX() + 162,
+            y = position.getLocation().getY() + 324;
         
-        return new Pose2d(x*INCHES_TO_METERS, y*INCHES_TO_METERS, new Rotation2d(Angles.degreesToRadians(position.getDirection())));
+        return new Pose2d(y*INCHES_TO_METERS, x*INCHES_TO_METERS, new Rotation2d(Angles.degreesToRadians(position.getDirection() + 90)));
     }
 	
 }

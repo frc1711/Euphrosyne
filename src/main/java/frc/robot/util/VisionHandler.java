@@ -9,10 +9,11 @@ public class VisionHandler {
 	// Offsets measured in inches. +Y = forward (shooter side), +Z = upward
 	// (x=0,y=0,z=0) = X center of the robot frame, on the floor, at the front of the frame in the direction of the shooter
 	private static final double
-		PITCH = 35,
+		PITCH = 33, // Limelight on bar is 35 deg, bar is 10 deg backwards
 		Y_OFFSET = 21,
 		Z_OFFSET = 39,
 		
+        HUB_DIAMETER = 53.38,
 		HUB_TAPE_HEIGHT = 8*12 + 7;
 	
 	private static VisionHandler visionHandlerInstance;
@@ -53,7 +54,7 @@ public class VisionHandler {
 		if (!getTargetExists()) return 0; // If the target cannot be seen, return 0
 		
 		// Complex math stuff to get the distance (don't worry about it)
-		return (HUB_TAPE_HEIGHT - Z_OFFSET) / Math.tan(Math.toRadians(PITCH + getTargetY())) - Y_OFFSET;
+		return HUB_DIAMETER / 2 + (HUB_TAPE_HEIGHT - Z_OFFSET) / Math.tan(Math.toRadians(PITCH + getTargetY())) - Y_OFFSET;
 	}
 	
 	public boolean getTargetExists () {
