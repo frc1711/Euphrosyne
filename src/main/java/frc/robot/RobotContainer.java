@@ -56,8 +56,8 @@ public class RobotContainer {
 		() -> centralController.getAButton(),										// Cargo handler AND intake
 		() -> centralController.getBButton(),										// Cargo handler
 		() -> centralController.getRightTriggerAxis(),								// Intake
-		() -> centralController.getLeftTriggerAxis(),								// Shooter
-		() -> centralController.getRightBumper(),									// Shooter sequence
+		() -> centralController.getLeftBumper(),								    // Low goal shooter
+		() -> centralController.getRightBumper(),									// High goal shooter
 		() -> centralController.getXButton(),                                       // Reverse mode
         swerveDrive); // neither added as a requirement in the command nor used except for scheduling other commands
 	

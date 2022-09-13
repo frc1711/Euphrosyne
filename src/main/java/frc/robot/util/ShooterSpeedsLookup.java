@@ -4,6 +4,8 @@ public class ShooterSpeedsLookup {
     
     private ShooterSpeedsLookup () { }
     
+    public static final ShooterSpeed LOW_GOAL_SPEED = new ShooterSpeed(0, -0.26, 0.26);
+    
     // Must be ordered from least to greatest distance
     private static final ShooterSpeed[] allSpeeds = {
         // current:         116.7           -0.40           0.43

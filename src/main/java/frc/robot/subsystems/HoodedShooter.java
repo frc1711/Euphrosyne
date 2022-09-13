@@ -28,7 +28,6 @@ public class HoodedShooter extends SubsystemBase {
 	public void setSpeed (double upper, double lower) {
         // upper = Dashboard.HOODED_SHOOTER_UPPER_SPEED.get();
         // lower = Dashboard.HOODED_SHOOTER_LOWER_SPEED.get();
-        System.out.println("UPPER " + upper + ",    LOWER: " + lower);
 		upperMotor.set(upper);
 		lowerMotor.set(lower);
 	}

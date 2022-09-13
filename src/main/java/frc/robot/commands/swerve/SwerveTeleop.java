@@ -4,10 +4,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.Dashboard;
 import frc.robot.subsystems.Swerve;
-import frc.robot.util.VisionHandler;
 import frc.team1711.swerve.subsystems.SwerveDrive;
 import frc.team1711.swerve.util.InputHandler;
-import frc.team1711.swerve.util.odometry.Position;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
@@ -68,13 +66,6 @@ public class SwerveTeleop extends CommandBase {
 	
 	@Override
 	public void execute () {
-        if (toggleFieldRelative.getAsBoolean()) {
-            Position position = swerveDrive.getPosition();
-            System.out.println("\n\n\nDISTANCE FROM HUB: "+VisionHandler.getInstance().getDistanceFromHub());
-            System.out.println("LOCATION: ("+position.getLocation().getX()+", "+position.getLocation().getY()+")");
-            System.out.println("DIRECTION: "+position.getDirection());
-        }
-        
 		// The field relativity cannot be toggled in outreach safety mode (to prevent confusion)
 		if (toggleFieldRelative.getAsBoolean() && !Dashboard.OUTREACH_SAFETY_MODE.get())
 			fieldRelative = !fieldRelative;
