@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.auton.AutoHighGoalTaxi;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
+import frc.robot.commands.auton.AutoTwoBallHigh;
 import frc.robot.commands.auton.AutoTwoBallLow;
 import frc.robot.commands.auton.WheelDistances;
 import frc.robot.commands.auton.base.AutoMove;
@@ -109,7 +111,9 @@ public class RobotContainer {
             new CommandWrapper(() -> new AutoVisionReset(swerveDrive), "AutoVisionReset", swerveDrive),
             new CommandWrapper(() -> new WheelDistances(swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
             new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "Low goal taxi", swerveDrive),
-            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake), "Two ball low", swerveDrive)
+            new CommandWrapper(() -> new AutoHighGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "High goal taxi", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake), "Two ball low", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake), "Two ball high", swerveDrive),
         };
 	}
 	

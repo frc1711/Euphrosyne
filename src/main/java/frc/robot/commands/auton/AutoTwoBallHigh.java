@@ -16,22 +16,20 @@ import frc.team1711.swerve.util.odometry.Position;
 import frc.team1711.swerve.util.odometry.RobotMovement;
 import frc.team1711.swerve.util.odometry.RobotTurn;
 
-public class AutoTwoBallLow extends SequentialCommandGroup {
+public class AutoTwoBallHigh extends SequentialCommandGroup {
     
     private static final double
         Y_BALL_DIST_TO_HUB = 116.17,
         X_BALL_DIST_TO_HUB = -24,
         ROBOT_LENGTH = 30;
     
-    public AutoTwoBallLow (Swerve swerve, HoodedShooter shooter, CargoHandler cargoHandler, Intake intake) {
+    public AutoTwoBallHigh (Swerve swerve, HoodedShooter shooter, CargoHandler cargoHandler, Intake intake) {
         super(
-            new AutoShooterSequence(shooter, cargoHandler, 1),
             new AutoCargoIntakeMove(swerve, cargoHandler, intake, new RobotMovement(
                 new Vector(X_BALL_DIST_TO_HUB, Y_BALL_DIST_TO_HUB - ROBOT_LENGTH),
                 FrameOfReference.ROBOT, AutoMove.MOVEMENT_MANNER), RobotTurn.NONE),
             new AutoCargoIntake(cargoHandler, intake, 3, true),
-            new AutoMove(swerve, new Position(Vector.ZERO, 0)),
-            new AutoShooterSequence(shooter, cargoHandler, 3));
+            new AutoShooterSequence(swerve, shooter, cargoHandler, 2));
     }
     
 }

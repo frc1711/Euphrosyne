@@ -17,8 +17,6 @@ import frc.robot.util.ShooterSpeedsLookup.ShooterSpeed;
 import java.util.function.BooleanSupplier;
 
 public class AutoShooterSequence extends SequentialCommandGroup {
-	
-    public static final double SHOOTER_RUN_LENGTH = 0.5;
     
     private final Swerve swerve;
 	private final HoodedShooter shooter;
@@ -32,8 +30,8 @@ public class AutoShooterSequence extends SequentialCommandGroup {
      * @param shooter       The {@link HoodedShooter}
      * @param cargoHandler  The {@link CargoHandler}
      */
-	public AutoShooterSequence (Swerve swerve, HoodedShooter shooter, CargoHandler cargoHandler) {
-		this(swerve, shooter, cargoHandler, SHOOTER_RUN_LENGTH, () -> false, true);
+	public AutoShooterSequence (Swerve swerve, HoodedShooter shooter, CargoHandler cargoHandler, double shooterRunLength) {
+		this(swerve, shooter, cargoHandler, shooterRunLength, () -> false, true);
 	}
     
     /**
@@ -42,8 +40,8 @@ public class AutoShooterSequence extends SequentialCommandGroup {
      * @param shooter       The {@link HoodedShooter}
      * @param cargoHandler  The {@link CargoHandler}
      */
-    public AutoShooterSequence (HoodedShooter shooter, CargoHandler cargoHandler) {
-        this(null, shooter, cargoHandler, SHOOTER_RUN_LENGTH, () -> false, false);
+    public AutoShooterSequence (HoodedShooter shooter, CargoHandler cargoHandler, double shooterRunLength) {
+        this(null, shooter, cargoHandler, shooterRunLength, () -> false, false);
     }
 	
     /**
