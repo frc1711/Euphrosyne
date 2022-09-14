@@ -187,6 +187,9 @@ public class AutoShooterSequence extends SequentialCommandGroup {
         public void initialize () {
             if (aimHigh) shooterSpeed = ShooterSpeedsLookup.getShooterSpeed(VisionHandler.getInstance().getDistanceFromHub());
             else shooterSpeed = ShooterSpeedsLookup.LOW_GOAL_SPEED;
+            System.out.println("--SHOOTING--");
+            System.out.println("UPPER SPEED: " + shooterSpeed.upperSpeed);
+            System.out.println("LOWER SPEED: " + shooterSpeed.lowerSpeed);
             shooter.stop();
         }
         

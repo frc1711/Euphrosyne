@@ -11,9 +11,10 @@ public class ShooterSpeedsLookup {
         // current:         116.7           -0.40           0.43
         //               distance    upper speed     lower speed
         new ShooterSpeed(   70.7,           -0.14,          0.53),
-        new ShooterSpeed(   106.7,          -0.335,         0.435),
+        new ShooterSpeed(   100.7,          -0.31,          0.445), // maybe toss
         new ShooterSpeed(   116.7,          -0.39,          0.42),
-        new ShooterSpeed(   132.7,          -0.41,          0.45), // questionable
+        new ShooterSpeed(   123.8,          -0.394,         0.44),
+        new ShooterSpeed(   164.5,          -0.42,          0.49),
         new ShooterSpeed(   174.7,          -0.41,          0.45),
         new ShooterSpeed(   196.2,          -0.56,          0.52),
     };

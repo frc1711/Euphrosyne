@@ -11,7 +11,9 @@ public class Dashboard {
 	public static final Entry<Boolean>
 		CLIMBER_OVERRIDE_MODE = Entry.getBooleanEntry("Climber Override Mode", false),
 		IS_FIELD_RELATIVE = Entry.getBooleanEntry("Field Relative", true),
-		OUTREACH_SAFETY_MODE = Entry.getBooleanEntry("Outreach Safety Mode", false);
+		OUTREACH_SAFETY_MODE = Entry.getBooleanEntry("Outreach Safety Mode", false),
+        HOODED_SHOOTER_OVERRIDE_LOOKUP_SPEED = Entry.getBooleanEntry("Override Hooded Shooter Lookup Speed", false);
+    
 	public static final Entry<Double>
 		AUTON_WAIT_PERIOD = Entry.getDoubleEntry("Auton Wait Period", 0),
 		CARGO_HANDLER_SPEED = Entry.getDoubleEntry("Cargo Handler Speed", -0.5),

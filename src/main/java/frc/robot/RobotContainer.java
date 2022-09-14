@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -74,6 +75,8 @@ public class RobotContainer {
 	private final SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
+        CameraServer.startAutomaticCapture(0);
+        
 		// Automatically run default commands
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
@@ -106,7 +109,7 @@ public class RobotContainer {
             new CommandWrapper(() -> new AutoVisionReset(swerveDrive), "AutoVisionReset", swerveDrive),
             new CommandWrapper(() -> new WheelDistances(swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
             new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "Low goal taxi", swerveDrive),
-            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler), "Two ball low", swerveDrive)
+            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake), "Two ball low", swerveDrive)
         };
 	}
 	

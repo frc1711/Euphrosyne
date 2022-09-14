@@ -86,8 +86,8 @@ public class CentralSystem extends CommandBase {
 		cargoHandler.setSpeed(runCargoHandlerBool ? r : 0, true);
 		
         // Control the intake
-		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * Dashboard.INTAKE_MAX_SPEED.get();
-		if (runHandlerAndIntake.getAsBoolean()) intakeSpeed = r * Dashboard.INTAKE_MAX_SPEED.get();
+		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble());
+		if (runHandlerAndIntake.getAsBoolean()) intakeSpeed = r;
 		intake.setSpeed(intakeSpeed);
 	}
     
