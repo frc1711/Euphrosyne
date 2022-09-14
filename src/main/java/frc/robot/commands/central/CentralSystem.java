@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Dashboard;
-import frc.robot.commands.auton.base.AutoShooterSequence;
+import frc.robot.commands.auton.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;

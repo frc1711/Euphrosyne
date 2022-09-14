@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.auton.AutoMove;
-import frc.robot.commands.auton.AutoVisionReset;
+import frc.robot.commands.auton.AutoLowGoalTaxi;
+import frc.robot.commands.auton.AutoTwoBallLow;
 import frc.robot.commands.auton.WheelDistances;
+import frc.robot.commands.auton.base.AutoMove;
+import frc.robot.commands.auton.base.AutoVisionReset;
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -102,9 +104,9 @@ public class RobotContainer {
 	private CommandWrapper[] getAutonCommands () {
 		return new CommandWrapper[] {
             new CommandWrapper(() -> new AutoVisionReset(swerveDrive), "AutoVisionReset", swerveDrive),
-            new CommandWrapper(() -> new WheelDistances(
-                swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
-            new CommandWrapper(() -> new AutoMove(swerveDrive), "AutoMove", swerveDrive),
+            new CommandWrapper(() -> new WheelDistances(swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
+            new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "Low goal taxi", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler), "Two ball low", swerveDrive)
         };
 	}
 	

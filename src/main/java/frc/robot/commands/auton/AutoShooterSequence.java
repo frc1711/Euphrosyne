@@ -1,11 +1,12 @@
-package frc.robot.commands.auton.base;
+package frc.robot.commands.auton;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.auton.AutoVisionReset;
+import frc.robot.commands.auton.base.AutoCargoHandler;
+import frc.robot.commands.auton.base.AutoVisionReset;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Swerve;
