@@ -21,7 +21,7 @@ public class CargoHandler extends SubsystemBase {
 	private final CANSparkMax pulley;
 	private final DigitalInput
         topProximitySensor = new DigitalInput(IDMap.DIO.TOP_PROXIMITY_SENSOR.ID),
-	    bottomProximitySensor = new DigitalInput(IDMap.DIO.BOTTOM_PROXIMITY_SENSOR.ID);
+	    bottomSwitchSensor = new DigitalInput(IDMap.DIO.BOTTOM_LIMIT_SWITCH_SENSOR.ID);
 	
 	private CargoHandler () {
 		pulley = new CANSparkMax(IDMap.CAN.CARGO_PULLEY.ID, MotorType.kBrushless);
@@ -33,7 +33,7 @@ public class CargoHandler extends SubsystemBase {
 	}
     
     public boolean checkBallAtBottomSensor () {
-        return !bottomProximitySensor.get();
+        return !bottomSwitchSensor.get();
     }
 	
     /**

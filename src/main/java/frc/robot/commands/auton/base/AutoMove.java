@@ -11,11 +11,11 @@ import frc.team1711.swerve.util.odometry.TurnManner;
 public class AutoMove extends AutonDrive {
     
     public static final MovementManner.MovementSpeedSupplier MOVE_SPEED_SUPPLIER =
-        MovementManner.MovementSpeedSupplier.speedWithSlowdown(0.8, 5*12, 0.08);
+        MovementManner.MovementSpeedSupplier.speedWithSlowdown(0.8, 8*12, 0.08);
     public static final TurnManner.TurnSpeedSupplier TURN_SPEED_SUPPLIER =
         TurnManner.TurnSpeedSupplier.speedWithSlowdown(0.4, 40, 0.08);
     
-    public static final MovementManner MOVEMENT_MANNER = new MovementManner(1, MOVE_SPEED_SUPPLIER);
+    public static final MovementManner MOVEMENT_MANNER = new MovementManner(3, MOVE_SPEED_SUPPLIER);
     public static final TurnManner TURN_MANNER = new TurnManner(3, TURN_SPEED_SUPPLIER);
     
     public AutoMove (Swerve swerve, Position position) {

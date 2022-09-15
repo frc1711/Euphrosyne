@@ -18,7 +18,7 @@ public class AutoTwoBallLow extends SequentialCommandGroup {
     
     private static final double
         Y_BALL_DIST_TO_HUB = 116.17,
-        X_BALL_DIST_TO_HUB = -24,
+        X_BALL_DIST_TO_HUB = 35,
         ROBOT_LENGTH = 30;
     
     public AutoTwoBallLow (Swerve swerve, HoodedShooter shooter, CargoHandler cargoHandler, Intake intake, boolean ballToRight) {
@@ -27,7 +27,7 @@ public class AutoTwoBallLow extends SequentialCommandGroup {
             new AutoCargoIntakeMove(swerve, cargoHandler, intake, new RobotMovement(
                 new Vector(X_BALL_DIST_TO_HUB * (ballToRight ? 1 : -1), Y_BALL_DIST_TO_HUB - ROBOT_LENGTH),
                 FrameOfReference.ROBOT, AutoMove.MOVEMENT_MANNER), RobotTurn.NONE),
-            new AutoCargoIntake(cargoHandler, intake, 3, true),
+            new AutoCargoIntake(cargoHandler, intake, 1, true),
             new AutoMove(swerve, new Position(Vector.ZERO, 0)),
             new AutoShooterSequence(shooter, cargoHandler, 3));
     }
