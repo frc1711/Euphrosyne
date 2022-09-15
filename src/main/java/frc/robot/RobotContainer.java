@@ -112,8 +112,14 @@ public class RobotContainer {
             new CommandWrapper(() -> new WheelDistances(swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
             new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "Low goal taxi", swerveDrive),
             new CommandWrapper(() -> new AutoHighGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "High goal taxi", swerveDrive),
-            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake), "Two ball low", swerveDrive),
-            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake), "Two ball high", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake, true),
+                "Two ball low (right)", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, true),
+                "Two ball high (right)", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake, false),
+                "Two ball low (left)", swerveDrive),
+            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, false),
+                "Two ball high (left)", swerveDrive),
         };
 	}
 	
