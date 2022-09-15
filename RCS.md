@@ -70,7 +70,7 @@ Shoots a ball into the low goal immediately, picks up the nearest ball on the fi
 shoot the second ball into the low goal.
 
 - Initial Position: The robot must be positioned square to the hub such that the rear bumper is centered on a side of the square
-forming the base of the hub.
+forming the base of the hub, with a four inch gap between the robot and the hub.
 
 - Usage Notes: There are actually two separate options for this command under `Main Board > Auton Selector`: "two ball low (right)" and
 "two ball low (left)". The options are named after the position of the ball on the field, based on the robot's point of view.
@@ -83,7 +83,7 @@ Below shows the initial position of the robot on the field, along with its path 
 Picks up the nearest ball on the field and immediately shoots into the high goal.
 
 - Initial Position: The robot must be positioned square to the hub such that the rear bumper is centered on a side of the square
-forming the base of the hub.
+forming the base of the hub, with a four inch gap between the robot and the hub.
 
 - Usage Notes: There are actually two separate options for this command under `Main Board > Auton Selector`: "two ball high (right)" and
 "two ball high (left)". The options are named after the position of the ball on the field, based on the robot's point of view.
