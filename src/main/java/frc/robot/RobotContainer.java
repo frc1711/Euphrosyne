@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auton.AutoHighGoalTaxi;
 import frc.robot.commands.auton.AutoLowGoalTaxi;
+import frc.robot.commands.auton.AutoTaxi;
 import frc.robot.commands.auton.AutoTwoBallHigh;
 import frc.robot.commands.auton.AutoTwoBallLow;
 import frc.robot.commands.auton.WheelDistances;
@@ -110,16 +111,19 @@ public class RobotContainer {
 		return new CommandWrapper[] {
             new CommandWrapper(() -> new AutoVisionReset(swerveDrive), "AutoVisionReset", swerveDrive),
             new CommandWrapper(() -> new WheelDistances(swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
-            new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "Low goal taxi", swerveDrive),
-            new CommandWrapper(() -> new AutoHighGoalTaxi(swerveDrive, hoodedShooter, cargoHandler), "High goal taxi", swerveDrive),
+            new CommandWrapper(() -> new AutoTaxi(swerveDrive), "Taxi only", swerveDrive),
+            new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler),
+                "Low goal taxi", swerveDrive, hoodedShooter, cargoHandler),
+            new CommandWrapper(() -> new AutoHighGoalTaxi(swerveDrive, hoodedShooter, cargoHandler),
+                "High goal taxi", swerveDrive, hoodedShooter, cargoHandler),
             new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake, true),
-                "Two ball low (right)", swerveDrive),
-            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, true),
-                "Two ball high (right)", swerveDrive),
+                "Two ball low (right)", swerveDrive, hoodedShooter, cargoHandler, intake),
             new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake, false),
-                "Two ball low (left)", swerveDrive),
+                "Two ball low (left)", swerveDrive, hoodedShooter, cargoHandler, intake),
+            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, true),
+                "Two ball high (right)", swerveDrive, hoodedShooter, cargoHandler, intake),
             new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, false),
-                "Two ball high (left)", swerveDrive),
+                "Two ball high (left)", swerveDrive, hoodedShooter, cargoHandler, intake),
         };
 	}
 	
