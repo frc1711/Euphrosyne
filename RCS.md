@@ -1,5 +1,5 @@
 # Robot Controls System Data Sheet for Euphrosyne
-Updated 9/15/2022 at 5:50 PM.
+Updated 9/15/2022 at 6:20 PM.
 
 ## Initialization Steps
 1. Run the climber initialization command, found on the dashboard: `Control Board > Climber Initialization`.
