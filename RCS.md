@@ -77,7 +77,7 @@ forming the base of the hub.
 
 Below shows the initial position of the robot on the field, along with its path to the ball on the field:
 
-<img src="./info/two-ball-auton-display.jpg" width="300">
+<img src="./info/two-ball-auton-display.JPG" width="300">
 
 ### AutoTwoBallHigh: Two ball high (right | left) 
 Picks up the nearest ball on the field and immediately shoots into the high goal.
