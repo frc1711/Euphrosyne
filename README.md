@@ -12,6 +12,14 @@ Please create your changes in a branch other then the main line Development bran
 
 Started creating a README.md file for the folders in src\main.  Just do document what each folder and file does.  But not to interfere with @gabrielseaver9678 code files, and force merges and such.  Really would like to make 
 
+## Robot Control Sheet
+
+Please check out the Robot Control Data Sheet for details on the working and controls of the robot
+
+[Robot Control Data Sheet](RCS.md)
+
 ## The code
+
 ### Auton Code
+
 [Auton ReadMe](./src/main/java/frc/robot/commands/auton/)
