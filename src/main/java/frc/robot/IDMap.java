@@ -21,11 +21,14 @@ public class IDMap {
 		REAR_RIGHT_STEER_ENCODER (12),
 		
 		INTAKE (13),
-		CARGO_HANDLER (14),
-		SHOOTER (15),
+		
+		UPPER_SHOOTER (15),
+		LOWER_SHOOTER (14),
 		
 		CLIMBER_ROTATOR (16),
-		CLIMBER_EXTENDER (17);
+		CLIMBER_EXTENDER (17),
+		
+		CARGO_PULLEY (18);
 		
 		public final int ID;
 		private CAN (int id) {
@@ -35,6 +38,7 @@ public class IDMap {
 	
 	public enum DIO {
 		TOP_PROXIMITY_SENSOR (4),
+        BOTTOM_LIMIT_SWITCH_SENSOR (5),
 		
 		LEFT_ROTATION_LIMIT_SWITCH (1),
 		RIGHT_ROTATION_LIMIT_SWITCH (0),

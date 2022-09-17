@@ -4,10 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.Dashboard;
-import frc.robot.commands.auton.base.AutoShooterSequence;
+import frc.robot.commands.auton.AutoShooterSequence;
 import frc.robot.subsystems.CargoHandler;
+import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Swerve;
 import frc.team1711.swerve.util.InputHandler;
 
 import java.util.function.BooleanSupplier;
@@ -17,23 +18,38 @@ public class CentralSystem extends CommandBase {
 	
 	private static final InputHandler centralSystemInputHandler = new InputHandler(0.10, InputHandler.Curve.linearCurve);
 	
+    /**
+     * <b>DO NOT CALL METHODS ON SWERVE OR SHOOTER IN THIS COMMAND. THESE ARE ONLY KEPT AS FIELDS HERE TO BE PASSED TO THE
+     * AUTOSHOOTERSEQUENCE COMMAND WHEN NECESSARY.</b>
+     */
+    private final Swerve swerve;
+    /**
+     * <b>DO NOT CALL METHODS ON SWERVE OR SHOOTER IN THIS COMMAND. THESE ARE ONLY KEPT AS FIELDS HERE TO BE PASSED TO THE
+     * AUTOSHOOTERSEQUENCE COMMAND WHEN NECESSARY.</b>
+     */
+    private final HoodedShooter shooter;
+    
 	private final CargoHandler cargoHandler;
 	private final Intake intake;
-	private final Shooter shooter;
 	
-	private final BooleanSupplier runHandlerAndIntake, runCargoHandler, reverseButton, runShooterSequence;
-	private final DoubleSupplier runIntake, runShooter;
+	private final BooleanSupplier runHandlerAndIntake, runCargoHandler, reverseButton, runLowGoalShooter, runHighGoalShooter;
+	private final DoubleSupplier runIntake;
 	
+    /**
+     * NOTE: Neither {@code swerve} nor {@code shooter} are added as requirements for this command. This command
+     * only accepts them as arguments in the constructor for use in scheduling the {@link AutoShooterSequence} command.
+     */
 	public CentralSystem (
 			CargoHandler cargoHandler,
 			Intake intake,
-			Shooter shooter,
+			HoodedShooter shooter,
 			BooleanSupplier runHandlerAndIntake,
 			BooleanSupplier runCargoHandler,
 			DoubleSupplier runIntake,
-			DoubleSupplier runShooter,
-			BooleanSupplier runShooterSequence,
-			BooleanSupplier reverseButton) {
+			BooleanSupplier runLowGoalShooter,
+            BooleanSupplier runHighGoalShooter,
+			BooleanSupplier reverseButton,
+            Swerve swerve) {
 		this.cargoHandler = cargoHandler;
 		this.intake = intake;
 		this.shooter = shooter;
@@ -41,46 +57,56 @@ public class CentralSystem extends CommandBase {
 		this.runHandlerAndIntake = runHandlerAndIntake;
 		this.runCargoHandler = runCargoHandler;
 		this.runIntake = runIntake;
-		this.runShooter = runShooter;
-		this.runShooterSequence = runShooterSequence;
+		this.runLowGoalShooter = runLowGoalShooter;
+		this.runHighGoalShooter = runHighGoalShooter;
 		this.reverseButton = reverseButton;
 		
-		addRequirements(cargoHandler, intake, shooter);
+		addRequirements(cargoHandler, intake);
+        
+        // the swerve drive is not used in this command but is instead passed into another command to be scheduled
+        this.swerve = swerve; 
 	}
 	
 	@Override
 	public void initialize () {
 		cargoHandler.stop();
 		intake.stop();
-		shooter.stop();
 	}
 	
 	@Override
 	public void execute () {
-		// Attempting to run the shooter sequence
-		if (runShooterSequence.getAsBoolean())
-			CommandScheduler.getInstance().schedule(
-				new AutoShooterSequence(shooter, cargoHandler, () -> !runShooterSequence.getAsBoolean()));
+        // Check whether to run the high goal or low goal shooter sequences
+		checkRunShooterSequences();
 		
-		int r = (reverseButton.getAsBoolean() ? -1 : 1); //r is a numerical value of true or false for reversebutton
+		// Checks whether the reverse button is pressed; r represents a scalar for speed inputs depending on the reverse mode
+		int r = reverseButton.getAsBoolean() ? -1 : 1;
 		
+        // Control the cargo handler
 		boolean runCargoHandlerBool = runCargoHandler.getAsBoolean() || runHandlerAndIntake.getAsBoolean();
-		cargoHandler.setSpeed(runCargoHandlerBool ? Dashboard.CARGO_HANDLER_SPEED.get() * r : 0);
+		cargoHandler.setSpeed(runCargoHandlerBool ? r : 0, true);
 		
-		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble()) * Dashboard.INTAKE_MAX_SPEED.get();
-		if (runHandlerAndIntake.getAsBoolean()) intakeSpeed = r * Dashboard.INTAKE_MAX_SPEED.get();
-		
-		double shooterSpeed = r * centralSystemInputHandler.apply(runShooter.getAsDouble()) * Dashboard.SHOOTER_MAX_SPEED.get();
-		
+        // Control the intake
+		double intakeSpeed = r * centralSystemInputHandler.apply(runIntake.getAsDouble());
+		if (runHandlerAndIntake.getAsBoolean()) intakeSpeed = r;
 		intake.setSpeed(intakeSpeed);
-		shooter.setSpeed(shooterSpeed);
 	}
+    
+    private void checkRunShooterSequences () {
+        // Run the low goal shooter command if necessary
+        if (runLowGoalShooter.getAsBoolean())
+            CommandScheduler.getInstance().schedule(
+                new AutoShooterSequence(shooter, cargoHandler, () -> !runLowGoalShooter.getAsBoolean()));
+        
+        // Run the high goal shooter command if necessary
+		if (runHighGoalShooter.getAsBoolean())
+            CommandScheduler.getInstance().schedule(
+                new AutoShooterSequence(swerve, shooter, cargoHandler, () -> !runHighGoalShooter.getAsBoolean()));
+    }
 	
 	@Override
 	public void end (boolean interrupted) {
 		cargoHandler.stop();
 		intake.stop();
-		shooter.stop();
 	}
 	
 	@Override

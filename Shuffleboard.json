@@ -22,7 +22,7 @@
               "_title": "FMS Info"
             }
           },
-          "8,2": {
+          "2,3": {
             "size": [
               2,
               1
@@ -33,22 +33,7 @@
               "_title": "Auton Selector"
             }
           },
-          "6,2": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Gyro",
-              "_source0": "network_table:///SmartDashboard/Gyro",
-              "_title": "Gyro",
-              "Visuals/Major tick spacing": 45.0,
-              "Visuals/Starting angle": 180.0,
-              "Visuals/Show tick mark ring": true,
-              "Visuals/Counter clockwise": false
-            }
-          },
-          "8,3": {
+          "0,3": {
             "size": [
               2,
               1
@@ -59,10 +44,37 @@
               "_title": "Auton Wait Period"
             }
           },
+          "4,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Field Relative",
+              "_title": "Field Relative",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
           "0,0": {
             "size": [
               6,
-              4
+              3
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Odometry-Field2D",
+              "_title": "SmartDashboard/Odometry-Field2D",
+              "Game/Game": "A2022_Rapid_React",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false
+            }
+          },
+          "6,0": {
+            "size": [
+              4,
+              3
             ],
             "content": {
               "_type": "Camera Stream",
@@ -76,38 +88,6 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
-            }
-          },
-          "7,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 1",
-              "_title": "USB Camera 1",
-              "Crosshair/Show crosshair": false,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": false,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Field Relative",
-              "_title": "Field Relative",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -248,15 +228,48 @@
               "_source0": "network_table:///SmartDashboard/Outreach Safety Mode",
               "_title": "Outreach Safety Mode"
             }
+          },
+          "0,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hooded Shooter Upper Speed",
+              "_title": "Hooded Shooter Upper Speed"
+            }
+          },
+          "2,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hooded Shooter Lower Speed",
+              "_title": "Hooded Shooter Lower Speed"
+            }
+          },
+          "4,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Switch",
+              "_source0": "network_table:///SmartDashboard/Override Hooded Shooter Lookup Speed",
+              "_title": "Override Hooded Shooter Lookup Speed"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 878.4000244140625
+    "x": -6.400000095367432,
+    "y": 0.0,
+    "width": 1548.800048828125,
+    "height": 712.0
   }
 }
