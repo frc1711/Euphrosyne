@@ -12,14 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.auton.AutoHighGoalTaxi;
-import frc.robot.commands.auton.AutoLowGoalTaxi;
-import frc.robot.commands.auton.AutoTaxi;
-import frc.robot.commands.auton.AutoTwoBallHigh;
-import frc.robot.commands.auton.AutoTwoBallLow;
-import frc.robot.commands.auton.WheelDistances;
-import frc.robot.commands.auton.base.AutoMove;
-import frc.robot.commands.auton.base.AutoVisionReset;
+
 import frc.robot.commands.central.CentralSystem;
 import frc.robot.commands.climber.ClimberCommand;
 import frc.robot.commands.climber.ClimberInitialization;
@@ -28,8 +21,8 @@ import frc.robot.commands.swerve.SetSwerveModulePositions;
 import frc.robot.commands.swerve.SwerveTeleop;
 import frc.robot.subsystems.CargoHandler;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.HoodedShooter;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 public class RobotContainer {
@@ -41,8 +34,8 @@ public class RobotContainer {
 	private final Swerve swerveDrive = Swerve.getInstance();
 	private final CargoHandler cargoHandler = CargoHandler.getInstance();
 	private final Intake intake = Intake.getInstance();
+	private final Shooter shooter = Shooter.getInstance();
 	private final Climber climber = Climber.getInstance();
-	private final HoodedShooter hoodedShooter = HoodedShooter.getInstance();
 	
 	// Swerve teleop command
 	private final SwerveTeleop swerveTeleop = new SwerveTeleop(
@@ -58,14 +51,13 @@ public class RobotContainer {
 	
 	// Central system command
 	private final CentralSystem centralSystem = new CentralSystem(
-		cargoHandler, intake, hoodedShooter,
+		cargoHandler, intake, shooter,
 		() -> centralController.getAButton(),										// Cargo handler AND intake
 		() -> centralController.getBButton(),										// Cargo handler
 		() -> centralController.getRightTriggerAxis(),								// Intake
-		() -> centralController.getLeftBumper(),								    // Low goal shooter
-		() -> centralController.getRightBumper(),									// High goal shooter
-		() -> centralController.getXButton(),                                       // Reverse mode
-        swerveDrive); // neither added as a requirement in the command nor used except for scheduling other commands
+		() -> centralController.getLeftTriggerAxis(),								// Shooter
+		() -> centralController.getRightBumper(),									// Shooter sequence
+		() -> centralController.getXButton());										// Reverse mode
 	
 	// Climber command
 	private final ClimberCommand climberCommand = new ClimberCommand(
@@ -78,13 +70,14 @@ public class RobotContainer {
 	private final SendableChooser<Command> autonSelector;
 	
 	public RobotContainer () {
-        CameraServer.startAutomaticCapture(0);
-        
+		// Instantiate cameras
+		CameraServer.startAutomaticCapture(0);
+		CameraServer.startAutomaticCapture(1);
+		
 		// Automatically run default commands
 		swerveDrive.setDefaultCommand(swerveTeleop);
 		climber.setDefaultCommand(climberCommand);
 		cargoHandler.setDefaultCommand(centralSystem);
-		// hoodedShooter.setDefaultCommand(hoodedShooterTest);
 		
 		// Auton selector
 		autonSelector = new SendableChooser<Command>();
@@ -92,7 +85,7 @@ public class RobotContainer {
 		for (CommandWrapper command : autonCommands)
 			autonSelector.addOption(command.commandName, command);
 		autonSelector.setDefaultOption("No Auton", null);
-        
+		
 		// Put sendables to dashboard
 		putSendablesToDashboard();
 	}
@@ -104,27 +97,10 @@ public class RobotContainer {
 		Dashboard.putSendable("Reset Gyro", new InstantCommand(() -> new ResetGyro(swerveDrive).schedule()));
 		Dashboard.putSendable("Swerve Drive", swerveDrive);
 		Dashboard.putSendable("Gyro", swerveDrive.getGyro());
-        Dashboard.putSendable("Odometry-Field2D", swerveDrive.getField());
 	}
 	
 	private CommandWrapper[] getAutonCommands () {
-		return new CommandWrapper[] {
-            new CommandWrapper(() -> new AutoVisionReset(swerveDrive), "AutoVisionReset", swerveDrive),
-            new CommandWrapper(() -> new WheelDistances(swerveDrive, 2.5, 0.2), "WheelDistances", swerveDrive),
-            new CommandWrapper(() -> new AutoTaxi(swerveDrive), "Taxi only", swerveDrive),
-            new CommandWrapper(() -> new AutoLowGoalTaxi(swerveDrive, hoodedShooter, cargoHandler, intake),
-                "Low goal taxi", swerveDrive, hoodedShooter, cargoHandler, intake),
-            new CommandWrapper(() -> new AutoHighGoalTaxi(swerveDrive, hoodedShooter, cargoHandler, intake),
-                "High goal taxi", swerveDrive, hoodedShooter, cargoHandler, intake),
-            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake, true),
-                "Two ball low (right)", swerveDrive, hoodedShooter, cargoHandler, intake),
-            new CommandWrapper(() -> new AutoTwoBallLow(swerveDrive, hoodedShooter, cargoHandler, intake, false),
-                "Two ball low (left)", swerveDrive, hoodedShooter, cargoHandler, intake),
-            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, true),
-                "Two ball high (right)", swerveDrive, hoodedShooter, cargoHandler, intake),
-            new CommandWrapper(() -> new AutoTwoBallHigh(swerveDrive, hoodedShooter, cargoHandler, intake, false),
-                "Two ball high (left)", swerveDrive, hoodedShooter, cargoHandler, intake),
-        };
+		return new CommandWrapper[0];
 	}
 	
 	private class CommandWrapper extends InstantCommand {

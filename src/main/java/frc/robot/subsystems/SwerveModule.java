@@ -11,7 +11,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
-
 import frc.team1711.swerve.subsystems.AutoSwerveWheel;
 import frc.team1711.swerve.util.Angles;
 
@@ -21,20 +20,15 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 
 public class SwerveModule extends AutoSwerveWheel {
-	
-    private static final double
+		
+	private static final double
 		steerPIDkp = 2.2,
 		steerPIDki = 0,
-		steerPIDkd = 0,
-        
-        ENCODER_TO_INCHES_FACTOR = 0.136,
-        
-        MIN_SPEED = 0.05;
-    
-    public static final double DIRECTION_MARGIN_OF_ERROR = 3;
+		steerPIDkd = 0;
 	
 	private final String name;
 	
+	private double drivePositionOffset;
 	private final PIDController steerPID;
 	private double directionAbsoluteOffset;
 	private final CANSparkMax driveController, steerController;
@@ -58,16 +52,12 @@ public class SwerveModule extends AutoSwerveWheel {
 		steerPID = new PIDController(steerPIDkp, steerPIDki, steerPIDkd);
 		
 		driveEncoder = driveController.getEncoder();
+		drivePositionOffset = 0;
 	}
 	
-    @Override
-    public double getEncoderDistance () {
-        return driveEncoder.getPosition() * ENCODER_TO_INCHES_FACTOR;
-    }
-    
 	// Direction methods
 	@Override
-	public double getDirection () {
+	protected double getDirection () {
 		return Angles.wrapDegrees(getRawDirection());
 	}
 	
@@ -139,7 +129,7 @@ public class SwerveModule extends AutoSwerveWheel {
 	// Controlling steering
 	@Override
 	protected void setDirection (double targetDirection) {
-        
+		
 		// Gets desired change in direction by wrapping the difference
 		// between where we want to be and where we with zero as the center
 		double directionChange = Angles.wrapDegreesZeroCenter(targetDirection - getDirection());
@@ -147,12 +137,6 @@ public class SwerveModule extends AutoSwerveWheel {
 		// PID loop between 0 (representing current value) and the number
 		// of revolutions we want to change the direction by
 		double steerSpeed = -steerPID.calculate(0, directionChange / 360);
-        
-        // Makes sure wheels are turning fast enough to move at least a little
-        if (Math.abs(directionChange) > DIRECTION_MARGIN_OF_ERROR) {
-            if (steerSpeed < 0) steerSpeed = Math.min(steerSpeed, -MIN_SPEED);
-            else steerSpeed = Math.max(steerSpeed, MIN_SPEED);
-        }
 		
 		// Sets steering controller
 		steerController.set(steerSpeed);
@@ -166,6 +150,16 @@ public class SwerveModule extends AutoSwerveWheel {
 	@Override
 	protected void setDriveSpeed (double speed) {
 		driveController.set(speed);
+	}
+	
+	@Override
+	protected double getPositionDifference () {
+		return driveEncoder.getPosition() - drivePositionOffset;
+	}
+	
+	@Override
+	protected void resetDriveEncoder () {
+		drivePositionOffset = driveEncoder.getPosition();
 	}
 	
 }

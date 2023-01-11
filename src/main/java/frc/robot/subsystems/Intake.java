@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Dashboard;
+
 import frc.robot.IDMap;
 
 public class Intake extends SubsystemBase {
@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
 	}
 	
 	public void setSpeed (double speed) {
-		intakeMotor.set(speed * Dashboard.INTAKE_MAX_SPEED.get());
+		intakeMotor.set(speed);
 	}
 	
 	public void stop () {
